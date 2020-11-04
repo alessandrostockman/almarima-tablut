@@ -1,4 +1,4 @@
-package main.java.it.unibo.almarima.tablut.util;
+package it.unibo.almarima.tablut.util;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

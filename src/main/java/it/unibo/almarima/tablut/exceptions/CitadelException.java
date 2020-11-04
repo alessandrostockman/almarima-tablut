@@ -1,6 +1,6 @@
-package main.java.it.unibo.almarima.tablut.exceptions;
+package it.unibo.almarima.tablut.exceptions;
 
-import main.java.it.unibo.almarima.tablut.domain.Action;
+import it.unibo.almarima.tablut.domain.Action;
 
 public class CitadelException extends Exception {
 

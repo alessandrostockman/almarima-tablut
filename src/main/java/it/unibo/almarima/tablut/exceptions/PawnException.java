@@ -1,6 +1,6 @@
-package main.java.it.unibo.almarima.tablut.exceptions;
+package it.unibo.almarima.tablut.exceptions;
 
-import main.java.it.unibo.almarima.tablut.domain.Action;
+import it.unibo.almarima.tablut.domain.Action;
 
 /**
  * This exception represent an action of a player that is trying to move an enemy or an empty pawn

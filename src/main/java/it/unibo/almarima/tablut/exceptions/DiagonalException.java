@@ -1,6 +1,6 @@
-package main.java.it.unibo.almarima.tablut.exceptions;
+package it.unibo.almarima.tablut.exceptions;
 
-import main.java.it.unibo.almarima.tablut.domain.Action;
+import it.unibo.almarima.tablut.domain.Action;
 
 /**
  * This exception represent an action that is moving a pawn diagonally

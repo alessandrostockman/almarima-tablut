@@ -1,8 +1,8 @@
-package main.java.it.unibo.almarima.tablut.client;
+package it.unibo.almarima.tablut.client;
 
-import main.java.it.unibo.almarima.tablut.domain.Action;
-import main.java.it.unibo.almarima.tablut.domain.State.Turn;
-import main.java.it.unibo.almarima.tablut.domain.StateTablut;
+import it.unibo.almarima.tablut.domain.Action;
+import it.unibo.almarima.tablut.domain.State.Turn;
+import it.unibo.almarima.tablut.domain.StateTablut;
 
 import java.io.BufferedReader;
 import java.io.IOException;

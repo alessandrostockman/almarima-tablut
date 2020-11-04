@@ -1,4 +1,4 @@
-package main.java.it.unibo.almarima.tablut.domain;
+package it.unibo.almarima.tablut.domain;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

@@ -1,6 +1,6 @@
-package main.java.it.unibo.almarima.tablut;
+package it.unibo.almarima.tablut;
 
-import main.java.it.unibo.almarima.tablut.client.TablutHumanClient;
+import it.unibo.almarima.tablut.client.TablutHumanClient;
 
 import java.io.IOException;
 

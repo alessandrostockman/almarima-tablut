@@ -1,10 +1,10 @@
-package main.java.it.unibo.almarima.tablut.client;
+package it.unibo.almarima.tablut.client;
 
 import com.google.gson.Gson;
-import main.java.it.unibo.almarima.tablut.domain.Action;
-import main.java.it.unibo.almarima.tablut.domain.State;
-import main.java.it.unibo.almarima.tablut.domain.StateTablut;
-import main.java.it.unibo.almarima.tablut.util.StreamUtils;
+import it.unibo.almarima.tablut.domain.Action;
+import it.unibo.almarima.tablut.domain.State;
+import it.unibo.almarima.tablut.domain.StateTablut;
+import it.unibo.almarima.tablut.util.StreamUtils;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
