@@ -50,6 +50,10 @@ public abstract class TablutClient implements Runnable {
 		this.currentState = currentState;
 	}
 
+	public int getTimeout(){
+		return this.timeout;
+	}
+
 	/**
 	 * Creates a new player initializing the sockets and the logger
 	 * 
