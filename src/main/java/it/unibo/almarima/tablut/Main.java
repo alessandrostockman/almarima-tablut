@@ -6,7 +6,7 @@ import it.unibo.almarima.tablut.client.TablutClient;
 import java.io.IOException;
 
 import java.util.Scanner;
-
+/*prova per marco*/
 public class Main {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
