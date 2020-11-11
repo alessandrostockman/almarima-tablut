@@ -28,7 +28,9 @@ public class DummyImpl extends Player {
                             case 3: x--;
                         } 
                         if (x >= 0 && x < currentState.getBoard().length && y >= 0 && y < currentState.getBoard().length && currentState.getPawn(x, y).equals(State.Pawn.EMPTY)) { 
-                            return new Action(new Coordinate(i,j), new Coordinate(x,y), this.getColor()); 
+                            Coordinate from = new Coordinate(i,j);
+                            Coordinate to = new Coordinate(x, y);
+                            return new Action(from.toString(), to.toString(), this.getColor()); 
                         } 
                     } 
                 } 

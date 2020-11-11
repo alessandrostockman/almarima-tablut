@@ -14,8 +14,8 @@ public class Action implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Coordinate from;
-	private Coordinate to;
+	private String from;
+	private String to;
 
 	private State.Turn turn;
 
@@ -23,32 +23,26 @@ public class Action implements Serializable {
 		if (from.length() != 2 || to.length() != 2) {
 			throw new InvalidParameterException("the FROM and the TO string must have length=2");
 		} else {
-			this.from = new Coordinate(from);
-			this.to = new Coordinate(to);
+			this.from = from;
+			this.to = to;
 			this.turn = t;
 		}
 	}
 
-	public Action(Coordinate from, Coordinate to, StateTablut.Turn t) throws IOException {
-		this.from = from;
-		this.to = to;
-		this.turn = t;
-	}
-
 	public String getFrom() {
-		return this.from.toString();
+		return this.from;
 	}
 
 	public void setFrom(String from) {
-		this.from = new Coordinate(from);
+		this.from = from;
 	}
 
 	public String getTo() {
-		return to.toString();
+		return to;
 	}
 
 	public void setTo(String to) {
-		this.to = new Coordinate(to);
+		this.to = to;
 	}
 
 	public StateTablut.Turn getTurn() {
@@ -67,28 +61,28 @@ public class Action implements Serializable {
 	 * @return means the index of the column where the pawn is moved from
 	 */
 	public int getColumnFrom() {
-		return this.from.getX();
+		return Character.toLowerCase(this.from.charAt(0)) - 97;
 	}
 
 	/**
 	 * @return means the index of the column where the pawn is moved to
 	 */
 	public int getColumnTo() {
-		return this.from.getY();
+		return Character.toLowerCase(this.to.charAt(0)) - 97;
 	}
 
 	/**
 	 * @return means the index of the row where the pawn is moved from
 	 */
 	public int getRowFrom() {
-		return this.to.getX();
+		return Integer.parseInt(this.from.charAt(1) + "") - 1;
 	}
 
 	/**
 	 * @return means the index of the row where the pawn is moved to
 	 */
 	public int getRowTo() {
-		return this.to.getY();
+		return Integer.parseInt(this.to.charAt(1) + "") - 1;
 	}
 
 }
