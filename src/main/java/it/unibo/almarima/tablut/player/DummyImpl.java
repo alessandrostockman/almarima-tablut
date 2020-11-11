@@ -3,6 +3,7 @@ package it.unibo.almarima.tablut.player;
 import java.io.IOException;
 
 import it.unibo.almarima.tablut.domain.Action;
+import it.unibo.almarima.tablut.domain.Coordinate;
 import it.unibo.almarima.tablut.domain.State;
 import it.unibo.almarima.tablut.domain.State.Turn;
 
@@ -27,17 +28,13 @@ public class DummyImpl extends Player {
                             case 3: x--;
                         } 
                         if (x >= 0 && x < currentState.getBoard().length && y >= 0 && y < currentState.getBoard().length && currentState.getPawn(x, y).equals(State.Pawn.EMPTY)) { 
-                            return new Action(this.conv(i,j),this.conv(x,y),this.getColor()); 
+                            return new Action(new Coordinate(i,j), new Coordinate(x,y), this.getColor()); 
                         } 
                     } 
                 } 
             } 
         }
         return null;
-    }
-
-    String conv(int x, int y) { 
-        return String.valueOf((char)(x + 64)) + y; 
     }
     
     
