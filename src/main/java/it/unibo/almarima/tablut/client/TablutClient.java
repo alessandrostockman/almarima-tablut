@@ -68,18 +68,21 @@ public abstract class TablutClient implements Runnable {
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
-	public TablutClient(String player, String name, int timeout, String ipAddress)
+	public TablutClient(String player, String name, int timeout, String ipAddress, int port)
 			throws UnknownHostException, IOException {
-		int port = 0;
-		serverIp = ipAddress;
+		this.serverIp = ipAddress;
 		this.timeout = timeout;
 		this.gson = new Gson();
 		if (player.toLowerCase().equals("white")) {
 			this.player = State.Turn.WHITE;
-			port = TablutClient.whitePort;
+			if (port == 0) {
+				port = TablutClient.whitePort;
+			}
 		} else if (player.toLowerCase().equals("black")) {
 			this.player = State.Turn.BLACK;
-			port = TablutClient.blackPort;
+			if (port == 0) {
+				port = TablutClient.blackPort;
+			}
 		} else {
 			throw new InvalidParameterException("Player role must be BLACK or WHITE");
 		}
@@ -103,7 +106,7 @@ public abstract class TablutClient implements Runnable {
 	 * @throws IOException
 	 */
 	public TablutClient(String player, String name, int timeout) throws UnknownHostException, IOException {
-		this(player, name, timeout, "localhost");
+		this(player, name, timeout, "localhost", 0);
 	}
 
 	/**
@@ -119,7 +122,7 @@ public abstract class TablutClient implements Runnable {
 	 * @throws IOException
 	 */
 	public TablutClient(String player, String name) throws UnknownHostException, IOException {
-		this(player, name, 60, "localhost");
+		this(player, name, 60, "localhost", 0);
 	}
 
 	/**
@@ -136,7 +139,26 @@ public abstract class TablutClient implements Runnable {
 	 * @throws IOException
 	 */
 	public TablutClient(String player, String name, String ipAddress) throws UnknownHostException, IOException {
-		this(player, name, 60, ipAddress);
+		this(player, name, 60, ipAddress, 0);
+	}
+
+	/**
+	 * Creates a new player initializing the sockets and the logger. Timeout is
+	 * set to be 60 seconds.
+	 * 
+	 * @param player
+	 *            The role of the player (black or white)
+	 * @param name
+	 *            The name of the player
+	 * @param ipAddress
+	 *            The ipAddress of the server
+	 * @param port
+	 *            The port of the server
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
+	public TablutClient(String player, String name, String ipAddress, int port) throws UnknownHostException, IOException {
+		this(player, name, 60, ipAddress, port);
 	}
 
 	public String getName() {

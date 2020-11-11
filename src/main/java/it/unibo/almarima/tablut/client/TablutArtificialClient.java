@@ -10,8 +10,8 @@ import java.net.UnknownHostException;
 
 public class TablutArtificialClient extends TablutClient {
 
-    public TablutArtificialClient(String player,String ipAddress) throws UnknownHostException, IOException {
-		super(player, "artificialInterface",ipAddress);
+    public TablutArtificialClient(String player,String ipAddress, int port) throws UnknownHostException, IOException {
+		super(player, "artificialInterface", ipAddress, port);
     }
     
     public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
@@ -22,7 +22,7 @@ public class TablutArtificialClient extends TablutClient {
 		}
 		System.out.println("Selected this: " + args[0]);
 
-		TablutClient client = new TablutArtificialClient(args[0],args[1]);
+		TablutClient client = new TablutArtificialClient(args[0],args[1],Integer.parseInt(args[2]));
 
 		client.run();
 
