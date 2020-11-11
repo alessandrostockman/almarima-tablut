@@ -1,7 +1,6 @@
 package it.unibo.almarima.tablut;
 
 import it.unibo.almarima.tablut.client.TablutArtificialClient;
-import it.unibo.almarima.tablut.client.TablutClient;
 
 import java.io.IOException;
 
@@ -14,26 +13,13 @@ public class Main {
         System.out.println("Choose your role (BLACK or WHITE): ");
         String role = scan.nextLine();
 
-        String defaultIp = "localhost";
         String ip;
-        System.out.println("Enter IP Address [localhost]: ");
+        System.out.println("Enter IP Address or 'localhost': ");
         ip = scan.nextLine();
-        if (ip.equals("")) {
-            ip = defaultIp;
-        }
         
-        String defaultPort = "";
-        String port;
-        if (role.equals("BLACK")){
-            defaultPort = String.valueOf(TablutClient.blackPort);
-        } else if (role.equals("WHITE")) {
-            defaultPort = String.valueOf(TablutClient.whitePort);
-        }
-        System.out.println("Enter Port ["+defaultPort+"]: ");
-        port = scan.nextLine();
-        if (port.equals("")) {
-            port = defaultPort;
-        } 
+    
+        System.out.println("Enter Port or 0 for default: ");
+        String port = scan.nextLine();
 
         scan.close();
         if (role.equals("BLACK") || role.equals("WHITE")){
