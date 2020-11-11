@@ -33,6 +33,10 @@ public class Coordinates {
 		return this.y;
 	}
 
+	public boolean equals(Coordinates other) {
+		return this.getX() == other.getX() && this.getY() == other.getY();
+	}
+
 	public String toString() {
 		return String.valueOf((char)(this.getX() + 65)) + (this.getY() + 1);
 	}
