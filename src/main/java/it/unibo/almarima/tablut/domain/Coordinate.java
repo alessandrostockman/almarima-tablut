@@ -34,7 +34,7 @@ public class Coordinate {
 	}
 
 	public String toString() {
-		return String.valueOf((char)(this.getY() + 65)) + (this.getY() + 1);
+		return String.valueOf((char)(this.getX() + 65)) + (this.getY() + 1);
 	}
 
 }
