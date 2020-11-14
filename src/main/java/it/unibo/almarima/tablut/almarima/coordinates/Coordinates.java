@@ -70,14 +70,14 @@ public class Coordinates {
         return allCoordinates[i][j];
     }
 
-    public static boolean isCorner(Coord c) {
-        return isCorner(c.x, c.y);
+    public static boolean isEscape(Coord c) {
+        return isEscape(c.x, c.y);
     }
 
-    public static boolean isCorner(int i, int j) { // Very efficient way to check if something is a corner.
+    public static boolean isEscape(int i, int j) { // Very efficient way to check if something is a corner.
         if (i * j != 0)
-            return i == size - 1 && j == size - 1;
-        return i + j == size - 1 || i + j == 0;
+            return i == size - 1 || j == size - 1;
+        return true;
     }
 
     public static boolean isCenterOrNeighborCenter(Coord c) {

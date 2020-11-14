@@ -14,12 +14,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-public class BoardState extends Cloneable {
+public class BoardState implements  Cloneable {
 
     /* Useful constants. */
-    // public static final int ILLEGAL = -1;
-    // public static final int WHITE = 1;
-    // public static final int BLACK = 0;
+    public static final int ILLEGAL = -1;
+    public static final int WHITE = 1;
+    public static final int BLACK = 0;
     public static final int BOARD_SIZE = 9; // 9x9 board for tablut
 
     static {
@@ -30,18 +30,18 @@ public class BoardState extends Cloneable {
     private Pawn[][] board;
     private HashSet<Coord> BlackCoords; 
     private HashSet<Coord> WhiteCoords;
-    //private Coord kingPosition;
+    private Coord kingPosition;
 
     private Random rand = new Random(Math.round(Math.random()*2000));
 
-    private int turnPlayer;       // 0 balck, 1 white 
-    private int winner = -1;      //0 black ,1 white , -1 nobody 
+    private int turnPlayer;             // 0 black, 1 white 
+    private int winner = ILLEGAL;      //0 black ,1 white , -1 nobody 
 
     // Initial Board State creation. The genesis constructor.
     public BoardState(State st) {
 
         this.board= st.getBoard();
-        this.turnPlayer = (st.getTurn().equalsTurn("B") ? 0 : 1);
+        this.turnPlayer = (st.getTurn().equalsTurn("B") ? BLACK : WHITE);
         
         // Update the lists storing the coordinates of all the pieces.
         WhiteCoords = new HashSet<>();
@@ -52,6 +52,8 @@ public class BoardState extends Cloneable {
                 BlackCoords.add(c);
             } else if (piece.toString() == "W") {
                 WhiteCoords.add(c);
+            }else if (piece.toString()== "K"){
+                this.kingPosition = c;
             }
         }
     }
@@ -63,7 +65,7 @@ public class BoardState extends Cloneable {
         }
         WhiteCoords = new HashSet<>(boardState.WhiteCoords);
         BlackCoords = new HashSet<>(boardState.BlackCoords);
-        //kingPosition = boardState.kingPosition;
+        kingPosition = boardState.kingPosition;
         turnPlayer = boardState.turnPlayer;
     }
 
@@ -89,8 +91,8 @@ public class BoardState extends Cloneable {
         HashSet<Coord> playerCoordSet = getPlayerCoordSet();
         playerCoordSet.remove(oldPos); // We can do this remove
         playerCoordSet.add(newPos);
-        // if (movingPiece == Piece.KING)
-        //     kingPosition = newPos;
+        if (movingPiece == Pawn.KING)
+             kingPosition = newPos;
 
         // Now update board.
         board[oldPos.x][oldPos.y] = Pawn.EMPTY;
@@ -132,11 +134,11 @@ public class BoardState extends Cloneable {
         // Note, it is possible for multiple pieces to be captured at once, so we have a
         // list of them.
         for (Coord capturedCoord : captured) {
-            if (getPieceAt(capturedCoord) == Piece.KING) {
+            if (getPawnAt(capturedCoord) == Pawn.KING) {
                 kingPosition = null;
             } // the king has been captured!
             getPlayerCoordSet(getOpponent()).remove(capturedCoord);
-            board[capturedCoord.x][capturedCoord.y] = Piece.EMPTY;
+            board[capturedCoord.x][capturedCoord.y] = Pawn.EMPTY;
         }
 
         // Update internal variables, winner, turn player, and turn number.
@@ -149,21 +151,17 @@ public class BoardState extends Cloneable {
         // Check if the king was captured -- BLACK WIN!
         // Also checking if the WHITES even have any legal moves at all. If not, they
         // lose.
-        if (kingPosition == null || !playerHasALegalMove(SWEDE)) {
-            winner = MUSCOVITE;
+        if (kingPosition == null || !playerHasALegalMove(WHITE)) {
+            winner = BLACK;
         }
 
         // Check if king is at corner -- SWEDES WIN!
         // Also checking if the muscovites even have any legal moves at all. If not,
         // they lose.
-        else if (Coordinates.isCorner(kingPosition) || !playerHasALegalMove(MUSCOVITE)) {
-            winner = SWEDE;
+        else if (Coordinates.isEscape(kingPosition) || !playerHasALegalMove(BLACK)) {
+            winner = WHITE;
         }
 
-        // If the turn limit is reached then it's a draw.
-        else if (gameOver()) {
-            winner = Board.DRAW;
-        }
     }
 
     /**
@@ -171,8 +169,12 @@ public class BoardState extends Cloneable {
      * desirable to select a subset of moves from specific positions.
      */
     public ArrayList<Move> getAllLegalMoves() {
+        return this.getAllLegalMoves(turnPlayer);
+    }
+
+    public ArrayList<Move> getAllLegalMoves(int player) {
         ArrayList<Move> allMoves = new ArrayList<>();
-        for (Coord pos : getPlayerCoordSet()) {
+        for (Coord pos : getPlayerCoordSet(player)) {
             allMoves.addAll(getLegalMovesForPosition(pos));
         }
         return allMoves;
@@ -182,23 +184,8 @@ public class BoardState extends Cloneable {
      * Check if there are any legal moves for the player.
      */
     private boolean playerHasALegalMove(int player) {
-        for (Coord c : getPlayerCoordSet(player)) {
-            for (Coord neighbor : Coordinates.getNeighbors(c)) {
-                if (coordIsEmpty(neighbor)) {
-                    if (pieceIsAllowedAt(neighbor, getPieceAt(c))) {
-                        return true;
-                    }
-                    // Need another convoluted check just in case it is the center.
-                    if (Coordinates.isCenter(neighbor)) {
-                        int xDiff = neighbor.x - c.x;
-                        int yDiff = neighbor.y - c.y;
-                        if (coordIsEmpty(Coordinates.get(neighbor.x + xDiff, neighbor.y + yDiff)))
-                            return true;
-                    }
-                }
-            }
-        }
-        return false;
+
+        return this.getAllLegalMoves(player).isEmpty();
     }
 
     /**
@@ -212,7 +199,7 @@ public class BoardState extends Cloneable {
 
         // Check that the piece being requested actually belongs to the player.
         Pawn piece = getPawnAt(start);
-        if (piecesToPlayer.get(piece) != turnPlayer) {
+        if (piece.toString() != this.fromTurnPlayerToChar()) {
             return legalMoves;
         }
 
@@ -230,13 +217,12 @@ public class BoardState extends Cloneable {
          * what they can do.
          */
         for (Coord end : goodCoords) {
-            if (pieceIsAllowedAt(end, piece)) {// only king moves to corner or center, so need to check.
-                legalMoves.add(new TablutMove(start, end, this.turnPlayer));
-            }
+            legalMoves.add(new Move(start, end, this.turnPlayer));
         }
         return legalMoves;
     }
 
+    /*TODO: ad ora questo non permette di muoversi dentro una cittadela, da modificare*/
     private List<Coord> getLegalCoordsInDirection(Coord start, int x, int y) {
         ArrayList<Coord> coords = new ArrayList<>();
         assert (!(x != 0 && y != 0));
@@ -247,7 +233,7 @@ public class BoardState extends Cloneable {
         for (int i = startPos + incr; incr * i <= endIdx; i += incr) { // increasing/decreasing functionality
             // new coord is an x coord change or a y coord change
             Coord coord = (x != 0) ? Coordinates.get(i, start.y) : Coordinates.get(start.x, i);
-            if (coordIsEmpty(coord)) {
+            if (coordIsEmpty(coord) && !Coordinates.isCitadel(coord)) {
                 coords.add(coord);
             } else {
                 break;
@@ -256,21 +242,21 @@ public class BoardState extends Cloneable {
         return coords;
     }
 
-    // Determines whether or not this coord is a valid coord we can sandwich with.
-    private boolean canCaptureWithCoord(Coord c) {
-        return Coordinates.isCorner(c) || Coordinates.isCenter(c) || piecesToPlayer.get(getPieceAt(c)) == turnPlayer;
-    }
+    // // Determines whether or not this coord is a valid coord we can sandwich with.
+    // private boolean canCaptureWithCoord(Coord c) {
+    //     return Coordinates.isCorner(c) || Coordinates.isCenter(c) || piecesToPlayer.get(getPieceAt(c)) == turnPlayer;
+    // }
 
     // Returns all of the coordinates of pieces belonging to the current player.
     public HashSet<Coord> getPlayerPieceCoordinates() {
-        if (turnPlayer != MUSCOVITE && turnPlayer != SWEDE) {
+        if (turnPlayer != BLACK && turnPlayer != WHITE) {
             return null;
         }
         return new HashSet<Coord>(getPlayerCoordSet(turnPlayer)); // Copy the set so no funny business.
     }
 
     public HashSet<Coord> getOpponentPieceCoordinates() {
-        if (turnPlayer != MUSCOVITE && turnPlayer != SWEDE) {
+        if (turnPlayer != BLACK && turnPlayer != WHITE) {
             return null;
         }
         return new HashSet<Coord>(getPlayerCoordSet(getOpponent())); // Copy the set so no funny business.
@@ -281,12 +267,12 @@ public class BoardState extends Cloneable {
     }
 
     private HashSet<Coord> getPlayerCoordSet(int player) {
-        return (player == 0) ? BlackCoords : WhiteCoords;
+        return (player == BLACK) ? BlackCoords : WhiteCoords;
     }
 
     public boolean isLegal(Move move) {
         // Make sure that this is the correct player.
-        if (turnPlayer != move.getPlayerId() || move.getPlayerId() == -1)
+        if (turnPlayer != move.getPlayerId() || move.getPlayerId() == ILLEGAL)
             return false;
 
         // Get useful things. TODO: cosa succede se la posizione non esiste??
@@ -333,6 +319,11 @@ public class BoardState extends Cloneable {
                 return false;
         }
 
+        // Make sure, if its a escape tile, the king is the only one able to
+        // go there.
+        if (!pieceIsAllowedAt(to, piece))
+            return false;
+
         // All of the conditions have been satisfied, we have a legal move!
         return true;
     }
@@ -343,15 +334,15 @@ public class BoardState extends Cloneable {
     }
 
     public String fromTurnPlayerToChar(){
-        return (this.getTurnPlayer()==0) ? "B" : "W" ;
+        return (this.getTurnPlayer()==BLACK) ? "B" : "W" ;
     }
 
     public boolean turnPlayerCanMoveFrom(Coord position) {
-        return piecesToPlayer.get(getPieceAt(position)) == turnPlayer;
+        return getPawnAt(position).toString() == this.fromTurnPlayerToChar();
     }
 
     public boolean isOpponentPieceAt(Coord position) {
-        return !(coordIsEmpty(position)) && piecesToPlayer.get(getPieceAt(position)) != turnPlayer;
+        return !(coordIsEmpty(position)) && getPawnAt(position).toString() != this.fromTurnPlayerToChar();
     }
 
     public boolean coordIsEmpty(Coord c) {
@@ -359,16 +350,22 @@ public class BoardState extends Cloneable {
     }
 
     public int getOpponent() {
-        return (turnPlayer == 0) ? 1 : 0;
+        return (turnPlayer == BLACK) ? WHITE : BLACK;
     }
 
     public int getNumberPlayerPieces(int player) {
         return getPlayerCoordSet(player).size();
     }
 
-    // public Coord getKingPosition() {
-    //     return kingPosition;
-    // }
+    public Coord getKingPosition() {
+        return kingPosition;
+    }
+
+    // If its a king, it can move anywhere. Otherwise, make sure it isn't trying to
+    // move to an escape tile
+    private boolean pieceIsAllowedAt(Coord pos, Pawn piece) {
+        return piece ==Pawn.KING || !(Coordinates.isEscape(pos));
+    }
 
     
     public boolean isInitialized() {
