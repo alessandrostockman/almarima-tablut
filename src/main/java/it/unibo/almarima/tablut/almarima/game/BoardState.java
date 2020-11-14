@@ -108,9 +108,9 @@ public class BoardState implements  Cloneable {
                 // If the opponent is a king, we need to check if its at the center or the
                 // neighbors of center.
                 // If it is, then it can only be captured on all 4 sides.
-                if (getPieceAt(enemy) == Piece.KING && Coordinates.isCenterOrNeighborCenter(kingPosition)) {
+                if (getPawnAt(enemy) == Pawn.KING && Coordinates.isCenterOrNeighborCenter(kingPosition)) {
                     for (Coord possibleAlly : Coordinates.getNeighbors(enemy)) {
-                        if (getPieceAt(possibleAlly) != Piece.BLACK && !Coordinates.isCenter(possibleAlly)) {
+                        if (getPawnAt(possibleAlly) != Pawn.BLACK && !Coordinates.isCenter(possibleAlly)) {
                             canCapture = false;
                             break;
                         }
@@ -242,10 +242,11 @@ public class BoardState implements  Cloneable {
         return coords;
     }
 
-    // // Determines whether or not this coord is a valid coord we can sandwich with.
-    // private boolean canCaptureWithCoord(Coord c) {
-    //     return Coordinates.isCorner(c) || Coordinates.isCenter(c) || piecesToPlayer.get(getPieceAt(c)) == turnPlayer;
-    // }
+    //TODO: understand and modify this method
+    // Determines whether or not this coord is a valid coord we can sandwich with.
+    private boolean canCaptureWithCoord(Coord c) {
+        return Coordinates.isCorner(c) || Coordinates.isCenter(c) || piecesToPlayer.get(getPieceAt(c)) == turnPlayer;
+    }
 
     // Returns all of the coordinates of pieces belonging to the current player.
     public HashSet<Coord> getPlayerPieceCoordinates() {
