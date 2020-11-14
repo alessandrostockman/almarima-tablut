@@ -1,15 +1,15 @@
-package it.unibo.almarima.tablut.player;
+package it.unibo.almarima.tablut.almarima.player;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import it.unibo.almarima.tablut.domain.Action;
-import it.unibo.almarima.tablut.domain.Coordinates;
-import it.unibo.almarima.tablut.domain.State;
+import it.unibo.almarima.tablut.unibo.Action;
+import it.unibo.almarima.tablut.almarima.domain.Coordinates;
+import it.unibo.almarima.tablut.unibo.State;
 
-public class DummyImpl extends Player {
+public class DummyImpl extends TablutPlayer {
 
     List<Coordinates> citadels;
 

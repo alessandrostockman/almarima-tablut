@@ -1,17 +1,18 @@
-package it.unibo.almarima.tablut.client;
+package it.unibo.almarima.tablut.almarima.client;
 
-import it.unibo.almarima.tablut.domain.Action;
-import it.unibo.almarima.tablut.domain.StateTablut;
-import it.unibo.almarima.tablut.player.*;
+import it.unibo.almarima.tablut.unibo.Action;
+import it.unibo.almarima.tablut.unibo.StateTablut;
+import it.unibo.almarima.tablut.unibo.TablutClient;
+import it.unibo.almarima.tablut.almarima.player.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-
+/*extends TablutClient : used to handle communication from and to the Server*/
 public class TablutArtificialClient extends TablutClient {
 
     public TablutArtificialClient(String role,String ipAddress, int port) throws UnknownHostException, IOException {
-		super(role, "AI", ipAddress, port);
+		super(role, "AlMaRiMa", ipAddress, port);
     }
     
     public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
@@ -31,7 +32,8 @@ public class TablutArtificialClient extends TablutClient {
     @Override
 	public void run() {
 
-        Player p=new DummyImpl(60,this.getPlayer());               // create a new player who will play the game according to his algo
+		
+        TablutPlayer p=new DummyImpl(this.getTimeout(),this.getPlayer());               // create a new player who will play the game according to his algo
 		
 		try {
 			this.declareName();
@@ -49,7 +51,8 @@ public class TablutArtificialClient extends TablutClient {
 
 				if (this.isYourTurn()) {
 					System.out.println("Player " + this.getPlayer().toString() + ", do your move: ");
-					Action action=p.computeMove(this.getCurrentState());
+					p.setBoardState(this.getCurrentState());
+					Action action=p.computeMove().moveToAction(this.getPlayer());
 					this.write(action);
 				} else if (!this.isYourTurn()) {
 					System.out.println("Waiting for your opponent move... ");

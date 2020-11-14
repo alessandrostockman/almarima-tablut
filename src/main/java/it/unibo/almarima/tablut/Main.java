@@ -1,6 +1,6 @@
 package it.unibo.almarima.tablut;
 
-import it.unibo.almarima.tablut.client.TablutArtificialClient;
+import it.unibo.almarima.tablut.almarima.client.TablutArtificialClient;
 
 import java.io.IOException;
 
@@ -12,17 +12,18 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         System.out.println("Choose your role (BLACK or WHITE): ");
         String role = scan.nextLine();
+        role=role.toLowerCase();
 
-        String ip;
+
         System.out.println("Enter IP Address or 'localhost': ");
-        ip = scan.nextLine();
+        String ip = scan.nextLine();
         
     
         System.out.println("Enter Port or 0 for default: ");
         String port = scan.nextLine();
 
         scan.close();
-        if (role.equals("BLACK") || role.equals("WHITE")){
+        if (role.equals("black") || role.equals("white")){
             String[] array = new String[]{role,ip,port};
             TablutArtificialClient.main(array);
         }
