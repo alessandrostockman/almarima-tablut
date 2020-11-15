@@ -180,8 +180,14 @@ public class BoardState implements  Cloneable {
      * Check if there are any legal moves for the player.
      */
     private boolean playerHasALegalMove(int player) {
-
-        return this.getAllLegalMoves(player).isEmpty();
+        for (Coord c : getPlayerCoordSet(player)) {
+            for (Coord neighbor : Coordinates.getNeighbors(c)) {
+                if (coordIsEmpty(neighbor)) {
+                    return true;       
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -218,7 +224,6 @@ public class BoardState implements  Cloneable {
         return legalMoves;
     }
 
-    /*TODO: ad ora questo non permette di muoversi dentro una cittadela, da modificare*/
     private List<Coord> getLegalCoordsInDirection(Coord start, int x, int y) {
         ArrayList<Coord> coords = new ArrayList<>();
         assert (!(x != 0 && y != 0));
@@ -229,16 +234,16 @@ public class BoardState implements  Cloneable {
         for (int i = startPos + incr; incr * i <= endIdx; i += incr) { // increasing/decreasing functionality
             // new coord is an x coord change or a y coord change
             Coord coord = (x != 0) ? Coordinates.get(i, start.y) : Coordinates.get(start.x, i);
-            if (coordIsEmpty(coord) && !Coordinates.isCitadel(coord)) {
+            if (coordIsEmpty(coord) && this.citadelRules(start, coord)) {
                 coords.add(coord);
             } else {
-                break;
+                break; 
             }
         }
         return coords;
     }
 
-    //TODO: understand this method, escape tiles are useful to campture or not ?? it not delete 
+    //TODO: se gli escape tiles sono utilizzabili per catturare lasciare il metodo cosi altrimenti eliminare isEscape() 
     // Determines whether or not this coord is a valid coord we can sandwich with.
     private boolean canCaptureWithCoord(Coord c) {
         return Coordinates.isEscape(c) || Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar();
@@ -294,20 +299,9 @@ public class BoardState implements  Cloneable {
         if (!(from.x == to.x || from.y == to.y))
             return false;
 
-        // Check if i'm moving towards a citadel without coming from one 
-        if (Coordinates.isCitadel(to) && !Coordinates.isCitadel(from)) {
-			return false;
-        }
-
-        // Check if i'm moving toward a citadel coming from one on the opposite side of the board
-        if (Coordinates.isCitadel(to) && Coordinates.isCitadel(from)) {
-			if (from.x==to.x){
-                if ((from.y - to.y > 5) || from.y - to.y < -5) return false;
-            }
-            else {
-                if (from.x - to.x > 5 || from.x - to.x < -5 ) return false; 
-            }
-            
+        // Check if trying to go to citadel without coming from one 
+        if (!this.citadelRules(from, to)){
+            return false;
         }
 
         // Now we make sure it isn't moving through any other pieces.
@@ -316,10 +310,11 @@ public class BoardState implements  Cloneable {
                 return false;
         }
 
-        // Make sure, if its a escape tile, the king is the only one able to
-        // go there.
-        if (!pieceIsAllowedAt(to, piece))
-            return false;
+        //TODO: se tutti possono andare dovunque (tranne centro e cittadelle) allora eliminare il metodo
+        // // Make sure, if it's an escape tile, the king is the only one able to
+        // // go there.
+        // if (!pieceIsAllowedAt(to, piece))
+        //     return false;
 
         // All of the conditions have been satisfied, we have a legal move!
         return true;
@@ -358,10 +353,33 @@ public class BoardState implements  Cloneable {
         return kingPosition;
     }
 
-    // If its a king, it can move anywhere. Otherwise, make sure it isn't trying to
-    // move to an escape tile
-    private boolean pieceIsAllowedAt(Coord pos, Pawn piece) {
-        return piece ==Pawn.KING || !(Coordinates.isEscape(pos));
+    //TODO: capire se questo metodo ci va o meno : se gli escape tiles sono caselle valide per tutti o solo per il re 
+    // // If its a king, it can move anywhere. Otherwise, make sure it isn't trying to
+    // // move to an escape tile
+    // private boolean pieceIsAllowedAt(Coord pos, Pawn piece) {
+    //     return piece ==Pawn.KING || !(Coordinates.isEscape(pos));
+    // }
+
+    //check if a piece can move to a citadel or not 
+    //returns TRUE when you can do the move , FALSE otherwise
+    public boolean citadelRules(Coord from , Coord to){
+        
+        // Check if i'm moving towards a citadel without coming from one 
+        if (Coordinates.isCitadel(to) && !Coordinates.isCitadel(from)) {
+			return false;
+        }
+
+        // Check if i'm moving toward a citadel coming from one on the opposite side of the board
+        if (Coordinates.isCitadel(to) && Coordinates.isCitadel(from)) {
+			if (from.x==to.x){
+                if ((from.y - to.y > 5) || from.y - to.y < -5) return false;
+            }
+            else {
+                if (from.x - to.x > 5 || from.x - to.x < -5 ) return false; 
+            }
+            
+        }
+        return true;
     }
 
     
