@@ -12,6 +12,7 @@ public class Coordinates {
     private static int size;
     private static boolean isSet = false;
     private static ArrayList<Coord> citadels;
+    private static ArrayList<Coord> escapes;
 
     // Sets all coords, should ONLY BE called once.
     public static void setAllCoordinates(int max) {
@@ -25,12 +26,18 @@ public class Coordinates {
             }
             isSet = true;
             
+            //initialize citadels positions
             citadels= new ArrayList<>();
-            createCitadels();
+            initCitadels();
+
+            //initialize escape tiles positions
+            escapes= new ArrayList<>();
+            initEscapes();
+
         }
     }
 
-    public static void createCitadels(){
+    public static void initCitadels(){
         ArrayList<String> cit= new ArrayList<>();
         cit.add("a4");
 		cit.add("a5");
@@ -53,6 +60,25 @@ public class Coordinates {
             citadels.add(get(c));
         }
     }
+    
+    public static void initEscapes(){
+        escapes.add(get(0,1));
+        escapes.add(get(0,2));
+        escapes.add(get(0,6));
+        escapes.add(get(0,7));
+        escapes.add(get(1,0));
+        escapes.add(get(1,8));
+        escapes.add(get(2,0));
+        escapes.add(get(2,8));
+        escapes.add(get(6,0));
+        escapes.add(get(6,8));
+        escapes.add(get(7,0));
+        escapes.add(get(7,8));
+        escapes.add(get(8,1));
+        escapes.add(get(8,2));
+        escapes.add(get(8,6));
+        escapes.add(get(8,7));    
+    }
 
     public static Coord get(String position){
         if (position.length() == 2) {
@@ -71,10 +97,12 @@ public class Coordinates {
     }
 
     public static boolean isEscape(Coord c) {
-        return isEscape(c.x, c.y);
+        return escapes.contains(c);
     }
 
-    public static boolean isEscape(int i, int j) { // Very efficient way to check if something is a corner.
+
+    //check if the coord passed is on an edge , it's not necessary an escape tile but if i already checked other conditions (ToCoord is legal) can be more efficient
+    public static boolean isEscapeAfterConditions(int i, int j) {           
         if (i * j != 0)
             return i == size - 1 || j == size - 1;
         return true;
@@ -96,6 +124,11 @@ public class Coordinates {
 
     public static boolean isCenter(int x, int y) {
         return x == 4 && y == 4;
+    }
+
+    // check if Coord is a Citadel 
+    public static boolean isCitadel(Coord c){
+        return citadels.contains(c);
     }
 
     public static List<Coord> getCorners() {
@@ -134,17 +167,13 @@ public class Coordinates {
         }
     }
 
-    // check if Coord is a Citadel 
-    public static boolean isCitadel(Coord c){
-        return citadels.contains(c);
-    }
-
-    // Given a coordinate, returns the distance between it and the closest corner.
-    public static int distanceToClosestCorner(Coord kingPos) {
-        List<Coord> corners = getCorners();
+    
+    // Given a coordinate, returns the distance between it and the closest escape tile.
+    public static int distanceToClosestEscape(Coord kingPos) {
+        List<Coord> escapes = getEscapes();
         int minDistance = Integer.MAX_VALUE;
-        for (Coord corner : corners) {
-            int distance = kingPos.distance(corner);
+        for (Coord esc : escapes) {
+            int distance = kingPos.distance(esc);
             if (distance < minDistance) {
                 minDistance = distance;
             }
@@ -193,7 +222,11 @@ public class Coordinates {
         return citadels;
     }
 
+    public static ArrayList<Coord> getEscapes() {
+        return escapes;
+    }
 
+    
     // useful exception
     public static class CoordinateDoesNotExistException extends Exception {
         private static final long serialVersionUID = 1L;

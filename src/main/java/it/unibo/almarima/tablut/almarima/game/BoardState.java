@@ -1,18 +1,15 @@
 package it.unibo.almarima.tablut.almarima.game;
 
-import it.unibo.almarima.tablut.almarima.coordinates.*;
-import it.unibo.almarima.tablut.almarima.coordinates.Coordinates.CoordinateDoesNotExistException;
-import it.unibo.almarima.tablut.unibo.State;
-import it.unibo.almarima.tablut.unibo.StateTablut;
-import it.unibo.almarima.tablut.unibo.State.Pawn;
-import it.unibo.almarima.tablut.unibo.State.Turn;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+
+import it.unibo.almarima.tablut.almarima.coordinates.Coord;
+import it.unibo.almarima.tablut.almarima.coordinates.Coordinates;
+import it.unibo.almarima.tablut.almarima.coordinates.Coordinates.CoordinateDoesNotExistException;
+import it.unibo.almarima.tablut.unibo.State;
+import it.unibo.almarima.tablut.unibo.State.Pawn;
 
 public class BoardState implements  Cloneable {
 
@@ -129,8 +126,7 @@ public class BoardState implements  Cloneable {
             }
         }
 
-        // Slaughter the captured enemies... like pigs. Or more like remove object
-        // memory addresses... same thing.
+        
         // Note, it is possible for multiple pieces to be captured at once, so we have a
         // list of them.
         for (Coord capturedCoord : captured) {
@@ -155,7 +151,7 @@ public class BoardState implements  Cloneable {
             winner = BLACK;
         }
 
-        // Check if king is at corner -- SWEDES WIN!
+        // Check if king is at corner -- WHITE WIN!
         // Also checking if the muscovites even have any legal moves at all. If not,
         // they lose.
         else if (Coordinates.isEscape(kingPosition) || !playerHasALegalMove(BLACK)) {
@@ -242,10 +238,10 @@ public class BoardState implements  Cloneable {
         return coords;
     }
 
-    //TODO: understand and modify this method
+    //TODO: understand this method, escape tiles are useful to campture or not ?? it not delete 
     // Determines whether or not this coord is a valid coord we can sandwich with.
     private boolean canCaptureWithCoord(Coord c) {
-        return Coordinates.isCorner(c) || Coordinates.isCenter(c) || piecesToPlayer.get(getPieceAt(c)) == turnPlayer;
+        return Coordinates.isEscape(c) || Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar();
     }
 
     // Returns all of the coordinates of pieces belonging to the current player.
