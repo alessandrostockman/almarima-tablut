@@ -32,7 +32,7 @@ public class BoardState implements  Cloneable {
     private Random rand = new Random(Math.round(Math.random()*2000));
 
     private int turnPlayer;             // 0 black, 1 white 
-    private int winner = ILLEGAL;      //0 black ,1 white , -1 nobody 
+    private int winner = ILLEGAL;       //0 black ,1 white , -1 nobody 
 
     // Initial Board State creation. The genesis constructor.
     public BoardState(State st) {
@@ -427,57 +427,4 @@ public class BoardState implements  Cloneable {
         System.out.println();
     }
 
-    // public static void main(String[] args) {
-    //     BoardState b = new BoardState();
-
-    //     // compute branching factors
-    //     for (Integer player : Arrays.asList(MUSCOVITE, SWEDE)) {
-    //         b.turnPlayer = player;
-    //         int totalMoves = b.getAllLegalMoves().size();
-    //         System.out.println(String.format("Player %d, %d possible moves.", player, totalMoves));
-    //     }
-
-    //     // Single coordinate observation for debugging.
-    //     for (int i = 0; i < BOARD_SIZE; i++) {
-    //         b.turnPlayer = MUSCOVITE;
-    //         Coord start = Coordinates.get(i, 0);
-    //         System.out.println("------------------\n" + start.toString());
-    //         List<TablutMove> moves = b.getLegalMovesForPosition(start);
-    //         List<Coord> positions = new ArrayList<>();
-    //         for (TablutMove move : moves)
-    //             positions.add(move.getEndPosition());
-    //         b.printSpecialBoard(positions, "*");
-    //     }
-
-    //     System.out.println("------------------\nCorner check.");
-    //     b.printSpecialBoard(Coordinates.getCorners(), "X");
-    //     System.out.println("------------------\n\nRandom Movement check.");
-    //     TablutMove move = (TablutMove) b.getRandomMove();
-    //     b.printSpecialBoard(Arrays.asList(move.getStartPosition()), "S");
-    //     System.out.println();
-    //     b.printSpecialBoard(Arrays.asList(move.getEndPosition()), "E");
-    //     b.processMove(move);
-    //     System.out.println();
-    //     b.printBoard();
-
-    //     // Check capture
-    //     System.out.println("------------------\n\n\nCapture check.");
-    //     b = new TablutBoardState();
-    //     TablutMove move1 = new TablutMove(0, 3, 2, 3, MUSCOVITE);
-    //     TablutMove move2 = new TablutMove(6, 4, 6, 5, SWEDE);
-    //     TablutMove move3 = new TablutMove(0, 5, 2, 5, MUSCOVITE);
-    //     TablutMove move4 = new TablutMove(6, 5, 6, 6, SWEDE);
-    //     TablutMove move5 = new TablutMove(1, 4, 2, 4, MUSCOVITE);
-    //     List<TablutMove> moves = Arrays.asList(move1, move2, move3, move4, move5);
-    //     for (TablutMove m : moves) {
-    //         b.printSpecialBoard(Arrays.asList(m.getStartPosition()), "S");
-    //         System.out.println();
-    //         b.printSpecialBoard(Arrays.asList(m.getEndPosition()), "E");
-    //         b.processMove(m);
-    //         System.out.println();
-    //         b.printBoard();
-    //         System.out.println("MOVE COMPLETED " + m.toPrettyString() + "\n\n");
-    //     }
-    //     System.out.println();
-    // }
 }
