@@ -1,11 +1,9 @@
 package it.unibo.almarima.tablut;
 
 import java.io.IOException;
-
 import java.util.Scanner;
 
 import it.unibo.almarima.tablut.application.client.TablutArtificialClient;
-import it.unibo.almarima.tablut.external.TablutClient;
 
 public class Main {
 
@@ -32,4 +30,6 @@ public class Main {
         return ;
         
     }
+
+    
 }
