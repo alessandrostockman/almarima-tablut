@@ -57,6 +57,8 @@ public class BoardState implements  Cloneable {
 
     /* The below method is for the purpose of cloning. */
     private BoardState(BoardState boardState) {
+        //TODO: debug
+        this.printBoard();
         for (Coord c : Coordinates.iterCoordinates()) {
             board[c.x][c.y] = boardState.board[c.x][c.y];
         }
