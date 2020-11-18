@@ -55,9 +55,9 @@ public class BoardState implements  Cloneable {
 
     /* The below method is for the purpose of cloning. */
     private BoardState(BoardState boardState) {
-        Pawn[][] board = new Pawn[BOARD_SIZE][BOARD_SIZE];
+        this.board = new Pawn[BOARD_SIZE][BOARD_SIZE];
         for (Coord c : Coordinates.iterCoordinates()) {
-            board[c.x][c.y] = boardState.board[c.x][c.y];
+            this.board[c.x][c.y] = boardState.board[c.x][c.y];
         }
         WhiteCoords = new HashSet<>(boardState.WhiteCoords);
         BlackCoords = new HashSet<>(boardState.BlackCoords);
