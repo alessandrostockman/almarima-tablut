@@ -29,8 +29,8 @@ public class Move {
     }
 
     public Action moveToAction(Turn t) throws IOException {
-        String from = String.valueOf((char)(this.getxFrom() + 65)) + (this.getyFrom() + 1);
-        String to= String.valueOf((char)(this.getxTo() + 65)) + (this.getyTo() + 1);
+        String from = String.valueOf((char)(this.getyFrom() + 65)) + (this.getxFrom() + 1);
+        String to= String.valueOf((char)(this.getyTo() + 65)) + (this.getxTo() + 1);
         return new Action(from,to,t);
     }
 
