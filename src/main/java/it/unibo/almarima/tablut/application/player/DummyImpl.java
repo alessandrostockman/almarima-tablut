@@ -1,13 +1,13 @@
-package it.unibo.almarima.tablut.almarima.player;
+package it.unibo.almarima.tablut.application.player;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import it.unibo.almarima.tablut.unibo.Action;
-import it.unibo.almarima.tablut.almarima.domain.Coordinates;
-import it.unibo.almarima.tablut.unibo.State;
+import it.unibo.almarima.tablut.application.domain.Coordinates;
+import it.unibo.almarima.tablut.external.Action;
+import it.unibo.almarima.tablut.external.State;
 
 public class DummyImpl extends TablutPlayer {
 

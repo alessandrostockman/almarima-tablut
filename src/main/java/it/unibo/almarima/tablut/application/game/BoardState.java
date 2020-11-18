@@ -1,15 +1,15 @@
-package it.unibo.almarima.tablut.almarima.game;
+package it.unibo.almarima.tablut.application.game;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-import it.unibo.almarima.tablut.almarima.coordinates.Coord;
-import it.unibo.almarima.tablut.almarima.coordinates.Coordinates;
-import it.unibo.almarima.tablut.almarima.coordinates.Coordinates.CoordinateDoesNotExistException;
-import it.unibo.almarima.tablut.unibo.State;
-import it.unibo.almarima.tablut.unibo.State.Pawn;
+import it.unibo.almarima.tablut.application.coordinates.Coord;
+import it.unibo.almarima.tablut.application.coordinates.Coordinates;
+import it.unibo.almarima.tablut.application.coordinates.Coordinates.CoordinateDoesNotExistException;
+import it.unibo.almarima.tablut.external.State;
+import it.unibo.almarima.tablut.external.State.Pawn;
 
 public class BoardState implements  Cloneable {
 
@@ -144,15 +144,15 @@ public class BoardState implements  Cloneable {
 
     // Determines if a player has won by updating internal variable.
     private void updateWinner() {
-        // Check if the king was captured -- BLACK WIN!
+        // Check if the king was captured -- BLACK WINS
         // Also checking if the WHITES even have any legal moves at all. If not, they
         // lose.
         if (kingPosition == null || !playerHasALegalMove(WHITE)) {
             winner = BLACK;
         }
 
-        // Check if king is at corner -- WHITE WIN!
-        // Also checking if the muscovites even have any legal moves at all. If not,
+        // Check if king is at corner -- WHITE WINS
+        // Also checking if the BLACKS even have any legal moves at all. If not,
         // they lose.
         else if (Coordinates.isEscape(kingPosition) || !playerHasALegalMove(BLACK)) {
             winner = WHITE;
@@ -177,7 +177,7 @@ public class BoardState implements  Cloneable {
     }
 
     /**
-     * Check if there are any legal moves for the player.
+     * Check if there are any legal move for the player.
      */
     private boolean playerHasALegalMove(int player) {
         for (Coord c : getPlayerCoordSet(player)) {
@@ -215,7 +215,7 @@ public class BoardState implements  Cloneable {
         /*
          * Add the real moves now. We do not call isLegal here; this is because we
          * efficiently enforce legality by only adding those that are legal. This makes
-         * for a more efficient method so people aren't slowed down by just figuring out
+         * for a more efficient method so player aren't slowed down by just figuring out
          * what they can do.
          */
         for (Coord end : goodCoords) {
@@ -362,6 +362,7 @@ public class BoardState implements  Cloneable {
 
     //check if a piece can move to a citadel or not 
     //returns TRUE when you can do the move , FALSE otherwise
+    //TODO: i Bianchi non possono mai andare in una cittadella
     public boolean citadelRules(Coord from , Coord to){
         
         // Check if i'm moving towards a citadel without coming from one 

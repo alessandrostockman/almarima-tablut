@@ -1,11 +1,11 @@
-package it.unibo.almarima.tablut.almarima.game;
+package it.unibo.almarima.tablut.application.game;
 
 import java.io.IOException;
 
-import it.unibo.almarima.tablut.almarima.coordinates.Coord;
-import it.unibo.almarima.tablut.almarima.coordinates.Coordinates;
-import it.unibo.almarima.tablut.unibo.Action;
-import it.unibo.almarima.tablut.unibo.State.Turn;
+import it.unibo.almarima.tablut.application.coordinates.Coord;
+import it.unibo.almarima.tablut.application.coordinates.Coordinates;
+import it.unibo.almarima.tablut.external.Action;
+import it.unibo.almarima.tablut.external.State.Turn;
 
 public class Move {
 

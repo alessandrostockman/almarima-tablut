@@ -1,10 +1,10 @@
 package it.unibo.almarima.tablut;
 
-import it.unibo.almarima.tablut.almarima.client.TablutArtificialClient;
-
 import java.io.IOException;
 
 import java.util.Scanner;
+
+import it.unibo.almarima.tablut.application.client.TablutArtificialClient;
 
 public class Main {
 

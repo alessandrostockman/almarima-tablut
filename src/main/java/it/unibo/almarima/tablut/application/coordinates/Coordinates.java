@@ -1,4 +1,4 @@
-package it.unibo.almarima.tablut.almarima.coordinates;
+package it.unibo.almarima.tablut.application.coordinates;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;

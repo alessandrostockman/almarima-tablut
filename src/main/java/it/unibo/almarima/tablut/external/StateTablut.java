@@ -1,4 +1,4 @@
-package it.unibo.almarima.tablut.unibo;
+package it.unibo.almarima.tablut.external;
 
 import java.io.Serializable;
 

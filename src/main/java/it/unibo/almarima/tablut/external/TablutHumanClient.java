@@ -1,11 +1,11 @@
-package it.unibo.almarima.tablut.unibo;
+package it.unibo.almarima.tablut.external;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.UnknownHostException;
 
-import it.unibo.almarima.tablut.unibo.State.Turn;
+import it.unibo.almarima.tablut.external.State.Turn;
 
 /**
  * 

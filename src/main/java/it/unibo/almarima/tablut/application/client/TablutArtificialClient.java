@@ -1,9 +1,9 @@
-package it.unibo.almarima.tablut.almarima.client;
+package it.unibo.almarima.tablut.application.client;
 
-import it.unibo.almarima.tablut.unibo.Action;
-import it.unibo.almarima.tablut.unibo.StateTablut;
-import it.unibo.almarima.tablut.unibo.TablutClient;
-import it.unibo.almarima.tablut.almarima.player.*;
+import it.unibo.almarima.tablut.application.player.*;
+import it.unibo.almarima.tablut.external.Action;
+import it.unibo.almarima.tablut.external.StateTablut;
+import it.unibo.almarima.tablut.external.TablutClient;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
