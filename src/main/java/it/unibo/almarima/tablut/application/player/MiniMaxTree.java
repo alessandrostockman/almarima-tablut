@@ -27,6 +27,8 @@ public class MiniMaxTree {
         this.endTime = endTime;
     }
 
+    // This function differs from minimax as it needs to keep track of not just max and min
+	// but also the corresponding moves that led to those values.
     public Move getBestMove() throws TimeLimitException {
         int depth = 0;
 		Valuation alpha = new Valuation(0.0, depth);

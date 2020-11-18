@@ -8,7 +8,7 @@ import it.unibo.almarima.tablut.external.State;
 /*abstract class that all player extend*/
 public class ImplPlayer extends TablutPlayer{
 
-    int timeLimit = (this.getTimeout()-5)*1000;
+    long timeLimit = (this.getTimeout()-5)*1000;
 
     public ImplPlayer(int timeout, State.Turn role ) {
 
