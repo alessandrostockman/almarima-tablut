@@ -5,7 +5,7 @@ import it.unibo.almarima.tablut.application.game.Move;
 import it.unibo.almarima.tablut.application.player.MiniMaxTree.TimeLimitException;
 import it.unibo.almarima.tablut.external.State;
 
-/*abstract class that all player extend*/
+
 public class ImplPlayer extends TablutPlayer{
 
     long timeLimit = (this.getTimeout()-5)*1000;
