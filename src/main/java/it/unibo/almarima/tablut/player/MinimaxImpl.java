@@ -3,14 +3,13 @@ package it.unibo.almarima.tablut.player;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import it.unibo.almarima.tablut.domain.Action;
-import it.unibo.almarima.tablut.domain.State;
-import it.unibo.almarima.tablut.domain.State.Turn;
+import it.unibo.almarima.tablut.application.player.TablutPlayer;
+import it.unibo.almarima.tablut.external.Action;
+import it.unibo.almarima.tablut.external.State;
+import it.unibo.almarima.tablut.external.State.Turn;
 
-public class MinimaxImpl extends Player {
+public class MinimaxImpl extends TablutPlayer {
     Turn t;
-
-
 
     public MinimaxImpl(int timeout, Turn color) {
         super(timeout, color);
