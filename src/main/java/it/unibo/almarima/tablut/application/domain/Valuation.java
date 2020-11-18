@@ -1,4 +1,4 @@
-package it.unibo.almarima.tablut.application.player;
+package it.unibo.almarima.tablut.application.domain;
 
 public class Valuation {
 

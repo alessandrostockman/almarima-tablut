@@ -1,7 +1,7 @@
-package it.unibo.almarima.tablut.application.player;
+package it.unibo.almarima.tablut.application.heuristics;
 
-import it.unibo.almarima.tablut.application.coordinates.Coordinates;
-import it.unibo.almarima.tablut.application.game.BoardState;
+import it.unibo.almarima.tablut.application.domain.Coordinates;
+import it.unibo.almarima.tablut.application.domain.BoardState;
 
 public class KingHeuristic extends Heuristic {
 

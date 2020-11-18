@@ -1,7 +1,8 @@
 package it.unibo.almarima.tablut.application.player;
 
-import it.unibo.almarima.tablut.application.game.BoardState;
-import it.unibo.almarima.tablut.application.game.Move;
+import it.unibo.almarima.tablut.application.domain.BoardState;
+import it.unibo.almarima.tablut.application.domain.Move;
+import it.unibo.almarima.tablut.application.heuristics.*;
 import it.unibo.almarima.tablut.application.player.MiniMaxTree.TimeLimitException;
 import it.unibo.almarima.tablut.external.State;
 

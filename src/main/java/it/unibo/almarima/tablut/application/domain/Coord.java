@@ -1,7 +1,6 @@
-package it.unibo.almarima.tablut.application.coordinates;
+package it.unibo.almarima.tablut.application.domain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public final class Coord {
@@ -65,47 +64,4 @@ public final class Coord {
         return String.format("(%d %d)", this.x, this.y);
     }
 
-    // Debugging
-    public static void main(String[] args) {
-        boolean testEquality = true;
-        boolean testBetweenCoords = true;
-        Coordinates.setAllCoordinates(9);
-
-        Coord a = Coordinates.get(1, 1);
-        Coord b = Coordinates.get(1, 1);
-        Coord c = Coordinates.get(1, 2);
-        Coord d = Coordinates.get(2, 1);
-        List<Coord> coords = Arrays.asList(a, b, c, d);
-
-        if (testEquality) {
-            for (Coord coord1 : coords) {
-                for (Coord coord2 : coords) {
-                    System.out.print(coord1.toString() + " =?= " + coord2.toString() + ": ");
-                    System.out.println(coord1 == coord2);
-                }
-            }
-        }
-
-        if (testBetweenCoords) {
-            Coord beg = Coordinates.get(1, 1);
-            Coord endRow = Coordinates.get(1, 4);
-            Coord endCol = Coordinates.get(4, 1);
-            Coord endDiag = Coordinates.get(4, 4);
-            coords = Arrays.asList(endRow, endCol, endDiag);
-            for (Coord co : coords) {
-                for (Coord start : Arrays.asList(beg, co)) {
-                    for (Coord end : Arrays.asList(co, beg)) {
-                        if (start.equals(end))
-                            continue;
-                        System.out.println("\nStart: " + start.toString());
-                        for (Coord through : start.getCoordsBetween(end)) {
-                            System.out.println("    -> " + through.toString());
-                        }
-                        System.out.println("->End: " + end.toString());
-                    }
-                }
-            }
-
-        }
-    }
 }

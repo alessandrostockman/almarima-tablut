@@ -1,8 +1,8 @@
-package it.unibo.almarima.tablut.application.player;
+package it.unibo.almarima.tablut.application.heuristics;
 
 import java.util.List;
 
-import it.unibo.almarima.tablut.application.game.BoardState;
+import it.unibo.almarima.tablut.application.domain.BoardState;
 
 public class MeanCompositeHeuristic extends Heuristic {
 
