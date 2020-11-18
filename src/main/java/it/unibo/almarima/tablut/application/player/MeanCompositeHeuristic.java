@@ -11,7 +11,7 @@ public class MeanCompositeHeuristic extends Heuristic {
 		this.heuristics = l;
 	}
 
-	public float evaluate(BoardState state) {
+	public double evaluate(BoardState state) {
 		float value = 0;
 		for (Heuristic h : this.heuristics) {
 			value += h.evaluate(state);

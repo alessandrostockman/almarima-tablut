@@ -7,7 +7,7 @@ public class KingHeuristic extends Heuristic {
 
 	private final int MAX_KING_ESCAPE_DISTANCE = 6; 
 
-	public float evaluate(BoardState state) {
+	public double evaluate(BoardState state) {
 		return Coordinates.distanceToClosestEscape(state.getKingPosition()) / this.MAX_KING_ESCAPE_DISTANCE;
 	}
 	
