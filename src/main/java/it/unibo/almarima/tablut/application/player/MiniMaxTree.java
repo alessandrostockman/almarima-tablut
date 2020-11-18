@@ -2,8 +2,10 @@ package it.unibo.almarima.tablut.application.player;
 
 import java.util.List;
 
-import it.unibo.almarima.tablut.application.game.BoardState;
-import it.unibo.almarima.tablut.application.game.Move;
+import it.unibo.almarima.tablut.application.domain.BoardState;
+import it.unibo.almarima.tablut.application.domain.Move;
+import it.unibo.almarima.tablut.application.domain.Valuation;
+import it.unibo.almarima.tablut.application.heuristics.Heuristic;
 
 
 public class MiniMaxTree {
@@ -50,7 +52,7 @@ public class MiniMaxTree {
 				Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
                 //TODO: scegliere la mossa in base ai valori di alfa beta e h ( e anche la profondità se sono uguali)
-                if (childValuation.gethVal()>alpha.gethVal() || (childValuation.gethVal()==alpha.gethVal() && childValuation.getDepthAttained() < alpha.getDepthAttained() ) ){
+                if (childValuation.gethVal()>=alpha.gethVal() || (childValuation.gethVal()==alpha.gethVal() && childValuation.getDepthAttained() < alpha.getDepthAttained() ) ){
                     alpha = childValuation;
                     maxMove = move;
 				}
@@ -70,7 +72,7 @@ public class MiniMaxTree {
                 Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
                 //TODO: scegliere la mossa in base ai valori di alfa beta e h ( e anche la profondità se sono uguali)
-                if (childValuation.gethVal()<beta.gethVal() || (childValuation.gethVal()==beta.gethVal() && childValuation.getDepthAttained() < beta.getDepthAttained() ) ){
+                if (childValuation.gethVal()<=beta.gethVal() || (childValuation.gethVal()==beta.gethVal() && childValuation.getDepthAttained() < beta.getDepthAttained() ) ){
                     beta = childValuation;
                     minMove = move;
 				}
@@ -81,7 +83,8 @@ public class MiniMaxTree {
     
     // Implementation of minmax alg with alpha beta pruning
 	private Valuation minimax(BoardState nodeBS, int depth, Valuation alpha, Valuation beta) throws TimeLimitException {
-        
+		boolean updated = false;
+		
         if (System.currentTimeMillis() > endTime) {
 			throw new TimeLimitException("");
 		}
@@ -107,17 +110,21 @@ public class MiniMaxTree {
                 
                 //TODO: scegliere la mossa in base ai valori di alfa beta e h ( e anche la profondità se sono uguali)
                 if (childValuation.gethVal()>alpha.gethVal() || (childValuation.gethVal()==alpha.gethVal() && childValuation.getDepthAttained() < alpha.getDepthAttained() ) ){
-                    alpha = childValuation;
+					alpha = childValuation;
+					updated = true;
 
                 }
                 if (alpha.gethVal()>=beta.gethVal()){
                     break;
                 }
 			}
+			if (!updated) {
+				return new Valuation(alpha.gethVal(), depth+1);
+			}
 			return alpha;
         }
 
-        //minimzing heuristic 
+        //minimizing heuristic 
         else {
 			List<Move> nextMoves = nodeBS.getAllLegalMoves();
 			// iterate through all possible moves
@@ -129,13 +136,17 @@ public class MiniMaxTree {
 				Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
                 //TODO: scegliere la mossa in base ai valori di alfa beta e h ( e anche la profondità se sono uguali)
-                if (beta.gethVal()< childValuation.gethVal() || (childValuation.gethVal()==beta.gethVal() && childValuation.getDepthAttained() < beta.getDepthAttained() ) ){
-                    beta = childValuation;
+                if (childValuation.gethVal()<beta.gethVal() || (childValuation.gethVal()==beta.gethVal() && childValuation.getDepthAttained() < beta.getDepthAttained() ) ){
+					beta = childValuation;
+					updated = true;
 
                 }
                 if (beta.gethVal()<=alpha.gethVal()){
                     break;
-                }
+				}
+			}
+			if (!updated) {
+				return new Valuation(beta.gethVal(), depth+1);
 			}
 			return beta;
         }

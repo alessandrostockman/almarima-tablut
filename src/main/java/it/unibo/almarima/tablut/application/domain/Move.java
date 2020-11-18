@@ -1,9 +1,8 @@
-package it.unibo.almarima.tablut.application.game;
+package it.unibo.almarima.tablut.application.domain;
 
 import java.io.IOException;
 
-import it.unibo.almarima.tablut.application.coordinates.Coord;
-import it.unibo.almarima.tablut.application.coordinates.Coordinates;
+
 import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.State.Turn;
 

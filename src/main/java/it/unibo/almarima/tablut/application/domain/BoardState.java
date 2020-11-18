@@ -1,13 +1,11 @@
-package it.unibo.almarima.tablut.application.game;
+package it.unibo.almarima.tablut.application.domain;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-import it.unibo.almarima.tablut.application.coordinates.Coord;
-import it.unibo.almarima.tablut.application.coordinates.Coordinates;
-import it.unibo.almarima.tablut.application.coordinates.Coordinates.CoordinateDoesNotExistException;
+import it.unibo.almarima.tablut.application.domain.Coordinates.CoordinateDoesNotExistException;
 import it.unibo.almarima.tablut.external.State;
 import it.unibo.almarima.tablut.external.State.Pawn;
 
@@ -17,7 +15,7 @@ public class BoardState implements  Cloneable {
     public static final int ILLEGAL = -1;
     public static final int WHITE = 1;
     public static final int BLACK = 0;
-    public static final int BOARD_SIZE = 9; // 9x9 board for tablut
+    public static final int BOARD_SIZE = 9;           // 9x9 board for tablut
 
     static {
         Coordinates.setAllCoordinates(BOARD_SIZE);
@@ -57,10 +55,9 @@ public class BoardState implements  Cloneable {
 
     /* The below method is for the purpose of cloning. */
     private BoardState(BoardState boardState) {
-        //TODO: debug
-        this.printBoard();
+        this.board = new Pawn[BOARD_SIZE][BOARD_SIZE];
         for (Coord c : Coordinates.iterCoordinates()) {
-            board[c.x][c.y] = boardState.board[c.x][c.y];
+            this.board[c.x][c.y] = boardState.board[c.x][c.y];
         }
         WhiteCoords = new HashSet<>(boardState.WhiteCoords);
         BlackCoords = new HashSet<>(boardState.BlackCoords);
