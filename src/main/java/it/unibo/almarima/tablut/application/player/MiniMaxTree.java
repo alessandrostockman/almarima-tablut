@@ -77,6 +77,34 @@ public class MiniMaxTree {
     
     // Implementation of minmax alg with alpha beta pruning
 	private Valuation minimax(BoardState nodeBS, int depth, Valuation alpha, Valuation beta) throws TimeLimitException {
+        int bestMove = 0;
+        ArrayList<State> possibleMoves = getLegalMoves(currentState, t);
 
+        if (depth == 0 || possibleMoves.isEmpty() || Turn.BLACKWIN == t || Turn.WHITEWIN == t){
+            return bestMove;
+        }
+        if (t== Turn.BLACK){ //maximizing BLACK
+            int maxValue = Integer.MIN_VALUE;
+            for(State s : possibleMoves){
+                int val = minimaxAlphaBeta(depth-1, alpha, beta, Turn.WHITE, s);
+                maxValue = max(maxValue, val);
+                alpha = max(alpha,maxValue);
+                if(alpha >= beta)
+                    break;
+            }
+            return maxValue;
+        }
+        else{ //minimizing WHITE
+            int minValue = Integer.MAX_VALUE;
+            for(State s: possibleMoves){
+                int val = minimaxAlphaBeta(depth-1, alpha, beta, Turn.BLACK, s);
+                minValue= min(minValue,val);
+                beta = min(beta,val);
+                if(alpha >= beta)
+                    break;
+            }
+            return minValue;
+        }
+    }
 
 }
