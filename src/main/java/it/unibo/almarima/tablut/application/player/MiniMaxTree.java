@@ -43,7 +43,7 @@ public class MiniMaxTree {
 				// clone the bs and process the move to generate a new board
 				BoardState childBS = (BoardState) this.headBoardState.clone();
 				childBS.processMove(move);
-				// recursively run minimaxPrune on the child board state
+				// recursively run minimax on the child board state
 				Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
                 //TODO: scegliere la mossa in base ai valori di alfa beta e h ( e anche la profondità se sono uguali)
@@ -62,7 +62,7 @@ public class MiniMaxTree {
 				// clone the bs and process the move to generate a new board
 				BoardState childBS = (BoardState) this.headBoardState.clone();
 				childBS.processMove(move);
-				// recursively run minimaxPrune on the child board state
+				// recursively run minimax on the child board state
                 Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
                 //TODO: scegliere la mossa in base ai valori di alfa beta e h ( e anche la profondità se sono uguali)
