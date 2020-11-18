@@ -7,19 +7,17 @@ import it.unibo.almarima.tablut.external.State;
 /*abstract class that all player extend*/
 public abstract class TablutPlayer {
     
-    public static final int ILLEGAL = -1;
-    public static final int WHITE = 1;
-    public static final int BLACK = 0;
+    
 
     private int timeout;               
-    protected int playerId = ILLEGAL;          //0 is Black , 1 is White  per rendere più semplice la gestione del ruolo 
-    protected BoardState boardState;          //la board in un determinato turno reale di gioco
+    protected int playerId = BoardState.ILLEGAL;          //0 is Black , 1 is White  per rendere più semplice la gestione del ruolo 
+    protected BoardState boardState;                       //la board in un determinato turno reale di gioco
 
     public TablutPlayer(int timeout, State.Turn role ) {
 
         this.timeout=timeout;
 
-        this.playerId = (role.equalsTurn("B") ? BLACK : WHITE);
+        this.playerId = (role.equalsTurn("B") ? BoardState.BLACK : BoardState.WHITE);
     }
 
     
