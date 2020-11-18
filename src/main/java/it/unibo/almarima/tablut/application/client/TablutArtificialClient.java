@@ -33,7 +33,7 @@ public class TablutArtificialClient extends TablutClient {
 	public void run() {
 
 		
-        TablutPlayer p=new DummyImpl(this.getTimeout(),this.getPlayer());               // create a new player who will play the game according to his algo
+        TablutPlayer p=new TablutPlayer(this.getTimeout(),this.getPlayer());               // create a new player who will play the game according to his algo
 		
 		try {
 			this.declareName();
