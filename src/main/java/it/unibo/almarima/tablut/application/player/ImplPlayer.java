@@ -15,7 +15,7 @@ public class ImplPlayer extends TablutPlayer{
         super(timeout, role);
     }
     
-    /*metodo che ritorna la migliore mossa valutata dal player implementato*/
+    /*return best move computed from player*/
     public  Move computeMove(){
         // keep track of time started and time limit
     	long startTime = System.currentTimeMillis();

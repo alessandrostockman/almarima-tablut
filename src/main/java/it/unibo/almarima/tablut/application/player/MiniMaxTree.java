@@ -52,7 +52,7 @@ public class MiniMaxTree {
 			return maxMove;
 		}
 		else {
-			// if the player with the turn is a MOSCO then minimize
+			// if the player with the turn is a BLACK then minimize
 			Move minMove = null;
 			List<Move> nextMoves = this.headBoardState.getAllLegalMoves();
 			// iterate through all possible moves
