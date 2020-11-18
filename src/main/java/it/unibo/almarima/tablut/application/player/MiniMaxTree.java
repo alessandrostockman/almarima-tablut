@@ -118,7 +118,7 @@ public class MiniMaxTree {
         }
 
         //minimzing heuristic 
-        if (nodeBS.getTurnPlayer()== BoardState.BLACK){
+        else {
 			List<Move> nextMoves = nodeBS.getAllLegalMoves();
 			// iterate through all possible moves
 			for (Move move : nextMoves) {
