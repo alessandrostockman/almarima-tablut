@@ -2,8 +2,8 @@ package it.unibo.almarima.tablut.application.player;
 
 public class Valuation {
 
-	public double hVal;
-	public int depthAttained;
+	private double hVal;
+	private int depthAttained;
 	
 	public Valuation(double hVal, int depthAttained) {
 		this.hVal = hVal;
@@ -17,4 +17,13 @@ public class Valuation {
 	public String toString() {
 		return ("(hVal: " + hVal + ", depthAttained: " + depthAttained + ")");
 	}
+
+	public double gethVal() {
+		return hVal;
+	}
+
+	public int getDepthAttained() {
+		return depthAttained;
+	}
+
 }
