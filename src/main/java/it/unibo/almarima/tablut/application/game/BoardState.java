@@ -88,13 +88,16 @@ public class BoardState implements  Cloneable {
         HashSet<Coord> playerCoordSet = getPlayerCoordSet();
         playerCoordSet.remove(oldPos); // We can do this remove
         playerCoordSet.add(newPos);
-        if (movingPiece == Pawn.KING)
-             kingPosition = newPos;
 
         // Now update board.
         board[oldPos.x][oldPos.y] = Pawn.EMPTY;
         board[newPos.x][newPos.y] = movingPiece;
 
+        //if i'm moving the king update king position and if it's the first time i move it (it is in the center) put the throne there 
+        if (movingPiece == Pawn.KING)
+             kingPosition = newPos;
+             if (Coordinates.isCenter(oldPos)) board[oldPos.x][oldPos.y] = Pawn.THRONE;
+        
         // Now check if a capture occurred. Only a piece next to the new position could
         // have been captured.
         List<Coord> captured = new ArrayList<>();
@@ -182,7 +185,7 @@ public class BoardState implements  Cloneable {
     private boolean playerHasALegalMove(int player) {
         for (Coord c : getPlayerCoordSet(player)) {
             for (Coord neighbor : Coordinates.getNeighbors(c)) {
-                if (coordIsEmpty(neighbor)) {
+                if (coordIsEmpty(neighbor) && citadelRules(c, neighbor)) {
                     return true;       
                 }
             }
@@ -243,10 +246,10 @@ public class BoardState implements  Cloneable {
         return coords;
     }
 
-    //TODO: se gli escape tiles sono utilizzabili per catturare lasciare il metodo cosi altrimenti eliminare isEscape() 
+ 
     // Determines whether or not this coord is a valid coord we can sandwich with.
     private boolean canCaptureWithCoord(Coord c) {
-        return Coordinates.isEscape(c) || Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar();
+        return Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar();
     }
 
     // Returns all of the coordinates of pieces belonging to the current player.
@@ -306,15 +309,9 @@ public class BoardState implements  Cloneable {
 
         // Now we make sure it isn't moving through any other pieces.
         for (Coord throughCoordinate : from.getCoordsBetween(to)) {
-            if (!coordIsEmpty(throughCoordinate))
+            if (!coordIsEmpty(throughCoordinate) && this.citadelRules(from, throughCoordinate))
                 return false;
         }
-
-        //TODO: se tutti possono andare dovunque (tranne centro e cittadelle) allora eliminare il metodo
-        // // Make sure, if it's an escape tile, the king is the only one able to
-        // // go there.
-        // if (!pieceIsAllowedAt(to, piece))
-        //     return false;
 
         // All of the conditions have been satisfied, we have a legal move!
         return true;
@@ -353,12 +350,6 @@ public class BoardState implements  Cloneable {
         return kingPosition;
     }
 
-    //TODO: capire se questo metodo ci va o meno : se gli escape tiles sono caselle valide per tutti o solo per il re 
-    // // If its a king, it can move anywhere. Otherwise, make sure it isn't trying to
-    // // move to an escape tile
-    // private boolean pieceIsAllowedAt(Coord pos, Pawn piece) {
-    //     return piece ==Pawn.KING || !(Coordinates.isEscape(pos));
-    // }
 
     //check if a piece can move to a citadel or not 
     //returns TRUE when you can do the move , FALSE otherwise

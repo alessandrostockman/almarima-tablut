@@ -12,8 +12,8 @@ public abstract class TablutPlayer {
     public static final int BLACK = 0;
 
     private int timeout;               
-    public int playerId = ILLEGAL;          //0 is Black , 1 is White  per rendere più semplice la gestione del ruolo 
-    private BoardState boardState;          //la board in un determinato turno reale di gioco
+    protected int playerId = ILLEGAL;          //0 is Black , 1 is White  per rendere più semplice la gestione del ruolo 
+    protected BoardState boardState;          //la board in un determinato turno reale di gioco
 
     public TablutPlayer(int timeout, State.Turn role ) {
 
