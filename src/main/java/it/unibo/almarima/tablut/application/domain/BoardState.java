@@ -271,17 +271,43 @@ public class BoardState implements  Cloneable {
                 for (Coord n: neigh){
                     try {
                         Coord s= Coordinates.getSandwichCoord(n,c);
-                        if (getPawnAt(c)==Pawn.BLACK){
-                            if (canCaptureWithCoord(s,turnPlayer) && getPawnAt(n)==Pawn.EMPTY) num+=1;
+                        if (getPawnAt(c)==Pawn.WHITE){
+                            if (canCaptureWithCoord(s, turnPlayer==BLACK ? WHITE : BLACK) && getPawnAt(n)==Pawn.EMPTY) num+=1;
                         }
                         else {
-                            if (canCaptureWithCoord(s,turnPlayer) && getPawnAt(n)==Pawn.EMPTY && !Coordinates.isCitadel(n)) num+=1;
+                            if (canCaptureWithCoord(s,turnPlayer==BLACK ? WHITE : BLACK) && getPawnAt(n)==Pawn.EMPTY && !Coordinates.isCitadel(n)) num+=1;
                         }
                     }catch(Exception e) {}
                 }
             }
         }
         return num;
+    }
+
+    public int endangeredKing(){
+        int max;
+        int occ=0;
+        Coord k = this.getKingPosition();
+        List<Coord> neigh = Coordinates.getNeighbors(k);
+        if (Coordinates.isCenterOrNeighborCenter(k)){
+            max=4;
+            for (Coord n : neigh) {
+                if (canCaptureWithCoord(n,BLACK)) {
+                    occ+=1;
+                }
+            }
+        }
+        else {
+            max=2;
+            for (Coord n: neigh){
+                try {
+                    Coord s= Coordinates.getSandwichCoord(n,k);
+                    if (canCaptureWithCoord(s,turnPlayer==BLACK ? WHITE : BLACK) && getPawnAt(n)==Pawn.EMPTY && !Coordinates.isCitadel(n)) occ+=1;
+                }catch(Exception e) {}
+            }
+        }
+        return max-occ;
+
     }
 
  
