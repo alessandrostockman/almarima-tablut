@@ -253,21 +253,21 @@ public class BoardState implements  Cloneable {
         HashSet<Coord> playerCoord = this.getPlayerCoordSet(turnPlayer);
         for (Coord c : playerCoord){
             List<Coord> neigh = Coordinates.getNeighbors(c);
-            if (getPawnAt(c)== Pawn.KING && Coordinates.isCenterOrNeighborCenter(c)){
-                int occ=0;
-                boolean end=true;
-                for (Coord n : neigh) {
-                    if (canCaptureWithCoord(n,turnPlayer)) {
-                        occ+=1;
-                    }
-                    else if(!(getPawnAt(n)==Pawn.EMPTY)) {
-                        end=false;
-                        break;
-                    }
-                    if (occ==3 && end ) num+=1;
-                }
-            }
-            else {
+            // if (getPawnAt(c)== Pawn.KING && Coordinates.isCenterOrNeighborCenter(c)){
+            //     int occ=0;
+            //     boolean end=true;
+            //     for (Coord n : neigh) {
+            //         if (canCaptureWithCoord(n,turnPlayer)) {
+            //             occ+=1;
+            //         }
+            //         else if(!(getPawnAt(n)==Pawn.EMPTY)) {
+            //             end=false;
+            //             break;
+            //         }
+            //         if (occ==3 && end ) num+=1;
+            //     }
+            //}
+            if (getPawnAt(c)!= Pawn.KING){
                 for (Coord n: neigh){
                     try {
                         Coord s= Coordinates.getSandwichCoord(n,c);
