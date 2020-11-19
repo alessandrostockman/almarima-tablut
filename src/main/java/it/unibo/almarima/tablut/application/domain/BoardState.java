@@ -247,6 +247,7 @@ public class BoardState implements  Cloneable {
         return coords;
     }
 
+    //return the number of pieces that are endagered aka pieces that can be eaten in the current situation
     public int numEndageredPieces(int turnPlayer){
         int num=0;
         HashSet<Coord> playerCoord = this.getPlayerCoordSet(turnPlayer);
