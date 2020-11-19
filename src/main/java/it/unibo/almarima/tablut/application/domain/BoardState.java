@@ -45,10 +45,11 @@ public class BoardState implements  Cloneable {
             Pawn piece = getPawnAt(c);
             if (piece.toString() == "B") {
                 BlackCoords.add(c);
-            } else if (piece.toString() == "W") {
+            } else if (piece.toString() == "W" || piece.toString()== "K") {
                 WhiteCoords.add(c);
-            }else if (piece.toString()== "K"){
-                this.kingPosition = c;
+                if (piece.toString()== "K"){
+                    this.kingPosition = c;
+                }
             }
         }
     }
@@ -92,6 +93,7 @@ public class BoardState implements  Cloneable {
         board[oldPos.x][oldPos.y] = Pawn.EMPTY;
         board[newPos.x][newPos.y] = movingPiece;
 
+        //TODO: controllare che questo è giusto 
         //if i'm moving the king update king position and if it's the first time i move it (it is in the center) put the throne there 
         if (movingPiece == Pawn.KING)
              kingPosition = newPos;
@@ -245,10 +247,50 @@ public class BoardState implements  Cloneable {
         return coords;
     }
 
+    public int numEndageredPieces(int turnPlayer){
+        int num=0;
+        HashSet<Coord> playerCoord = this.getPlayerCoordSet(turnPlayer);
+        for (Coord c : playerCoord){
+            List<Coord> neigh = Coordinates.getNeighbors(c);
+            if (getPawnAt(c)== Pawn.KING && Coordinates.isCenterOrNeighborCenter(c)){
+                int occ=0;
+                boolean end=true;
+                for (Coord n : neigh) {
+                    if (canCaptureWithCoord(n,turnPlayer)) {
+                        occ+=1;
+                    }
+                    else if(!(getPawnAt(n)==Pawn.EMPTY)) {
+                        end=false;
+                        break;
+                    }
+                    if (occ==3 && end ) num+=1;
+                }
+            }
+            else {
+                for (Coord n: neigh){
+                    try {
+                        Coord s= Coordinates.getSandwichCoord(n,c);
+                        if (getPawnAt(c)==Pawn.BLACK){
+                            if (canCaptureWithCoord(s,turnPlayer) && getPawnAt(n)==Pawn.EMPTY) num+=1;
+                        }
+                        else {
+                            if (canCaptureWithCoord(s,turnPlayer) && getPawnAt(n)==Pawn.EMPTY && !Coordinates.isCitadel(n)) num+=1;
+                        }
+                    }catch(Exception e) {}
+                }
+            }
+        }
+        return num;
+    }
+
  
     // Determines whether or not this coord is a valid coord we can sandwich with.
     private boolean canCaptureWithCoord(Coord c) {
         return Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar();
+    }
+
+    private boolean canCaptureWithCoord(Coord c, int turn){
+        return Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar(turn);
     }
 
     // Returns all of the coordinates of pieces belonging to the current player.
@@ -322,7 +364,11 @@ public class BoardState implements  Cloneable {
     }
 
     public String fromTurnPlayerToChar(){
-        return (this.getTurnPlayer()==BLACK) ? "B" : "W" ;
+        return fromTurnPlayerToChar(this.getTurnPlayer()) ;
+    }
+
+    public String fromTurnPlayerToChar(int turnPlayer){
+        return (turnPlayer==BLACK) ? "B" : "W" ;
     }
 
     public boolean turnPlayerCanMoveFrom(Coord position) {
