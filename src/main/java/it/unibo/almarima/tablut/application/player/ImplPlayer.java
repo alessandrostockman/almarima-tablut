@@ -16,7 +16,7 @@ public class ImplPlayer extends TablutPlayer{
     public ImplPlayer(int timeout, State.Turn role ) {
 
 		super(timeout, role);
-		h= new KingHeuristic();
+		h= new PawnsHeuristic();
     }
     
     /*return best move computed from player*/
@@ -25,14 +25,14 @@ public class ImplPlayer extends TablutPlayer{
     	long startTime = System.currentTimeMillis();
     	long endTime = startTime + timeLimit;
     			
-    	// start minimaxPruning algorithm with depth of 2
+    	// start minimaxPruning algorithm with depth of 4
     	int iterDepth = 4;
     	Move chosenMove = boardState.getRandomMove();
 		try {
 			// if move is chosen without time limit reached, set it to chosenMove
 			chosenMove = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime, h).getBestMove();
         } catch (TimeLimitException e) {
-            //System.out.println("Reached time limit while trying iterDepth " + iterDepth--);
+            System.out.println("Reached time limit while trying iterDepth " + iterDepth--);
 		}
 		
 		// // keep running minimax-pruning with higher depth as long as there is time left

@@ -36,8 +36,8 @@ public class MiniMaxTree {
     public Move getBestMove() throws TimeLimitException {
         
         int depth = 0;
-		Valuation alpha = new Valuation(0.0, maxDepth);
-        Valuation beta = new Valuation(1.0, maxDepth);
+		Valuation alpha = new Valuation(0.0, maxDepth+1);      //TODO: magari depth+1
+        Valuation beta = new Valuation(1.0, maxDepth+1);
         
         // if the player with the turn is a WHITE then maximize
 		if ( headBoardState.getTurnPlayer() == BoardState.WHITE) {

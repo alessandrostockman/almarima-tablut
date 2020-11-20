@@ -49,13 +49,15 @@ public class TablutArtificialClient extends TablutClient {
 				System.out.println("Current state:");
 				System.out.println(this.getCurrentState().toString());
 
+				//giving the current board to the current player
+				p.setBoardState(this.getCurrentState());
+				//TODO: debug
+				p.getBoardState().printBoard();
+
 				if (this.isYourTurn()) {
 					System.out.println("Player " + this.getPlayer().toString() + ", do your move: ");
-					p.setBoardState(this.getCurrentState());
 					Action action=p.computeMove().moveToAction(this.getPlayer());
 					this.write(action);
-				} else if (!this.isYourTurn()) {
-					System.out.println("Waiting for your opponent move... ");
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITEWIN)) {
 					System.out.println("WHITE WINS");
 					System.exit(0);
@@ -65,7 +67,9 @@ public class TablutArtificialClient extends TablutClient {
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.DRAW)) {
 					System.out.println("DRAW!");
 					System.exit(0);
-				}
+				}else {
+					System.out.println("Waiting for your opponent move... ");
+				} 
 
 			} catch (Exception e) {
 				e.printStackTrace();
