@@ -206,6 +206,7 @@ public class BoardState implements  Cloneable {
         // Check that the piece being requested actually belongs to the player.
         Pawn piece = getPawnAt(start);
         if (piece.toString() != this.fromTurnPlayerToChar()) {
+            if (piece.equalsPawn("K") && this.getTurnPlayer()!=WHITE)     //the king belongs to the whites 
             return legalMoves;
         }
 
@@ -313,7 +314,7 @@ public class BoardState implements  Cloneable {
  
     // Determines whether or not this coord is a valid coord we can sandwich with.
     private boolean canCaptureWithCoord(Coord c) {
-        return Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar();
+        return this.canCaptureWithCoord(c,this.getTurnPlayer());
     }
 
     private boolean canCaptureWithCoord(Coord c, int turn){
@@ -354,8 +355,10 @@ public class BoardState implements  Cloneable {
         Pawn piece = getPawnAt(from); // this will check if the position is on the board
 
         // Check that the piece being requested actually belongs to the player.
-        if (piece.toString() != this.fromTurnPlayerToChar())
-            return false;
+        if (piece.toString() != this.fromTurnPlayerToChar()){
+            if(piece.equalsPawn("K") && this.getTurnPlayer()!=WHITE)   //the king belongs to the whites 
+                return false;
+        }
 
         // Next, make sure move doesn't end on a piece.
         if (!coordIsEmpty(to))

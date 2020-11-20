@@ -36,8 +36,8 @@ public class MiniMaxTree {
     public Move getBestMove() throws TimeLimitException {
         
         int depth = 0;
-		Valuation alpha = new Valuation(0.0, depth);
-        Valuation beta = new Valuation(1.0, depth);
+		Valuation alpha = new Valuation(0.0, maxDepth);
+        Valuation beta = new Valuation(1.0, maxDepth);
         
         // if the player with the turn is a WHITE then maximize
 		if ( headBoardState.getTurnPlayer() == BoardState.WHITE) {
@@ -52,7 +52,7 @@ public class MiniMaxTree {
 				Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
                 //TODO: scegliere la mossa in base ai valori di alfa beta e h ( e anche la profondità se sono uguali)
-                if (childValuation.gethVal()>=alpha.gethVal() || (childValuation.gethVal()==alpha.gethVal() && childValuation.getDepthAttained() < alpha.getDepthAttained() ) ){
+                if (childValuation.gethVal()>alpha.gethVal() || (childValuation.gethVal()==alpha.gethVal() && childValuation.getDepthAttained() < alpha.getDepthAttained() ) ){
                     alpha = childValuation;
                     maxMove = move;
 				}
@@ -72,7 +72,7 @@ public class MiniMaxTree {
                 Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
                 //TODO: scegliere la mossa in base ai valori di alfa beta e h ( e anche la profondità se sono uguali)
-                if (childValuation.gethVal()<=beta.gethVal() || (childValuation.gethVal()==beta.gethVal() && childValuation.getDepthAttained() < beta.getDepthAttained() ) ){
+                if (childValuation.gethVal()<beta.gethVal() || (childValuation.gethVal()==beta.gethVal() && childValuation.getDepthAttained() < beta.getDepthAttained() ) ){
                     beta = childValuation;
                     minMove = move;
 				}
