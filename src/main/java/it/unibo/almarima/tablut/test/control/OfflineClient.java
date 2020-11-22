@@ -1,4 +1,4 @@
-package it.unibo.almarima.tablut.test.offline;
+package it.unibo.almarima.tablut.test.control;
 
 import it.unibo.almarima.tablut.application.player.*;
 import it.unibo.almarima.tablut.external.Action;
