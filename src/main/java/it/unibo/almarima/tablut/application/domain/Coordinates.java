@@ -1,4 +1,4 @@
-package it.unibo.almarima.tablut.application.coordinates;
+package it.unibo.almarima.tablut.application.domain;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -61,6 +61,7 @@ public class Coordinates {
         }
     }
     
+    //TODO: aggiungere gli angoli ? non è chiaro se cambi qualcosa o meno 
     public static void initEscapes(){
         escapes.add(get(0,1));
         escapes.add(get(0,2));

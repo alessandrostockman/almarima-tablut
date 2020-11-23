@@ -1,9 +1,8 @@
-package it.unibo.almarima.tablut.application.game;
+package it.unibo.almarima.tablut.application.domain;
 
 import java.io.IOException;
 
-import it.unibo.almarima.tablut.application.coordinates.Coord;
-import it.unibo.almarima.tablut.application.coordinates.Coordinates;
+
 import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.State.Turn;
 
@@ -29,8 +28,8 @@ public class Move {
     }
 
     public Action moveToAction(Turn t) throws IOException {
-        String from = String.valueOf((char)(this.getxFrom() + 65)) + (this.getyFrom() + 1);
-        String to= String.valueOf((char)(this.getxTo() + 65)) + (this.getyTo() + 1);
+        String from = String.valueOf((char)(this.getyFrom() + 65)) + (this.getxFrom() + 1);
+        String to= String.valueOf((char)(this.getyTo() + 65)) + (this.getxTo() + 1);
         return new Action(from,to,t);
     }
 

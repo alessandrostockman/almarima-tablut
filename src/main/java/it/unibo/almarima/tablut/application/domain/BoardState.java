@@ -1,13 +1,11 @@
-package it.unibo.almarima.tablut.application.game;
+package it.unibo.almarima.tablut.application.domain;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-import it.unibo.almarima.tablut.application.coordinates.Coord;
-import it.unibo.almarima.tablut.application.coordinates.Coordinates;
-import it.unibo.almarima.tablut.application.coordinates.Coordinates.CoordinateDoesNotExistException;
+import it.unibo.almarima.tablut.application.domain.Coordinates.CoordinateDoesNotExistException;
 import it.unibo.almarima.tablut.external.State;
 import it.unibo.almarima.tablut.external.State.Pawn;
 
@@ -17,7 +15,7 @@ public class BoardState implements  Cloneable {
     public static final int ILLEGAL = -1;
     public static final int WHITE = 1;
     public static final int BLACK = 0;
-    public static final int BOARD_SIZE = 9; // 9x9 board for tablut
+    public static final int BOARD_SIZE = 9;           // 9x9 board for tablut
 
     static {
         Coordinates.setAllCoordinates(BOARD_SIZE);
@@ -47,20 +45,20 @@ public class BoardState implements  Cloneable {
             Pawn piece = getPawnAt(c);
             if (piece.toString() == "B") {
                 BlackCoords.add(c);
-            } else if (piece.toString() == "W") {
+            } else if (piece.toString() == "W" || piece.toString()== "K") {
                 WhiteCoords.add(c);
-            }else if (piece.toString()== "K"){
-                this.kingPosition = c;
+                if (piece.toString()== "K"){
+                    this.kingPosition = c;
+                }
             }
         }
     }
 
     /* The below method is for the purpose of cloning. */
     private BoardState(BoardState boardState) {
-        //TODO: debug
-        this.printBoard();
+        this.board = new Pawn[BOARD_SIZE][BOARD_SIZE];
         for (Coord c : Coordinates.iterCoordinates()) {
-            board[c.x][c.y] = boardState.board[c.x][c.y];
+            this.board[c.x][c.y] = boardState.board[c.x][c.y];
         }
         WhiteCoords = new HashSet<>(boardState.WhiteCoords);
         BlackCoords = new HashSet<>(boardState.BlackCoords);
@@ -95,6 +93,7 @@ public class BoardState implements  Cloneable {
         board[oldPos.x][oldPos.y] = Pawn.EMPTY;
         board[newPos.x][newPos.y] = movingPiece;
 
+        //TODO: controllare che questo è giusto 
         //if i'm moving the king update king position and if it's the first time i move it (it is in the center) put the throne there 
         if (movingPiece == Pawn.KING)
              kingPosition = newPos;
@@ -207,6 +206,7 @@ public class BoardState implements  Cloneable {
         // Check that the piece being requested actually belongs to the player.
         Pawn piece = getPawnAt(start);
         if (piece.toString() != this.fromTurnPlayerToChar()) {
+            if (piece.equalsPawn("K") && this.getTurnPlayer()!=WHITE)     //the king belongs to the whites 
             return legalMoves;
         }
 
@@ -248,10 +248,13 @@ public class BoardState implements  Cloneable {
         return coords;
     }
 
- 
     // Determines whether or not this coord is a valid coord we can sandwich with.
     private boolean canCaptureWithCoord(Coord c) {
-        return Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar();
+        return this.canCaptureWithCoord(c,this.getTurnPlayer());
+    }
+
+    private boolean canCaptureWithCoord(Coord c, int turn){
+        return Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar(turn);
     }
 
     // Returns all of the coordinates of pieces belonging to the current player.
@@ -288,8 +291,10 @@ public class BoardState implements  Cloneable {
         Pawn piece = getPawnAt(from); // this will check if the position is on the board
 
         // Check that the piece being requested actually belongs to the player.
-        if (piece.toString() != this.fromTurnPlayerToChar())
-            return false;
+        if (piece.toString() != this.fromTurnPlayerToChar()){
+            if(piece.equalsPawn("K") && this.getTurnPlayer()!=WHITE)   //the king belongs to the whites 
+                return false;
+        }
 
         // Next, make sure move doesn't end on a piece.
         if (!coordIsEmpty(to))
@@ -325,7 +330,11 @@ public class BoardState implements  Cloneable {
     }
 
     public String fromTurnPlayerToChar(){
-        return (this.getTurnPlayer()==BLACK) ? "B" : "W" ;
+        return fromTurnPlayerToChar(this.getTurnPlayer()) ;
+    }
+
+    public String fromTurnPlayerToChar(int turnPlayer){
+        return (turnPlayer==BLACK) ? "B" : "W" ;
     }
 
     public boolean turnPlayerCanMoveFrom(Coord position) {
