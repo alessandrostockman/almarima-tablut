@@ -6,11 +6,11 @@ import java.net.UnknownHostException;
 
 import org.junit.jupiter.api.Test;
 
-import it.unibo.almarima.tablut.application.game.BoardState;
+import it.unibo.almarima.tablut.application.domain.BoardState;
+import it.unibo.almarima.tablut.application.domain.Coord;
 import it.unibo.almarima.tablut.external.State;
 import it.unibo.almarima.tablut.external.StateTablut;
 import it.unibo.almarima.tablut.external.State.Pawn;
-import it.unibo.almarima.tablut.application.coordinates.Coord;
 
 public class BasicTest {
 
