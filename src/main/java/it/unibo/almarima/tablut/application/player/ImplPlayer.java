@@ -20,7 +20,7 @@ public class ImplPlayer extends TablutPlayer{
     public ImplPlayer(int timeout, State.Turn role ) {
 
 		super(timeout, role);
-		h= new PawnsHeuristic();
+		h= new WeightedHeuristic();
 		history = new ArrayList<>();
     }
     
