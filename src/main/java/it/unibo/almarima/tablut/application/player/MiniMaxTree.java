@@ -22,13 +22,15 @@ public class MiniMaxTree {
     public int maxDepth;
     public BoardState headBoardState;
     public long endTime;
-    public Heuristic h;
+	public Heuristic h;
+	public List<BoardState> history;
 
-    public MiniMaxTree(int maxDepth, BoardState headBoardState, long endTime , Heuristic h) {
+    public MiniMaxTree(int maxDepth, BoardState headBoardState, long endTime , Heuristic h, List<BoardState> history) {
         this.headBoardState = headBoardState;
         this.maxDepth = maxDepth;
         this.endTime = endTime;
-        this.h = h ;
+		this.h = h ;
+		this.history = history;
     }
 
     // This function differs from minimax as it needs to keep track of not just max and min
@@ -40,7 +42,7 @@ public class MiniMaxTree {
         Valuation beta = new Valuation(1.0, maxDepth+1);
         
         // if the player with the turn is a WHITE then maximize
-		if ( headBoardState.getTurnPlayer() == BoardState.WHITE) {
+		if (headBoardState.getTurnPlayer() == BoardState.WHITE) {
 			Move maxMove = null;
 			List<Move> nextMoves = this.headBoardState.getAllLegalMoves();
 			// iterate through all possible moves
@@ -48,6 +50,11 @@ public class MiniMaxTree {
 				// clone the bs and process the move to generate a new board
 				BoardState childBS = (BoardState) this.headBoardState.clone();
 				childBS.processMove(move);
+
+				/*TODO: Da controllare, controllo se la board processata è già presente nella history*/
+				if(history.contains(childBS))
+					continue;
+
 				// recursively run minimax on the child board state
 				Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
@@ -68,6 +75,10 @@ public class MiniMaxTree {
 				// clone the bs and process the move to generate a new board
 				BoardState childBS = (BoardState) this.headBoardState.clone();
 				childBS.processMove(move);
+
+				/*TODO: Da controllare, controllo se la board processata è già presente nella history*/
+				if(history.contains(childBS))
+					continue;
 				// recursively run minimax on the child board state
                 Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
@@ -105,6 +116,10 @@ public class MiniMaxTree {
 				// clone the bs and process the move to generate a new board
 				BoardState childBS = (BoardState) nodeBS.clone();
 				childBS.processMove(move);
+				/*TODO: Da controllare, controllo se la board processata è già presente nella history*/
+				if(history.contains(childBS))
+					continue;
+			
 				// recursively run minimax on the child board state
 				Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
@@ -132,6 +147,11 @@ public class MiniMaxTree {
 				// clone the bs and process the move to generate a new board
 				BoardState childBS = (BoardState) nodeBS.clone();
 				childBS.processMove(move);
+
+				/*TODO: Da controllare, controllo se la board processata è già presente nella history*/
+				if(history.contains(childBS))
+					continue;
+
 				// recursively run minimax on the child board state
 				Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 

@@ -460,4 +460,14 @@ public class BoardState implements  Cloneable {
         System.out.println();
     }
 
+    /*Method that controls if two boards are equal*/
+    public boolean equals(BoardState b){
+        for(Coord c: Coordinates.iterCoordinates()){
+            if(this.getPawnAt(c) != b.getPawnAt(c)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
