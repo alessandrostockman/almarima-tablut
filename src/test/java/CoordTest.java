@@ -21,7 +21,7 @@ public class CoordTest {
     @BeforeAll
     public static void init(){
         s = new StateTablut();
-        BoardState b = new BoardState(s);
+        new BoardState(s);
     }
 
     @Test

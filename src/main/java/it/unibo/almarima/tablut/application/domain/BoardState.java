@@ -71,6 +71,22 @@ public class BoardState implements  Cloneable {
         return new BoardState(this);
     }
 
+    @Override
+    public boolean equals(Object o){
+        BoardState b ;
+        try{
+            b = (BoardState) o;
+        }catch(Exception e) {
+            return false;
+        }
+        for (Coord c : Coordinates.iterCoordinates()){
+            if(!this.getPawnAt(c).equals(b.getPawnAt(c))) 
+                return false;
+            
+        }
+        return true;
+    }
+
     /**
      * Here and below are for dealing with moves, and processing captures.
      */
@@ -402,6 +418,8 @@ public class BoardState implements  Cloneable {
         ArrayList<Move> moves = getAllLegalMoves();
         return moves.get(rand.nextInt(moves.size()));
     }
+
+    
 
     /*** Debugging functionality is found below. ***/
 

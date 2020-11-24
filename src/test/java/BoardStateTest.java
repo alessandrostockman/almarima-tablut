@@ -8,37 +8,71 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.almarima.tablut.application.domain.BoardState;
-import it.unibo.almarima.tablut.application.domain.Coord;
 import it.unibo.almarima.tablut.application.domain.Coordinates;
 import it.unibo.almarima.tablut.application.domain.Move;
 import it.unibo.almarima.tablut.external.State;
-import it.unibo.almarima.tablut.external.StateTablut;
 import it.unibo.almarima.tablut.external.State.Pawn;
+import it.unibo.almarima.tablut.external.StateTablut;
 
 
 public class BoardStateTest {
 
     private static State s;
+    private static BoardState b;
     
     @BeforeAll
     public static void init(){
         s = new StateTablut();
-        BoardState bs = new BoardState(s);
+    }
+
+    @BeforeEach
+    public void boardInit(){
+        b = new BoardState(s);
     }
 
     @Test
-    public void testCreation() throws UnknownHostException, IOException {
-        State s = new StateTablut();
-        BoardState b = new BoardState(s);
+    public void creationTest() throws UnknownHostException, IOException {
         assertEquals(b.getPawnAt(Coordinates.get(4, 4)), Pawn.KING);
         assertNotEquals(b.getPawnAt(Coordinates.get(0, 0)), Pawn.KING);
     }
 
-    public void testProcessMove() {
+    @Test
+    public void creationTest2(){
+        assertEquals(9, b.getPlayerPieceCoordinates().size());
+        assertEquals(16, b.getOpponentPieceCoordinates().size());
+        assertEquals(b.getNumberPlayerPieces(BoardState.WHITE), b.getPlayerPieceCoordinates().size());
+        assertEquals(b.getNumberPlayerPieces(BoardState.BLACK), b.getOpponentPieceCoordinates().size());
 
+    }
+
+    @Test
+    public void creationTest3(){
+        assertEquals(Coordinates.get(4,4), b.getKingPosition());
+        assertTrue(Coordinates.isCenter(b.getKingPosition()));
+        assertTrue(b.getPlayerPieceCoordinates().contains(b.getKingPosition()));
+    }
+
+    @Test
+    public void cloneTest(){
+        BoardState cl = (BoardState) b.clone();
+        assertTrue(cl.equals(b));
+    }
+
+    @Test
+    public void cloneTest2(){
+        BoardState cl= (BoardState) b.clone();
+        BoardState cl2 = (BoardState) cl.clone();
+        assertTrue(cl2.clone().equals(b));
+    }
+
+
+    @Test
+    public void processMoveTest() {
+        
     }
 
     public void updateWinner() {
