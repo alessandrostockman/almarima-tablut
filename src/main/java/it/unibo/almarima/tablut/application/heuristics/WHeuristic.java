@@ -22,8 +22,8 @@ public class WHeuristic extends Heuristic {
         
         double kingEscape= (MAX_KING_ESCAPE_DISTANCE - Coordinates.distanceToClosestEscape(state.getKingPosition()))/MAX_KING_ESCAPE_DISTANCE;
 
-        double kingKilled = state.
-
+        //double kingKilled = state;
+        return 0;
 
     }
     
