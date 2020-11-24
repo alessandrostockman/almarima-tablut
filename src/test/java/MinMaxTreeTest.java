@@ -1,5 +1,4 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -11,8 +10,8 @@ import it.unibo.almarima.tablut.application.domain.Valuation;
 import it.unibo.almarima.tablut.application.heuristics.Heuristic;
 import it.unibo.almarima.tablut.application.player.MiniMaxTree;
 import it.unibo.almarima.tablut.application.player.MiniMaxTree.TimeLimitException;
-import it.unibo.almarima.tablut.external.StateTablut;
 import it.unibo.almarima.tablut.external.State.Pawn;
+import it.unibo.almarima.tablut.external.StateTablut;
 
 public class MinMaxTreeTest {
 
