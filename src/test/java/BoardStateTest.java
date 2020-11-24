@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.almarima.tablut.application.domain.BoardState;
+import it.unibo.almarima.tablut.application.domain.Coord;
 import it.unibo.almarima.tablut.application.domain.Coordinates;
 import it.unibo.almarima.tablut.application.domain.Move;
 import it.unibo.almarima.tablut.external.State;
