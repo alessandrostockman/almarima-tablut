@@ -11,7 +11,7 @@ public class EndangeredPawns extends Heuristic {
 	public double evaluate(BoardState state) {
 		int blackPiecesEndangered = state.numEndangeredPieces(BoardState.BLACK);
 		int whitePiecesEndangered = state.numEndangeredPieces(BoardState.WHITE);
-		return (STARTING_BLACK_PAWNS+(STARTING_BLACK_PAWNS/STARTING_WHITE_PAWNS)*whitePiecesEndangered-blackPiecesEndangered)/(STARTING_BLACK_PAWNS+(STARTING_BLACK_PAWNS/STARTING_WHITE_PAWNS));
+		return (STARTING_BLACK_PAWNS-2*whitePiecesEndangered+blackPiecesEndangered)/(2*STARTING_BLACK_PAWNS);
 		//It basically is return (16-2*whitePiecesEndangered+blackPiecesEndangered)/32; but it was written this way in order to garantee more flexibility may the starting pieces numbers be changed
 	}
 
