@@ -17,7 +17,7 @@ public class WeightedHeuristic extends Heuristic {
 		this.a = 1;
 		this.b = 0;
 		this.c = 1;
-		this.d = 0;
+		this.d = 1;
 		this.KE = new KingEscaped();
 		this.KK = new KingKilled();
 		this.PD = new PawnsDifference();
@@ -25,6 +25,9 @@ public class WeightedHeuristic extends Heuristic {
 	}
 
 	public double evaluate(BoardState state) {
+		if (state.getWinner() == 0 || state.getWinner() == 1) {
+			return state.getWinner();
+		}
 		return (this.a*this.KE.evaluate(state)+this.b*this.KK.evaluate(state)+this.c*this.PD.evaluate(state)+this.d*this.EP.evaluate(state))/(this.a+this.b+this.c+this.d);
 	}
 	
