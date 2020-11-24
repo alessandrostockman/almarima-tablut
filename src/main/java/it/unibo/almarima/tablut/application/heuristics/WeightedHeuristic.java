@@ -12,10 +12,10 @@ public class WeightedHeuristic extends Heuristic {
 	public final int STARTING_BLACK_PAWNS = 16;
 	private final int MAX_KING_ESCAPE_DISTANCE = 6; 
 
-	private int a;
-	private int b;
-	private int c;
-	private int d;
+	private double a;
+	private double b;
+	private double c;
+	private double d;
 	private double KE;
 	private double KK;
 	private double PD;
@@ -44,13 +44,14 @@ public class WeightedHeuristic extends Heuristic {
 
 	public WeightedHeuristic() {
 		a = 2;
-		b = 2;
+		b = 4;
 		c = 1;
 		d = 1;
 	}
 
 	public double evaluate(BoardState state) {
 		if (state.getWinner() == 0 || state.getWinner() == 1) {
+		//	System.out.println("HO TROVATO UNO 0/1");
 			return state.getWinner();
 		}
 
@@ -66,11 +67,20 @@ public class WeightedHeuristic extends Heuristic {
 		PD = (double) (STARTING_BLACK_PAWNS+2*whitePieces-blackPieces)/(2*STARTING_BLACK_PAWNS);
 		EP = (double) (STARTING_BLACK_PAWNS-2*whitePiecesEndangered+blackPiecesEndangered)/(2*STARTING_BLACK_PAWNS);
 
-		System.out.println("KE = "+KE);
-		System.out.println("KK = "+KK);
-		System.out.println("PD = "+PD);
-		System.out.println("EP = "+EP);
-		System.out.println("score = "+((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d)));
+		// System.out.println("KE = "+KE);
+		// System.out.println("KK = "+KK);
+		// System.out.println("PD = "+PD);
+		// System.out.println("EP = "+EP);
+		// System.out.println("score = "+((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d)));
+		if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) == 0 || (a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) == 1){
+			System.out.println("HO TROVATO UNO 0/1");
+		}
+		if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) > 1){
+			System.out.println("HO TROVATO UNO > 1");
+		}
+		if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) < 0){
+			System.out.println("HO TROVATO UNO < 0");
+		}
 		return (a*KE+b*KK+c*PD+d*EP)/(a+b+c+d);
 	}
 	

@@ -12,7 +12,7 @@ import it.unibo.almarima.tablut.external.State;
 
 public class ImplPlayer extends TablutPlayer{
 
-	long timeLimit = (this.getTimeout()-55)*1000;
+	long timeLimit = (this.getTimeout()-5)*1000;
 	
 	Heuristic h;
 	public List<BoardState> history;
@@ -41,16 +41,16 @@ public class ImplPlayer extends TablutPlayer{
 		}
 		
 		// keep running minimax-pruning with higher depth as long as there is time left
-    	while ((System.currentTimeMillis() - startTime) < timeLimit) {
-			iterDepth++;
-			try {
-				// if move is chosen without time limit reached, set it to chosenMove
-	    		Move newMove = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime, h, history).getBestMove();
-				chosenMove = newMove;
-			} catch (TimeLimitException e) {
-                System.out.println("Reached time limit while trying iterDepth " + iterDepth--);
-			}
-		}
+    	// while ((System.currentTimeMillis() - startTime) < timeLimit) {
+		// 	iterDepth++;
+		// 	try {
+		// 		// if move is chosen without time limit reached, set it to chosenMove
+	    // 		Move newMove = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime, h, history).getBestMove();
+		// 		chosenMove = newMove;
+		// 	} catch (TimeLimitException e) {
+        //         System.out.println("Reached time limit while trying iterDepth " + iterDepth--);
+		// 	}
+		// }
 		BoardState b = (BoardState) boardState.clone();
 		b.processMove(chosenMove);
 		history.add(b);
