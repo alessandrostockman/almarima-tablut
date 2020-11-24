@@ -306,11 +306,16 @@ public class BoardState implements  Cloneable {
         Coord to = move.getToPosition();
         Pawn piece = getPawnAt(from); // this will check if the position is on the board
 
+        
+        //TODO: da controllare
+        // if (piece.toString() != this.fromTurnPlayerToChar()){
+        //     if(piece.equalsPawn("K") && this.getTurnPlayer()!=WHITE)   //the king belongs to the whites 
+        //         return false;
+        // }
+        
         // Check that the piece being requested actually belongs to the player.
-        if (piece.toString() != this.fromTurnPlayerToChar()){
-            if(piece.equalsPawn("K") && this.getTurnPlayer()!=WHITE)   //the king belongs to the whites 
-                return false;
-        }
+        if(!pieceBelongsTo(piece, this.getTurnPlayer())) 
+            return false;
 
         // Next, make sure move doesn't end on a piece.
         if (!coordIsEmpty(to))
@@ -340,9 +345,26 @@ public class BoardState implements  Cloneable {
         return true;
     }
 
-    /* ----- Useful helper functions. ----- */
+
     public Pawn getPawnAt(Coord c) {
         return board[c.x][c.y];
+    }
+
+    //check if the piece actually belongs to the given player
+    public boolean pieceBelongsTo(Pawn p,int player){
+        if (!p.toString().equals(fromTurnPlayerToChar(player))){           //if the letter doesn't match (W or B) check further if it's the king 
+            if(!isPawnKingAndTurnWhite(p, this.getTurnPlayer())){          
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //check if the piece is the king and the given player is WHITE (king is a white piece)
+    public boolean isPawnKingAndTurnWhite(Pawn p, int player){
+        
+        if(p.equalsPawn("K") && player==WHITE) return true;
+        return false;
     }
 
     public String fromTurnPlayerToChar(){
