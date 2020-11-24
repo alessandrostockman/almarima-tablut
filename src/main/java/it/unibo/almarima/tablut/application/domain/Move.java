@@ -90,5 +90,13 @@ public class Move {
     public void setPlayerId(int playerId) {
         this.playerId = playerId;
     }
+
+    public boolean equals(Move other) {
+        return this.getPlayerId() == other.getPlayerId()
+            && this.getxFrom() == other.getxFrom()
+            && this.getyFrom() == other.getyFrom()
+            && this.getxTo() == other.getxTo()
+            && this.getyTo() == other.getyTo();
+    }
     
 }

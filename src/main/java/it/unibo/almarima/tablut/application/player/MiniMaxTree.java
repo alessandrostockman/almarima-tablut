@@ -82,7 +82,7 @@ public class MiniMaxTree {
     }
     
     // Implementation of minmax alg with alpha beta pruning
-	private Valuation minimax(BoardState nodeBS, int depth, Valuation alpha, Valuation beta) throws TimeLimitException {
+	public Valuation minimax(BoardState nodeBS, int depth, Valuation alpha, Valuation beta) throws TimeLimitException {
 		boolean updated = false;
 		
         if (System.currentTimeMillis() > endTime) {
