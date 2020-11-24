@@ -90,7 +90,7 @@ public class BoardState implements  Cloneable {
     /**
      * Here and below are for dealing with moves, and processing captures.
      */
-    public void processMove(Move m) throws IllegalArgumentException {
+        public void processMove(Move m) throws IllegalArgumentException {
         if (!isLegal(m)) { // isLegal checks if the player is the correct player.
             throw new IllegalArgumentException("Invalid move for current context. " + "Move: " + m.toPrettyString());
         }
@@ -171,7 +171,7 @@ public class BoardState implements  Cloneable {
             winner = BLACK;
         }
 
-        // Check if king is at corner -- WHITE WINS
+        // Check if king is at escape tile -- WHITE WINS
         // Also checking if the BLACKS even have any legal moves at all. If not,
         // they lose.
         else if (Coordinates.isEscape(kingPosition) || !playerHasALegalMove(BLACK)) {
