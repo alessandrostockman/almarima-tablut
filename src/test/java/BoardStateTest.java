@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,48 +104,75 @@ public class BoardStateTest {
 
     }
 
-    public void testGetOpponentPieceCoordinates() {
-
+    @Test
+    public void getOpponentPieceCoordinatesTest() {
+        BoardState b1 = new BoardState(new StateTablut());
+        HashSet<Coord> players = b1.getPlayerPieceCoordinates();
+        HashSet<Coord> opponents = b1.getOpponentPieceCoordinates();
+        
+        for (Coord c : players) {
+            assertEquals(b1.getPawnAt(c), Pawn.WHITE);
+        }
+        
+        for (Coord c : opponents) {
+            assertEquals(b1.getPawnAt(c), Pawn.BLACK);
+        }
     }
 
-    public void testGetPlayerCoordSet() {
-
+    @Test
+    public void isLegalTest() {
+        BoardState b1 = new BoardState(new StateTablut());
+        assertFalse(b1.isLegal(new Move(Coordinates.get(3, 1), Coordinates.get(4, 1), -1)));
+        assertFalse(b1.isLegal(new Move(Coordinates.get(4, 3), Coordinates.get(5, 3), 0)));
+        assertFalse(b1.isLegal(new Move(Coordinates.get(4, 4), Coordinates.get(4, 3), 1)));
+        assertTrue(b1.isLegal(new Move(Coordinates.get(4, 4), Coordinates.get(4, 3), 1)));
     }
 
-    public void testIsLegal() {
-
-    }
-
-    public void testGetPawnAt() {
-
-    }
-
-    public void testFromTurnPlayerToChar() {
-
-    }
-
-    public void testTurnPlayerCanMoveFrom() {
-
-    }
-
+    @Test
     public void testIsOpponentPieceAt() {
+        BoardState b1 = new BoardState(new StateTablut());
+        assertTrue(b1.isOpponentPieceAt(Coordinates.get(4, 0)));
+        assertFalse(b1.isOpponentPieceAt(Coordinates.get(4, 4)));
+        assertFalse(b1.isOpponentPieceAt(Coordinates.get(3, 4)));
+        assertFalse(b1.isOpponentPieceAt(Coordinates.get(0, 0)));
 
+        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        assertFalse(b1.isOpponentPieceAt(Coordinates.get(4, 0)));
+        assertTrue(b1.isOpponentPieceAt(Coordinates.get(4, 4)));
+        assertFalse(b1.isOpponentPieceAt(Coordinates.get(3, 4)));
+        assertFalse(b1.isOpponentPieceAt(Coordinates.get(0, 0)));
+        
     }
 
-    public void testCoordIsEmpty() {
-
-    }
-
+    @Test
     public void testGetOpponent() {
+        BoardState b1 = new BoardState(new StateTablut());
+        int firstPlayer = b1.getTurnPlayer();
+        assertNotEquals(b1.getOpponent(), b1.getTurnPlayer());
 
+        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        assertEquals(b1.getOpponent(), firstPlayer);
     }
 
     public void testGetNumberPlayerPieces() {
 
+        BoardState b1 = new BoardState(new StateTablut());
+        assertEquals(b1.getPawnAt(b1.getKingPosition()), Pawn.KING);
     }
 
+    @Test
     public void testGetKingPosition() {
+        BoardState b1 = new BoardState(new StateTablut());
+        assertEquals(b1.getPawnAt(b1.getKingPosition()), Pawn.KING);
 
+        //Move the king to add a little spice
+        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        b1.processMove(new Move(Coordinates.get(3, 0), Coordinates.get(2, 0), 0));
+        b1.processMove(new Move(Coordinates.get(3, 3), Coordinates.get(4, 3), 1));
+        b1.processMove(new Move(Coordinates.get(2, 0), Coordinates.get(1, 0), 0));
+        b1.processMove(new Move(Coordinates.get(4, 4), Coordinates.get(4, 3), 1));
+                
+        assertEquals(b1.getPawnAt(b1.getKingPosition()), Pawn.KING);
     }
 
     @Test
@@ -154,7 +182,6 @@ public class BoardStateTest {
         BoardState b3 = new BoardState(new StateTablut());
         BoardState b4 = new BoardState(new StateTablut());
         BoardState b5 = new BoardState(new StateTablut());
-        BoardState b6 = new BoardState(new StateTablut());
 
         /**
          * Testing whether non black can move from into citadels
