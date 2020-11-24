@@ -83,8 +83,9 @@ public class Coordinates {
 
     public static Coord get(String position){
         if (position.length() == 2) {
-			int x = Character.toLowerCase(position.charAt(0)) - 97;
-            int y = Integer.parseInt(position.charAt(1) + "") - 1;
+            
+            int x = Integer.parseInt(position.charAt(1) + "") - 1;
+			int y = Character.toLowerCase(position.charAt(0)) - 97;
             return allCoordinates[x][y];
 
 		} else {
@@ -226,7 +227,7 @@ public class Coordinates {
     public static ArrayList<Coord> getEscapes() {
         return escapes;
     }
-    
+
     // useful exception
     public static class CoordinateDoesNotExistException extends Exception {
         private static final long serialVersionUID = 1L;
