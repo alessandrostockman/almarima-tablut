@@ -226,7 +226,6 @@ public class Coordinates {
     public static ArrayList<Coord> getEscapes() {
         return escapes;
     }
-
     
     // useful exception
     public static class CoordinateDoesNotExistException extends Exception {
