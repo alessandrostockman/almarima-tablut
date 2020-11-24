@@ -64,6 +64,7 @@ public class MiniMaxTree {
                     maxMove = move;
 				}
 			}
+			System.out.println("alpha = " + alpha.toString());
 			return maxMove;
 		}
 		else {
@@ -88,6 +89,7 @@ public class MiniMaxTree {
                     minMove = move;
 				}
 			}
+			System.out.println("beta = " + beta.toString());
 			return minMove;
 		}
     }

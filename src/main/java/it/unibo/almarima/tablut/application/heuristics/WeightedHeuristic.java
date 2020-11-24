@@ -1,11 +1,10 @@
 package it.unibo.almarima.tablut.application.heuristics;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import it.unibo.almarima.tablut.application.domain.BoardState;
 import it.unibo.almarima.tablut.application.domain.Coord;
 import it.unibo.almarima.tablut.application.domain.Coordinates;
-import it.unibo.almarima.tablut.application.heuristics.Heuristic;
 import it.unibo.almarima.tablut.external.State.Pawn;
 
 public class WeightedHeuristic extends Heuristic {
@@ -22,9 +21,30 @@ public class WeightedHeuristic extends Heuristic {
 	private double PD;
 	private double EP;
 
+	private int scoreKing(BoardState b){
+        int score = checkSurroundings(b, b.getKingPosition());
+        if(Coordinates.isCenterOrNeighborCenter(b.getKingPosition()))
+            return (4-score)/4;
+        return (3-score)/4;
+    }
+
+
+    /*Checks the numbers of black Pawns surrounding the king*/
+    private int checkSurroundings(BoardState b, Coord kingPos){
+        int counter = 0;
+        ArrayList<Coord> neigh = (ArrayList<Coord>) Coordinates.getNeighbors(kingPos);
+
+        for(Coord x: neigh){
+            if(b.getPawnAt(x) == Pawn.BLACK || b.getPawnAt(x) == Pawn.THRONE || Coordinates.isCitadel(x)){
+                counter++;
+            }
+        }
+        return counter;
+    }
+
 	public WeightedHeuristic() {
-		a = 4;
-		b = 0;
+		a = 2;
+		b = 2;
 		c = 1;
 		d = 1;
 	}
@@ -35,37 +55,22 @@ public class WeightedHeuristic extends Heuristic {
 		}
 
 		int blackPieces = state.getNumberPlayerPieces(BoardState.BLACK);
-		int whitePieces = state.getNumberPlayerPieces(BoardState.WHITE);
+		int whitePieces = state.getNumberPlayerPieces(BoardState.WHITE)-1;
 
 		int blackPiecesEndangered = state.numEndangeredPieces(BoardState.BLACK);
 		int whitePiecesEndangered = state.numEndangeredPieces(BoardState.WHITE);
-
-		/*
-		(int num=0;
-        Coord c = state.getKingPosition();
-        List<Coord> neigh = Coordinates.getNeighbors(c);
-        if (Coordinates.isCenterOrNeighborCenter(c) == true){
-            
-        } else {
-            for (Coord n: neigh){
-                try {
-                    Coord s= Coordinates.getSandwichCoord(n,c);
-                        if (state.canCaptureWithCoord(s, state.BLACK) && state.getPawnAt(n)==Pawn.EMPTY) {
-                            num+=1;
-                            break;
-                        }
-                }catch(Exception e) {}
-            }
-        }
-        */
         
 
-		KE = (MAX_KING_ESCAPE_DISTANCE - Coordinates.distanceToClosestEscape(state.getKingPosition()))/MAX_KING_ESCAPE_DISTANCE;
-		KK = 0;
-		PD = (STARTING_BLACK_PAWNS+2*whitePieces-blackPieces)/(2*STARTING_BLACK_PAWNS);
-		EP = (STARTING_BLACK_PAWNS-2*whitePiecesEndangered+blackPiecesEndangered)/(2*STARTING_BLACK_PAWNS);
+		KE = (double) (MAX_KING_ESCAPE_DISTANCE - Coordinates.distanceToClosestEscape(state.getKingPosition()))/MAX_KING_ESCAPE_DISTANCE;
+		KK = (double) this.scoreKing(state);
+		PD = (double) (STARTING_BLACK_PAWNS+2*whitePieces-blackPieces)/(2*STARTING_BLACK_PAWNS);
+		EP = (double) (STARTING_BLACK_PAWNS-2*whitePiecesEndangered+blackPiecesEndangered)/(2*STARTING_BLACK_PAWNS);
 
-
+		System.out.println("KE = "+KE);
+		System.out.println("KK = "+KK);
+		System.out.println("PD = "+PD);
+		System.out.println("EP = "+EP);
+		System.out.println("score = "+((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d)));
 		return (a*KE+b*KK+c*PD+d*EP)/(a+b+c+d);
 	}
 	
