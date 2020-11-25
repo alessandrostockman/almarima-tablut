@@ -15,7 +15,6 @@ public class ImplPlayer extends TablutPlayer{
 	long timeLimit = (this.getTimeout()-30)*1000;
 	
 	Heuristic h;
-	public List<BoardState> history;
 
     public ImplPlayer(int timeout, State.Turn role, Heuristic heuristic) {
 		super(timeout, role);
@@ -34,7 +33,7 @@ public class ImplPlayer extends TablutPlayer{
     	Move chosenMove = boardState.getRandomMove();
 		try {
 			// if move is chosen without time limit reached, set it to chosenMove
-			chosenMove = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime, h, history).getBestMove();
+			chosenMove = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime, h).getBestMove();
         } catch (TimeLimitException e) {
             System.out.println("Reached time limit while trying iterDepth " + iterDepth--);
 		}
@@ -44,7 +43,7 @@ public class ImplPlayer extends TablutPlayer{
 			iterDepth++;
 			try {
 				// if move is chosen without time limit reached, set it to chosenMove
-	    		Move newMove = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime, h, history).getBestMove();
+	    		Move newMove = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime, h).getBestMove();
 				chosenMove = newMove;
 			} catch (TimeLimitException e) {
                 System.out.println("Reached time limit while trying iterDepth " + iterDepth--);
@@ -52,7 +51,6 @@ public class ImplPlayer extends TablutPlayer{
 		}
 		BoardState b = (BoardState) boardState.clone();
 		b.processMove(chosenMove);
-		history.add(b);
         return chosenMove;
 
     }
