@@ -263,6 +263,36 @@ public class BoardState implements  Cloneable {
         }
         return coords;
     }
+    
+
+    //return the number of pieces of turnPlayer that are endangered aka pieces that can be eaten in the current situation
+    public int numEndangeredPieces(int turnPlayer){
+        int num=0;
+        HashSet<Coord> playerCoord = this.getPlayerCoordSet(turnPlayer);
+        for (Coord c : playerCoord){
+            List<Coord> neigh = Coordinates.getNeighbors(c);
+            if (getPawnAt(c)!= Pawn.KING){
+                for (Coord n: neigh){
+                    try {
+                        Coord s= Coordinates.getSandwichCoord(n,c);
+                        if (getPawnAt(c)==Pawn.WHITE){
+                            if (canCaptureWithCoord(s, turnPlayer==BLACK ? WHITE : BLACK) && getPawnAt(n)==Pawn.EMPTY) {
+                                num+=1;
+                                break;
+                            }
+                        }
+                        else {
+                            if (canCaptureWithCoord(s,turnPlayer==BLACK ? WHITE : BLACK) && getPawnAt(n)==Pawn.EMPTY && !Coordinates.isCitadel(n)) {
+                            num+=1;
+                            break;
+                            }
+                        }
+                    }catch(Exception e) {}
+                }
+            }
+        }
+        return num;
+    }
 
     // Determines whether or not this coord is a valid coord we can sandwich with.
     public boolean canCaptureWithCoord(Coord c) {

@@ -32,9 +32,8 @@ public class TablutArtificialClient extends TablutClient {
     
     @Override
 	public void run() {
-
-		
-        TablutPlayer p=new ImplPlayer(this.getTimeout(),this.getPlayer(), new PawnsHeuristic());               // create a new player who will play the game according to his algo
+		// create a new player who will play the game according to his algo
+        TablutPlayer p=new ImplPlayer(this.getTimeout(),this.getPlayer(), new WeightedHeuristic());               
 		
 		try {
 			this.declareName();
