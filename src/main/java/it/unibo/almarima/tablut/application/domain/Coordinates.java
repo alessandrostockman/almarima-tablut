@@ -101,7 +101,7 @@ public class Coordinates {
         return escapes.contains(c);
     }
 
-
+    //TODO: mai usato
     //check if the coord passed is on an edge , it's not necessary an escape tile but if i already checked other conditions (ToCoord is legal) can be more efficient
     public static boolean isEscapeAfterConditions(int i, int j) {           
         if (i * j != 0)
@@ -182,7 +182,6 @@ public class Coordinates {
         return minDistance;
     }
 
-    // Lol at the insanity of OOP, two anonymous classes just to iterate!
     public static Iterable<Coord> iterCoordinates() {
         return new Iterable<Coord>() {
             @Override

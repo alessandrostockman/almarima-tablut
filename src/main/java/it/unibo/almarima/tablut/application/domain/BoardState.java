@@ -221,8 +221,7 @@ public class BoardState implements  Cloneable {
 
         // Check that the piece being requested actually belongs to the player.
         Pawn piece = getPawnAt(start);
-        if (piece.toString() != this.fromTurnPlayerToChar()) {
-            if (piece.equalsPawn("K") && this.getTurnPlayer()!=WHITE)     //the king belongs to the whites 
+        if(!this.pieceBelongsTo(piece, this.getTurnPlayer())){
             return legalMoves;
         }
 
@@ -331,10 +330,10 @@ public class BoardState implements  Cloneable {
         if (turnPlayer != move.getPlayerId() || move.getPlayerId() == ILLEGAL)
             return false;
 
-        // Get useful things. TODO: cosa succede se la posizione non esiste??
+        // Get useful things. TODO: cosa succede se la posizione non esiste?? aggiungere un test con una posizione inesistente 
         Coord from = move.getFromPosition();
         Coord to = move.getToPosition();
-        Pawn piece = getPawnAt(from); // this will check if the position is on the board
+        Pawn piece = getPawnAt(from); // this will check if the position is on the board //TODO: da testare
 
         
         //TODO: da controllare
@@ -466,6 +465,7 @@ public class BoardState implements  Cloneable {
         return winner;
     }
 
+    //TODO: da controllare 
     public Move getRandomMove() {
         ArrayList<Move> moves = getAllLegalMoves();
         return moves.get(rand.nextInt(moves.size()));
