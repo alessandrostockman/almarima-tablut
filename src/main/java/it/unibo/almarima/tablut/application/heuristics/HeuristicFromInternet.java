@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import it.unibo.almarima.tablut.application.domain.*;
 import it.unibo.almarima.tablut.external.State.Pawn;
 
-public class heuristicFromInternet {
+public class HeuristicFromInternet {
     public double evaluate(BoardState b){
         if (b.getWinner() == 0 || b.getWinner() == 1) {
 			return b.getWinner();
