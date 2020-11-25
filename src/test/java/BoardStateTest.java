@@ -433,13 +433,13 @@ public class BoardStateTest {
 
     @Test
     public void getPlayerPieceCoordinatesTest() {
-        BoardState b1 = new BoardState(new StateTablut());
-        for (Coord c : b1.getPlayerPieceCoordinates()) {
-            assertTrue(b1.pieceBelongsTo(b1.getPawnAt(c), b1.getTurnPlayer()));
+        BoardState b = new BoardState(new StateTablut());
+        for (Coord c : b.getPlayerPieceCoordinates()) {
+            assertTrue(b.pieceBelongsTo(b.getPawnAt(c), b.getTurnPlayer()));
         }
-        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
-        for (Coord c : b1.getPlayerPieceCoordinates()) {
-            assertTrue(b1.pieceBelongsTo(b1.getPawnAt(c), b1.getTurnPlayer()));
+        b.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        for (Coord c : b.getPlayerPieceCoordinates()) {
+            assertTrue(b.pieceBelongsTo(b.getPawnAt(c), b.getTurnPlayer()));
         }
     }
 
@@ -464,10 +464,18 @@ public class BoardStateTest {
         }
     }
 
+    @Test
     public void getPlayerCoordSetTest(){
+        assertEquals(9, b.getPlayerCoordSet().size());
+        assertEquals(16, b.getPlayerCoordSet(BoardState.BLACK).size());
+        
     }
-    
+    @Test
     public void getPlayerCoordSetTest2(){
+        Move m1= new Move(Coordinates.get(4,3),Coordinates.get(3,3),b.getTurnPlayer());
+        b.processMove(m1);
+        assertEquals(16, b.getPlayerCoordSet().size());
+        assertEquals(9, b.getPlayerCoordSet(BoardState.WHITE).size());
     }
 
     @Test
@@ -480,63 +488,118 @@ public class BoardStateTest {
     }
 
     @Test
+    public void isLegalTest2() {
+        Move m1= new Move(Coordinates.get(4,5),Coordinates.get(3,5),b.getTurnPlayer());
+        b.processMove(m1);
+        Move m2= new Move(Coordinates.get(3,8),Coordinates.get(2,8),b.getTurnPlayer());
+        b.processMove(m2);
+
+        assertFalse(b.isLegal(new Move(Coordinates.get(3, 5), Coordinates.get(3, 8), b.getTurnPlayer())));
+        assertFalse(b.isLegal(new Move(Coordinates.get(3, 5), Coordinates.get(3, 2), b.getTurnPlayer())));
+        assertFalse(b.isLegal(new Move(Coordinates.get(3, 5), Coordinates.get(7, 5), b.getTurnPlayer())));
+        assertFalse(b.isLegal(new Move(Coordinates.get(3, 5), Coordinates.get(1, 7), b.getTurnPlayer())));
+        assertTrue(b.isLegal(new Move(Coordinates.get(7, 3), Coordinates.get(5, 3), b.getTurnPlayer())));
+    }
+
+    @Test
+    public void isLegalTest3() {
+        Move m1= new Move(Coordinates.get(4,5),Coordinates.get(3,5),b.getTurnPlayer());
+        b.processMove(m1);
+        Move m2= new Move(Coordinates.get(3,8),Coordinates.get(2,8),b.getTurnPlayer());
+        b.processMove(m2);
+        Move m3= new Move(Coordinates.get(4,6),Coordinates.get(3,6),b.getTurnPlayer());
+        b.processMove(m3);
+
+        assertFalse(b.isLegal(new Move(Coordinates.get(4, 4), Coordinates.get(4, 5), b.getTurnPlayer())));
+
+
+    }
+
+
+    @Test
     public void getPawnAtTest(){
-        BoardState b1 = new BoardState(new StateTablut());
-        assertEquals(b1.getPawnAt(Coordinates.get(4, 4)), Pawn.KING);
-        assertEquals(b1.getPawnAt(Coordinates.get(2, 2)), Pawn.EMPTY);
-        assertEquals(b1.getPawnAt(Coordinates.get(0, 4)), Pawn.BLACK);
-        assertEquals(b1.getPawnAt(Coordinates.get(4, 3)), Pawn.WHITE);
-        assertNotEquals(b1.getPawnAt(Coordinates.get(1, 1)), Pawn.KING);
-        assertNotEquals(b1.getPawnAt(Coordinates.get(3, 0)), Pawn.EMPTY);
-        assertNotEquals(b1.getPawnAt(Coordinates.get(3, 4)), Pawn.BLACK);
-        assertNotEquals(b1.getPawnAt(Coordinates.get(8, 0)), Pawn.WHITE);
+        assertEquals(b.getPawnAt(Coordinates.get(4, 4)), Pawn.KING);
+        assertEquals(b.getPawnAt(Coordinates.get(2, 2)), Pawn.EMPTY);
+        assertEquals(b.getPawnAt(Coordinates.get(0, 4)), Pawn.BLACK);
+        assertEquals(b.getPawnAt(Coordinates.get(4, 3)), Pawn.WHITE);
+        assertNotEquals(b.getPawnAt(Coordinates.get(1, 1)), Pawn.KING);
+        assertNotEquals(b.getPawnAt(Coordinates.get(3, 0)), Pawn.EMPTY);
+        assertNotEquals(b.getPawnAt(Coordinates.get(3, 4)), Pawn.BLACK);
+        assertNotEquals(b.getPawnAt(Coordinates.get(8, 0)), Pawn.WHITE);
     }
 
     @Test
     public void pieceBelongsToTest(){
-        BoardState b1 = new BoardState(new StateTablut());
-        assertTrue(b1.pieceBelongsTo(Pawn.KING, 1));
-        assertTrue(b1.pieceBelongsTo(Pawn.BLACK, 0));
-        assertTrue(b1.pieceBelongsTo(Pawn.WHITE, 1));
-        assertFalse(b1.pieceBelongsTo(Pawn.KING, 0));
+        assertTrue(b.pieceBelongsTo(Pawn.KING, BoardState.WHITE));
+        assertTrue(b.pieceBelongsTo(Pawn.BLACK, BoardState.BLACK));
+        assertTrue(b.pieceBelongsTo(Pawn.WHITE, BoardState.WHITE));
+        assertFalse(b.pieceBelongsTo(Pawn.KING, BoardState.BLACK));
     }
 
     @Test
+    public void pieceBelongsToTest2(){
+        assertTrue(b.pieceBelongsTo(b.getPawnAt(Coordinates.get(4, 4)), BoardState.WHITE));
+        assertFalse(b.pieceBelongsTo(b.getPawnAt(Coordinates.get(7,8)), BoardState.BLACK));
+        assertFalse(b.pieceBelongsTo(b.getPawnAt(Coordinates.get(7,8)), BoardState.WHITE));
+
+    }
+
+    @Test
+    public void pieceBelongsToTest3(){
+        Move m1= new Move(Coordinates.get(4,5),Coordinates.get(3,5),b.getTurnPlayer());
+        b.processMove(m1);
+        Move m2= new Move(Coordinates.get(3,8),Coordinates.get(2,8),b.getTurnPlayer());
+        b.processMove(m2);
+        Move m3= new Move(Coordinates.get(4,6),Coordinates.get(3,6),b.getTurnPlayer());
+        b.processMove(m3);
+
+        assertFalse(b.pieceBelongsTo(b.getPawnAt(Coordinates.get(4,4)), b.getTurnPlayer()));
+
+        Move m4= new Move(Coordinates.get(8,5),Coordinates.get(7,5),b.getTurnPlayer());
+        b.processMove(m4);
+        Move m5= new Move(Coordinates.get(4,4),Coordinates.get(4,5),b.getTurnPlayer());
+        b.processMove(m5);
+
+        
+        assertFalse(b.pieceBelongsTo(b.getPawnAt(Coordinates.get(4,4)), b.getTurnPlayer()));
+        assertFalse(b.pieceBelongsTo(b.getPawnAt(Coordinates.get(4,4)), BoardState.BLACK));
+        assertEquals(Pawn.THRONE,b.getPawnAt(Coordinates.get(4,4)));
+
+    }
+
+    
+    @Test
     public void isPawnKingAndTurnWhiteTest(){
-        BoardState b1 = new BoardState(new StateTablut());
-        assertTrue(b1.isPawnKingAndTurnWhite(b1.getPawnAt(Coordinates.get(4, 4)), BoardState.WHITE));
-        assertFalse(b1.isPawnKingAndTurnWhite(b1.getPawnAt(Coordinates.get(4, 4)), BoardState.BLACK));
-        assertFalse(b1.isPawnKingAndTurnWhite(b1.getPawnAt(Coordinates.get(3, 3)), BoardState.WHITE));
+        assertTrue(b.isPawnKingAndTurnWhite(b.getPawnAt(Coordinates.get(4, 4)), BoardState.WHITE));
+        assertFalse(b.isPawnKingAndTurnWhite(b.getPawnAt(Coordinates.get(4, 4)), BoardState.BLACK));
+        assertFalse(b.isPawnKingAndTurnWhite(b.getPawnAt(Coordinates.get(3, 3)), BoardState.WHITE));
     }
 
     @Test
     public void fromTurnPlayerToCharTest(){
-        BoardState b1 = new BoardState(new StateTablut());
-        assertEquals(b1.fromTurnPlayerToChar(), "W");
+        assertEquals(b.fromTurnPlayerToChar(), "W");
     }
 
     @Test
     public void fromTurnPlayerToCharTest2(){
-        BoardState b1 = new BoardState(new StateTablut());
-        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
-        assertEquals(b1.fromTurnPlayerToChar(), "B");    
+        b.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        assertEquals(b.fromTurnPlayerToChar(), "B");    
     }
 
     @Test
     public void turnPlayerCanMoveFromTest(){
-        BoardState b1 = new BoardState(new StateTablut());
-        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(4, 3)));
-        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(2, 4)));
-        assertFalse(b1.turnPlayerCanMoveFrom(Coordinates.get(5, 5)));
-        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        assertTrue(b.turnPlayerCanMoveFrom(Coordinates.get(4, 3)));
+        assertTrue(b.turnPlayerCanMoveFrom(Coordinates.get(2, 4)));
+        assertFalse(b.turnPlayerCanMoveFrom(Coordinates.get(5, 5)));
+        b.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
 
-        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(4, 0)));
-        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(0, 4)));
-        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(1, 4)));
-        assertFalse(b1.turnPlayerCanMoveFrom(Coordinates.get(4, 3)));
-        b1.processMove(new Move(Coordinates.get(4, 1), Coordinates.get(3, 1), 0));
+        assertTrue(b.turnPlayerCanMoveFrom(Coordinates.get(4, 0)));
+        assertTrue(b.turnPlayerCanMoveFrom(Coordinates.get(0, 4)));
+        assertTrue(b.turnPlayerCanMoveFrom(Coordinates.get(1, 4)));
+        assertFalse(b.turnPlayerCanMoveFrom(Coordinates.get(4, 3)));
+        b.processMove(new Move(Coordinates.get(4, 1), Coordinates.get(3, 1), 0));
 
-        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(4, 4)));
+        assertTrue(b.turnPlayerCanMoveFrom(Coordinates.get(4, 4)));
     }
 
     @Test
@@ -557,16 +620,16 @@ public class BoardStateTest {
 
     @Test
     public void coordIsEmptyTest(){
-        BoardState b1 = new BoardState(new StateTablut());
-        assertTrue(b1.coordIsEmpty(Coordinates.get(3, 3)));
-        assertTrue(b1.coordIsEmpty(Coordinates.get(2, 2)));
-        assertFalse(b1.coordIsEmpty(Coordinates.get(4, 4)));
-        assertFalse(b1.coordIsEmpty(Coordinates.get(0, 4)));
-        assertFalse(b1.coordIsEmpty(Coordinates.get(4, 0)));
+        BoardState b = new BoardState(new StateTablut());
+        assertTrue(b.coordIsEmpty(Coordinates.get(3, 3)));
+        assertTrue(b.coordIsEmpty(Coordinates.get(2, 2)));
+        assertFalse(b.coordIsEmpty(Coordinates.get(4, 4)));
+        assertFalse(b.coordIsEmpty(Coordinates.get(0, 4)));
+        assertFalse(b.coordIsEmpty(Coordinates.get(4, 0)));
 
-        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
-        assertFalse(b1.coordIsEmpty(Coordinates.get(3, 3)));
-        assertTrue(b1.coordIsEmpty(Coordinates.get(4, 3)));
+        b.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        assertFalse(b.coordIsEmpty(Coordinates.get(3, 3)));
+        assertTrue(b.coordIsEmpty(Coordinates.get(4, 3)));
     }
 
 
@@ -588,7 +651,7 @@ public class BoardStateTest {
 
     @Test
     public void getKingPositionTest() {
-        BoardState b = new BoardState(new StateTablut());
+
         assertEquals(b.getPawnAt(b.getKingPosition()), Pawn.KING);
 
         //Move the king to add a little spice
@@ -611,7 +674,7 @@ public class BoardStateTest {
 
     @Test
     public void citadelRulesTest() {
-        BoardState b = new BoardState(new StateTablut());
+        BoardState b1 = new BoardState(new StateTablut());
         BoardState b2 = new BoardState(new StateTablut());
         BoardState b3 = new BoardState(new StateTablut());
         BoardState b4 = new BoardState(new StateTablut());
@@ -620,15 +683,15 @@ public class BoardStateTest {
         /**
          * Testing whether non black can move from into citadels
          */
-        assertTrue(b.citadelRules(Coordinates.get(4, 5), Coordinates.get(5, 5)));
-        b.processMove(new Move(Coordinates.get(4, 5), Coordinates.get(5, 5), 1));
+        assertTrue(b1.citadelRules(Coordinates.get(4, 5), Coordinates.get(5, 5)));
+        b1.processMove(new Move(Coordinates.get(4, 5), Coordinates.get(5, 5), 1));
        
-        assertTrue(b.citadelRules(Coordinates.get(4, 5), Coordinates.get(5, 5)));
-        b.processMove(new Move(Coordinates.get(4, 1), Coordinates.get(3, 1), 0));
+        assertTrue(b1.citadelRules(Coordinates.get(4, 5), Coordinates.get(5, 5)));
+        b1.processMove(new Move(Coordinates.get(4, 1), Coordinates.get(3, 1), 0));
         
-        assertFalse(b.citadelRules(Coordinates.get(4, 3), Coordinates.get(4, 1)));
+        assertFalse(b1.citadelRules(Coordinates.get(4, 3), Coordinates.get(4, 1)));
         assertThrows(IllegalArgumentException.class, () -> {
-            b.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(4, 1), 1));
+            b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(4, 1), 1));
         });
 
 

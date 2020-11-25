@@ -288,11 +288,11 @@ public class BoardState implements  Cloneable {
         return new HashSet<Coord>(getPlayerCoordSet(getOpponent())); // Copy the set so no funny business.
     }
 
-    private HashSet<Coord> getPlayerCoordSet() {
+    public HashSet<Coord> getPlayerCoordSet() {
         return getPlayerCoordSet(turnPlayer);
     }
 
-    private HashSet<Coord> getPlayerCoordSet(int player) {
+    public HashSet<Coord> getPlayerCoordSet(int player) {
         return (player == BLACK) ? BlackCoords : WhiteCoords;
     }
 
