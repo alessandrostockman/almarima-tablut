@@ -47,6 +47,10 @@ public class Move {
         return (player == 0) ? "Black" : "White";
     }
 
+    public String toString() {
+        return this.xFrom + this.yFrom + ":" + this.xTo + this.yTo + ":" + this.playerId;
+    }
+
     public String toPrettyString() {
         return String.format("%s (p%d) move (%d, %d) to (%d, %d)", getPlayerName(playerId), playerId, xFrom, yFrom, xTo, yTo);
     }
@@ -91,7 +95,13 @@ public class Move {
         this.playerId = playerId;
     }
 
-    public boolean equals(Move other) {
+    @Override
+    public boolean equals(Object o) {
+        if (! (o instanceof Move)) {
+            return false;
+        }
+        Move other = (Move)o;
+        
         return this.getPlayerId() == other.getPlayerId()
             && this.getxFrom() == other.getxFrom()
             && this.getyFrom() == other.getyFrom()

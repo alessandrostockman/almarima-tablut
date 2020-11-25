@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,18 +29,37 @@ public class CoordinatesTest {
 
     @Test
     public void getCoordFromPosition() {
-
         assertEquals(Coordinates.get("F4"), Coordinates.get(3, 5));
         assertEquals(Coordinates.get("H2"), Coordinates.get(1, 7));
+    }
 
+    @Test
+    public void getCoordFromPosition2() {
+        assertEquals(Coordinates.get("E5"), Coordinates.get(4, 4));
+        assertEquals(Coordinates.get("A1"), Coordinates.get(0, 0));
+        assertEquals(Coordinates.get("I9"), Coordinates.get(8, 8));
+        assertEquals(Coordinates.get("I1"), Coordinates.get(0, 8));
+        assertEquals(Coordinates.get("A9"), Coordinates.get(8, 0));
+        assertEquals(Coordinates.get("B2"), Coordinates.get(1, 1));
+        assertEquals(Coordinates.get("C3"), Coordinates.get(2, 2));
+        assertEquals(Coordinates.get("D4"), Coordinates.get(3, 3));
 
+        assertNotEquals(Coordinates.get("A1"), Coordinates.get(2, 2));
     }
 
     @Test
     public void isEscapeTest() {
         assertFalse(Coordinates.isEscape(Coordinates.get(4, 4)));
-
         assertTrue(Coordinates.isEscape(Coordinates.get(0, 1)));
+    }
+
+    @Test
+    public void isEscapeTest2() {
+        assertFalse(Coordinates.isEscape(Coordinates.get(1, 5)));
+        assertTrue(Coordinates.isEscape(Coordinates.get(0, 1)));
+        assertTrue(Coordinates.isEscape(Coordinates.get(1, 0)));
+        assertTrue(Coordinates.isEscape(Coordinates.get(8, 1)));
+        assertTrue(Coordinates.isEscape(Coordinates.get(1, 8)));
     }
 
     @Test
@@ -57,6 +77,15 @@ public class CoordinatesTest {
         assertTrue(Coordinates.isCitadel(Coordinates.get(8, 5)));
         assertFalse(Coordinates.isCitadel(Coordinates.get(1, 0)));
         assertFalse(Coordinates.isCitadel(Coordinates.get(7, 6)));
+
+    }
+
+    @Test
+    public void isCitadelTest2() {
+        assertTrue(Coordinates.isCitadel(Coordinates.get(4, 0)));
+        assertTrue(Coordinates.isCitadel(Coordinates.get(5, 8)));
+        assertFalse(Coordinates.isCitadel(Coordinates.get(0, 1)));
+        assertFalse(Coordinates.isCitadel(Coordinates.get(6, 7)));
 
     }
 
@@ -82,9 +111,39 @@ public class CoordinatesTest {
     }
 
     @Test
+    public void getNeighborsTest2() {
+        List<Coord> neigh1 = new ArrayList<>();
+        List<Coord> neigh2 = new ArrayList<>();
+        List<Coord> neigh3 = new ArrayList<>();
+
+        neigh1.add(Coordinates.get(0, 7));
+        neigh1.add(Coordinates.get(1, 6));
+        neigh1.add(Coordinates.get(2, 7));
+        neigh1.add(Coordinates.get(1, 8));
+
+        neigh2.add(Coordinates.get(7, 0));
+        neigh2.add(Coordinates.get(8, 1));
+
+        neigh3.add(Coordinates.get(4, 0));
+        neigh3.add(Coordinates.get(6, 0));
+        neigh3.add(Coordinates.get(5, 1));
+
+        assertEquals(neigh1, Coordinates.getNeighbors(Coordinates.get(1, 7)));
+        assertEquals(neigh2, Coordinates.getNeighbors(Coordinates.get(8, 0)));
+        assertEquals(neigh3, Coordinates.getNeighbors(Coordinates.get(5, 0)));
+
+    }
+
+    @Test
     public void getSandwichCoordTest() throws CoordinateDoesNotExistException {
         assertEquals(Coordinates.get(3,3), Coordinates.getSandwichCoord(Coordinates.get(3,5), Coordinates.get(3,4)));
         assertThrows(CoordinateDoesNotExistException.class, ()-> Coordinates.getSandwichCoord(Coordinates.get(7,1), Coordinates.get(8,1)));
+    }
+
+    @Test
+    public void getSandwichCoordTest2() throws CoordinateDoesNotExistException {
+        assertEquals(Coordinates.get(0,2), Coordinates.getSandwichCoord(Coordinates.get(0,0), Coordinates.get(0,1)));
+        assertThrows(CoordinateDoesNotExistException.class, ()-> Coordinates.getSandwichCoord(Coordinates.get(1,1), Coordinates.get(0,1)));
     }
 
 
@@ -93,6 +152,12 @@ public class CoordinatesTest {
         assertEquals(5, Coordinates.distanceToClosestEscape(Coordinates.get(4, 3)));
         assertEquals(6, Coordinates.distanceToClosestEscape(Coordinates.get(4, 4)));
 
+    }
+
+    @Test
+    public void distanceToClosestEscapeTest2(){
+        assertEquals(1, Coordinates.distanceToClosestEscape(Coordinates.get(7, 7)));
+        assertEquals(2, Coordinates.distanceToClosestEscape(Coordinates.get(6, 6)));
     }
 
 }

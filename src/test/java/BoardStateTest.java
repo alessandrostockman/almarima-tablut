@@ -8,8 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +21,10 @@ import it.unibo.almarima.tablut.application.domain.BoardState;
 import it.unibo.almarima.tablut.application.domain.Coord;
 import it.unibo.almarima.tablut.application.domain.Coordinates;
 import it.unibo.almarima.tablut.application.domain.Move;
+import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.State;
 import it.unibo.almarima.tablut.external.State.Pawn;
+import it.unibo.almarima.tablut.external.State.Turn;
 import it.unibo.almarima.tablut.external.StateTablut;
 
 
@@ -151,7 +155,7 @@ public class BoardStateTest {
 
     @Test
     public void getAllLegalMovesTest() {
-        ArrayList<Move> legal= new ArrayList<>();
+        List<Move> legal= new ArrayList<>();
         Move m1= new Move(Coordinates.get(2,4),Coordinates.get(2,3),b.getTurnPlayer());
         Move m2= new Move(Coordinates.get(2,4),Coordinates.get(2,2),b.getTurnPlayer());
         Move m3= new Move(Coordinates.get(2,4),Coordinates.get(2,1),b.getTurnPlayer());
@@ -267,9 +271,11 @@ public class BoardStateTest {
         legal.add(m56);
         legal.add(m57);
 
-        //TODO: vanno ordinate in qualche modo [Hamcrest]
+        List<Move> testLegal = b.getAllLegalMoves();
+        testLegal = testLegal.stream().sorted((move1, move2) -> move1.toString().compareTo(move2.toString())).collect(Collectors.toList());
+        legal = legal.stream().sorted((move1, move2) -> move1.toString().compareTo(move2.toString())).collect(Collectors.toList());
 
-        assertEquals(legal, b.getAllLegalMoves());
+        assertEquals(legal, testLegal);
     }
     @Test
     public void getAllLegalMovesTest2() {
@@ -394,9 +400,16 @@ public class BoardStateTest {
         HashSet<Coord> players = b.getPlayerPieceCoordinates();
         HashSet<Coord> opponents = b.getOpponentPieceCoordinates();
         
+        boolean kingFound = false;
         for (Coord c : players) {
-            assertEquals(b.getPawnAt(c), Pawn.WHITE);
+            if (b.getPawnAt(c).equals(Pawn.KING)) {
+                kingFound = true;
+            } else {
+                assertEquals(b.getPawnAt(c), Pawn.WHITE);
+            }
         }
+
+        assertTrue(kingFound);
         
         for (Coord c : opponents) {
             assertEquals(b.getPawnAt(c), Pawn.BLACK);
@@ -417,7 +430,7 @@ public class BoardStateTest {
         assertFalse(b.isLegal(new Move(Coordinates.get(3, 1), Coordinates.get(4, 1), -1)));
         assertFalse(b.isLegal(new Move(Coordinates.get(4, 3), Coordinates.get(5, 3), 0)));
         assertFalse(b.isLegal(new Move(Coordinates.get(4, 4), Coordinates.get(4, 3), 1)));
-        assertTrue(b.isLegal(new Move(Coordinates.get(4, 4), Coordinates.get(4, 3), 1)));
+        assertTrue(b.isLegal(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1)));
     }
 
     public void getPawnAtTest(){
@@ -487,13 +500,21 @@ public class BoardStateTest {
         assertEquals(b.getPawnAt(b.getKingPosition()), Pawn.KING);
 
         //Move the king to add a little spice
-        b.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        b.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(5, 3), 1));
         b.processMove(new Move(Coordinates.get(3, 0), Coordinates.get(2, 0), 0));
-        b.processMove(new Move(Coordinates.get(3, 3), Coordinates.get(4, 3), 1));
-        b.processMove(new Move(Coordinates.get(2, 0), Coordinates.get(1, 0), 0));
         b.processMove(new Move(Coordinates.get(4, 4), Coordinates.get(4, 3), 1));
+        b.processMove(new Move(Coordinates.get(2, 0), Coordinates.get(1, 0), 0));
                 
         assertEquals(b.getPawnAt(b.getKingPosition()), Pawn.KING);
+
+        b.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(1, 3), 1));
+        b.processMove(new Move(Coordinates.get(1, 0), Coordinates.get(2, 0), 0));
+
+        assertEquals(b.getPawnAt(b.getKingPosition()), Pawn.KING);
+
+        b.processMove(new Move(Coordinates.get(1, 3), Coordinates.get(1, 0), 1));
+        assertEquals(b.getPawnAt(b.getKingPosition()), Pawn.KING);
+
     }
 
     @Test
