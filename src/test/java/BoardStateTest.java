@@ -431,8 +431,16 @@ public class BoardStateTest {
         assertFalse(b.canCaptureWithCoord(Coordinates.get(6,2),BoardState.BLACK));
     }
 
+    @Test
     public void getPlayerPieceCoordinatesTest() {
-
+        BoardState b1 = new BoardState(new StateTablut());
+        for (Coord c : b1.getPlayerPieceCoordinates()) {
+            assertTrue(b1.pieceBelongsTo(b1.getPawnAt(c), b1.getTurnPlayer()));
+        }
+        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        for (Coord c : b1.getPlayerPieceCoordinates()) {
+            assertTrue(b1.pieceBelongsTo(b1.getPawnAt(c), b1.getTurnPlayer()));
+        }
     }
 
     @Test
@@ -457,11 +465,9 @@ public class BoardStateTest {
     }
 
     public void getPlayerCoordSetTest(){
-
     }
     
     public void getPlayerCoordSetTest2(){
-
     }
 
     @Test
@@ -473,28 +479,64 @@ public class BoardStateTest {
         assertTrue(b.isLegal(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1)));
     }
 
+    @Test
     public void getPawnAtTest(){
-
+        BoardState b1 = new BoardState(new StateTablut());
+        assertEquals(b1.getPawnAt(Coordinates.get(4, 4)), Pawn.KING);
+        assertEquals(b1.getPawnAt(Coordinates.get(2, 2)), Pawn.EMPTY);
+        assertEquals(b1.getPawnAt(Coordinates.get(0, 4)), Pawn.BLACK);
+        assertEquals(b1.getPawnAt(Coordinates.get(4, 3)), Pawn.WHITE);
+        assertNotEquals(b1.getPawnAt(Coordinates.get(1, 1)), Pawn.KING);
+        assertNotEquals(b1.getPawnAt(Coordinates.get(3, 0)), Pawn.EMPTY);
+        assertNotEquals(b1.getPawnAt(Coordinates.get(3, 4)), Pawn.BLACK);
+        assertNotEquals(b1.getPawnAt(Coordinates.get(8, 0)), Pawn.WHITE);
     }
 
+    @Test
     public void pieceBelongsToTest(){
-
+        BoardState b1 = new BoardState(new StateTablut());
+        assertTrue(b1.pieceBelongsTo(Pawn.KING, 1));
+        assertTrue(b1.pieceBelongsTo(Pawn.BLACK, 0));
+        assertTrue(b1.pieceBelongsTo(Pawn.WHITE, 1));
+        assertFalse(b1.pieceBelongsTo(Pawn.KING, 0));
     }
 
+    @Test
     public void isPawnKingAndTurnWhiteTest(){
-
+        BoardState b1 = new BoardState(new StateTablut());
+        assertTrue(b1.isPawnKingAndTurnWhite(b1.getPawnAt(Coordinates.get(4, 4)), BoardState.WHITE));
+        assertFalse(b1.isPawnKingAndTurnWhite(b1.getPawnAt(Coordinates.get(4, 4)), BoardState.BLACK));
+        assertFalse(b1.isPawnKingAndTurnWhite(b1.getPawnAt(Coordinates.get(3, 3)), BoardState.WHITE));
     }
 
+    @Test
     public void fromTurnPlayerToCharTest(){
-
+        BoardState b1 = new BoardState(new StateTablut());
+        assertEquals(b1.fromTurnPlayerToChar(), "W");
     }
 
+    @Test
     public void fromTurnPlayerToCharTest2(){
-        
+        BoardState b1 = new BoardState(new StateTablut());
+        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        assertEquals(b1.fromTurnPlayerToChar(), "B");    
     }
 
+    @Test
     public void turnPlayerCanMoveFromTest(){
+        BoardState b1 = new BoardState(new StateTablut());
+        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(4, 3)));
+        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(2, 4)));
+        assertFalse(b1.turnPlayerCanMoveFrom(Coordinates.get(5, 5)));
+        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
 
+        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(4, 0)));
+        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(0, 4)));
+        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(1, 4)));
+        assertFalse(b1.turnPlayerCanMoveFrom(Coordinates.get(4, 3)));
+        b1.processMove(new Move(Coordinates.get(4, 1), Coordinates.get(3, 1), 0));
+
+        assertTrue(b1.turnPlayerCanMoveFrom(Coordinates.get(4, 4)));
     }
 
     @Test
@@ -513,8 +555,18 @@ public class BoardStateTest {
         
     }
 
+    @Test
     public void coordIsEmptyTest(){
+        BoardState b1 = new BoardState(new StateTablut());
+        assertTrue(b1.coordIsEmpty(Coordinates.get(3, 3)));
+        assertTrue(b1.coordIsEmpty(Coordinates.get(2, 2)));
+        assertFalse(b1.coordIsEmpty(Coordinates.get(4, 4)));
+        assertFalse(b1.coordIsEmpty(Coordinates.get(0, 4)));
+        assertFalse(b1.coordIsEmpty(Coordinates.get(4, 0)));
 
+        b1.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        assertFalse(b1.coordIsEmpty(Coordinates.get(3, 3)));
+        assertTrue(b1.coordIsEmpty(Coordinates.get(4, 3)));
     }
 
 
