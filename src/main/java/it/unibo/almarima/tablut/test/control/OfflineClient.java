@@ -5,6 +5,7 @@ import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.StateTablut;
 import it.unibo.almarima.tablut.external.TablutClient;
 import it.unibo.almarima.tablut.external.State.Turn;
+import it.unibo.almarima.tablut.application.heuristics.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -13,11 +14,13 @@ import java.net.UnknownHostException;
 public class OfflineClient extends TablutClient {
 
 	private Shared shared;
+	private Heuristic heuristic;
 
-	public OfflineClient(Shared shared, Turn role)
+	public OfflineClient(Shared shared, Turn role, Heuristic heuristic)
 			throws UnknownHostException, IOException {
 		super("AlMaRiMa", role);
 		this.shared = shared;
+		this.heuristic = heuristic;
 	}
 
 	@Override
@@ -32,7 +35,7 @@ public class OfflineClient extends TablutClient {
 			}
 			System.out.println(this.getPlayer()+": Wake 1");
 		}
-        TablutPlayer p = new ImplPlayer(this.getTimeout(),this.getPlayer()); 
+        TablutPlayer p = new ImplPlayer(this.getTimeout(),this.getPlayer(), this.heuristic);
 		
 		System.out.println("You are player " + this.getPlayer().toString() + "!");
 		synchronized (this.shared) {

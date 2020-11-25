@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import it.unibo.almarima.tablut.application.domain.BoardState;
 import it.unibo.almarima.tablut.application.domain.Move;
+import it.unibo.almarima.tablut.application.heuristics.PawnsHeuristic;
 import it.unibo.almarima.tablut.application.player.ImplPlayer;
 import it.unibo.almarima.tablut.application.player.TablutPlayer;
 import it.unibo.almarima.tablut.external.State;
@@ -16,8 +17,8 @@ public class TablutPlayerTest {
 
     @Test
     public void testCreation() {
-        TablutPlayer whitePlayer = new ImplPlayer(60, Turn.WHITE);
-        TablutPlayer blackPlayer = new ImplPlayer(60, Turn.BLACK);
+        TablutPlayer whitePlayer = new ImplPlayer(60, Turn.WHITE, new PawnsHeuristic());
+        TablutPlayer blackPlayer = new ImplPlayer(60, Turn.BLACK, new PawnsHeuristic());
         assertEquals(whitePlayer.getPlayerId(), BoardState.WHITE);
         assertEquals(blackPlayer.getPlayerId(), BoardState.BLACK);
     }
@@ -26,7 +27,7 @@ public class TablutPlayerTest {
     public void testComputeMove() {
         State s = new StateTablut();
         BoardState bs = new BoardState(s);
-        TablutPlayer whitePlayer = new ImplPlayer(60, Turn.WHITE);
+        TablutPlayer whitePlayer = new ImplPlayer(60, Turn.WHITE, new PawnsHeuristic());
         whitePlayer.setBoardState(s);
         
         Move chosen = whitePlayer.computeMove();
