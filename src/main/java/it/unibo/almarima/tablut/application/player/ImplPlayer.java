@@ -13,10 +13,9 @@ public class ImplPlayer extends TablutPlayer{
 	
 	Heuristic h;
 
-    public ImplPlayer(int timeout, State.Turn role ) {
-
+    public ImplPlayer(int timeout, State.Turn role, Heuristic heuristic) {
 		super(timeout, role);
-		h= new PawnsHeuristic();
+		this.h = heuristic;
     }
     
     /*return best move computed from player*/
