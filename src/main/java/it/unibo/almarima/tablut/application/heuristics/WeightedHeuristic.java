@@ -43,10 +43,10 @@ public class WeightedHeuristic extends Heuristic {
     }
 
 	public WeightedHeuristic() {
-		a = 2;
-		b = 4;
-		c = 1;
-		d = 1;
+		a = 5;
+		b = 1;
+		c = 3;
+		d = 0;
 	}
 
 	public double evaluate(BoardState state) {
@@ -72,15 +72,15 @@ public class WeightedHeuristic extends Heuristic {
 		// System.out.println("PD = "+PD);
 		// System.out.println("EP = "+EP);
 		// System.out.println("score = "+((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d)));
-		if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) == 0 || (a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) == 1){
-			System.out.println("HO TROVATO UNO 0/1");
-		}
-		if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) > 1){
-			System.out.println("HO TROVATO UNO > 1");
-		}
-		if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) < 0){
-			System.out.println("HO TROVATO UNO < 0");
-		}
+		// if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) == 0 || (a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) == 1){
+		// 	System.out.println("HO TROVATO UNO 0/1");
+		// }
+		// if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) > 1){
+		// 	System.out.println("HO TROVATO UNO > 1");
+		// }
+		// if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) < 0){
+		// 	System.out.println("HO TROVATO UNO < 0");
+		// }
 		return (a*KE+b*KK+c*PD+d*EP)/(a+b+c+d);
 	}
 	

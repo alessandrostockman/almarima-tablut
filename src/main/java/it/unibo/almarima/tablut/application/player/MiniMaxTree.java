@@ -30,7 +30,7 @@ public class MiniMaxTree {
         this.maxDepth = maxDepth;
         this.endTime = endTime;
 		this.h = h ;
-		this.history = history;
+//		this.history = history;
     }
 
     // This function differs from minimax as it needs to keep track of not just max and min
@@ -52,8 +52,8 @@ public class MiniMaxTree {
 				childBS.processMove(move);
 
 				/*TODO: Da controllare, controllo se la board processata è già presente nella history*/
-				if(history.contains(childBS))
-					continue;
+				// if(history.contains(childBS))
+				// 	continue;
 
 				// recursively run minimax on the child board state
 				Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
@@ -78,8 +78,8 @@ public class MiniMaxTree {
 				childBS.processMove(move);
 
 				/*TODO: Da controllare, controllo se la board processata è già presente nella history*/
-				if(history.contains(childBS))
-					continue;
+				// if(history.contains(childBS))
+				// 	continue;
 				// recursively run minimax on the child board state
                 Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
                 
@@ -89,7 +89,7 @@ public class MiniMaxTree {
                     minMove = move;
 				}
 			}
-			System.out.println("beta = "+alpha.toString());
+			System.out.println("beta = "+beta.toString());
 			return minMove;
 		}
     }
@@ -119,8 +119,8 @@ public class MiniMaxTree {
 				BoardState childBS = (BoardState) nodeBS.clone();
 				childBS.processMove(move);
 				/*TODO: Da controllare, controllo se la board processata è già presente nella history*/
-				if(history.contains(childBS))
-					continue;
+				// if(history.contains(childBS))
+				// 	continue;
 			
 				// recursively run minimax on the child board state
 				Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
@@ -151,8 +151,8 @@ public class MiniMaxTree {
 				childBS.processMove(move);
 
 				/*TODO: Da controllare, controllo se la board processata è già presente nella history*/
-				if(history.contains(childBS))
-					continue;
+				// if(history.contains(childBS))
+				// 	continue;
 
 				// recursively run minimax on the child board state
 				Valuation childValuation = minimax(childBS, depth+1, alpha.clone(), beta.clone());
