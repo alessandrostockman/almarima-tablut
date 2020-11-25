@@ -1,6 +1,5 @@
 package it.unibo.almarima.tablut.application.client;
 
-import it.unibo.almarima.tablut.application.heuristics.*;
 import it.unibo.almarima.tablut.application.player.*;
 import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.StateTablut;
@@ -32,8 +31,9 @@ public class TablutArtificialClient extends TablutClient {
     
     @Override
 	public void run() {
+
 		// create a new player who will play the game according to his algo
-        TablutPlayer p=new ImplPlayer(this.getTimeout(),this.getPlayer(), new WeightedHeuristic());               
+        TablutPlayer p=new ImplPlayer(this.getTimeout(),this.getPlayer());               
 		
 		try {
 			this.declareName();
@@ -49,10 +49,8 @@ public class TablutArtificialClient extends TablutClient {
 				System.out.println("Current state:");
 				System.out.println(this.getCurrentState().toString());
 
-				//giving the current board to the current player
+				//passing the current board to the current player
 				p.setBoardState(this.getCurrentState());
-				//TODO: debug
-				p.getBoardState().printBoard();
 
 				if (this.isYourTurn()) {
 					System.out.println("Player " + this.getPlayer().toString() + ", do your move: ");
@@ -79,7 +77,8 @@ public class TablutArtificialClient extends TablutClient {
 
 		
 	}
-
+	
+	//return if it is the turn for the current player to play 
 	public boolean isYourTurn(){
 		return this.getCurrentState().getTurn().equals(this.getPlayer());
 	}

@@ -10,8 +10,8 @@ public abstract class TablutPlayer {
     
 
     private int timeout;               
-    protected int playerId = BoardState.ILLEGAL;          //0 is Black , 1 is White  per rendere più semplice la gestione del ruolo 
-    protected BoardState boardState;                       //la board in un determinato turno reale di gioco
+    protected int playerId = BoardState.ILLEGAL;           //0 is Black , 1 is White   
+    protected BoardState boardState;                       //the board state in any real game turn 
 
     public TablutPlayer(int timeout, State.Turn role ) {
 
@@ -21,7 +21,7 @@ public abstract class TablutPlayer {
     }
 
     
-    /*metodo che ritorna la migliore mossa valutata dal player implementato*/
+    /*return the best move as retured from MinMax Algo*/
     public abstract Move computeMove();
 
             

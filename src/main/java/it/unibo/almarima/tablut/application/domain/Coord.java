@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Coord {
-    public final int x; // make it final so they cannot be changed
+    public final int x;             // final so they cannot be changed
     public final int y;
 
     Coord(int x, int y) {
@@ -19,7 +19,7 @@ public final class Coord {
 
     /**
      * Returns a list of all the coordinates between this coord and another
-     * coordinate. Note that it assumes they are either in the same row or same
+     * coordinate. It assumes they are either in the same row or same
      * column, otherwise it will return an empty list.
      */
     public List<Coord> getCoordsBetween(Coord c) {

@@ -27,6 +27,7 @@ public class Move {
         this.yTo = yTo;
     }
 
+    //create an Action that as to be sent to ther sever, using the coordinates
     public Action moveToAction(Turn t) throws IOException {
         String from = String.valueOf((char)(this.getyFrom() + 65)) + (this.getxFrom() + 1);
         String to= String.valueOf((char)(this.getyTo() + 65)) + (this.getxTo() + 1);

@@ -14,7 +14,7 @@ public class Coordinates {
     private static ArrayList<Coord> citadels;
     private static ArrayList<Coord> escapes;
 
-    // Sets all coords, should ONLY BE called once.
+    // Sets all coords, should ONLY be called once.
     public static void setAllCoordinates(int max) {
         if (!isSet) {
             size = max;
@@ -37,6 +37,7 @@ public class Coordinates {
         }
     }
 
+    //add citadels
     public static void initCitadels(){
         ArrayList<String> cit= new ArrayList<>();
         cit.add("a4");
@@ -61,7 +62,7 @@ public class Coordinates {
         }
     }
     
-    //TODO: aggiungere gli angoli ? non è chiaro se cambi qualcosa o meno 
+    //add escapes
     public static void initEscapes(){
         escapes.add(get(0,1));
         escapes.add(get(0,2));
@@ -99,14 +100,6 @@ public class Coordinates {
 
     public static boolean isEscape(Coord c) {
         return escapes.contains(c);
-    }
-
-
-    //check if the coord passed is on an edge , it's not necessary an escape tile but if i already checked other conditions (ToCoord is legal) can be more efficient
-    public static boolean isEscapeAfterConditions(int i, int j) {           
-        if (i * j != 0)
-            return i == size - 1 || j == size - 1;
-        return true;
     }
 
     public static boolean isCenterOrNeighborCenter(Coord c) {
@@ -151,8 +144,7 @@ public class Coordinates {
         return neighbors;
     }
 
-    // Returns the coordinate with which a sandwich would be made around "middle",
-    // using "front".
+    // Returns the coordinate with which a sandwich would be made around "middle", using "front".
     public static Coord getSandwichCoord(Coord front, Coord middle) throws CoordinateDoesNotExistException {
         int xDiff = front.x - middle.x;
         int yDiff = front.y - middle.y;
@@ -169,7 +161,7 @@ public class Coordinates {
     }
 
     
-    // Given a coordinate, returns the distance between it and the closest escape tile.
+    // Given a coordinate, returns the distance between it and the closest escape tile. (important for the king)
     public static int distanceToClosestEscape(Coord kingPos) {
         List<Coord> escapes = getEscapes();
         int minDistance = Integer.MAX_VALUE;
@@ -182,7 +174,7 @@ public class Coordinates {
         return minDistance;
     }
 
-    // Lol at the insanity of OOP, two anonymous classes just to iterate!
+    // Useful to iterate over all Coordinates
     public static Iterable<Coord> iterCoordinates() {
         return new Iterable<Coord>() {
             @Override

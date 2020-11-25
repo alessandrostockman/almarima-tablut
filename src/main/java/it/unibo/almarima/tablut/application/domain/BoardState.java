@@ -30,9 +30,9 @@ public class BoardState implements  Cloneable {
     private Random rand = new Random(Math.round(Math.random()*2000));
 
     private int turnPlayer;             // 0 black, 1 white 
-    private int winner = ILLEGAL;       //0 black ,1 white , -1 nobody 
+    private int winner = ILLEGAL;       //0 black ,1 white , -1 nobody [illegal]
 
-    // Initial Board State creation. The genesis constructor.
+    // Initial Board State creation.
     public BoardState(State st) {
 
         this.board= st.getBoard();
@@ -93,7 +93,6 @@ public class BoardState implements  Cloneable {
         board[oldPos.x][oldPos.y] = Pawn.EMPTY;
         board[newPos.x][newPos.y] = movingPiece;
 
-        //TODO: controllare che questo è giusto 
         //if i'm moving the king update king position and if it's the first time i move it (it is in the center) put the throne there 
         if (movingPiece == Pawn.KING)
              kingPosition = newPos;
@@ -149,25 +148,20 @@ public class BoardState implements  Cloneable {
     // Determines if a player has won by updating internal variable.
     private void updateWinner() {
         // Check if the king was captured -- BLACK WINS
-        // Also checking if the WHITES even have any legal moves at all. If not, they
-        // lose.
+        // Also checking if the WHITES even have any legal moves at all. If not, they lose.
         if (kingPosition == null || !playerHasALegalMove(WHITE)) {
             winner = BLACK;
         }
 
         // Check if king is at escape tile -- WHITE WINS
-        // Also checking if the BLACKS even have any legal moves at all. If not,
-        // they lose.
+        // Also checking if the BLACKS even have any legal moves at all. If not, they lose.
         else if (Coordinates.isEscape(kingPosition) || !playerHasALegalMove(BLACK)) {
             winner = WHITE;
         }
 
     }
 
-    /**
-     * Get all legal moves for the player. This may be expensive, so it may be more
-     * desirable to select a subset of moves from specific positions.
-     */
+    //Get all legal moves for the player. 
     public ArrayList<Move> getAllLegalMoves() {
         return this.getAllLegalMoves(turnPlayer);
     }
@@ -180,9 +174,7 @@ public class BoardState implements  Cloneable {
         return allMoves;
     }
 
-    /**
-     * Check if there are any legal move for the player.
-     */
+    //Check if there are any legal move for the player. 
     private boolean playerHasALegalMove(int player) {
         for (Coord c : getPlayerCoordSet(player)) {
             for (Coord neighbor : Coordinates.getNeighbors(c)) {
@@ -197,16 +189,14 @@ public class BoardState implements  Cloneable {
     /**
      * Get all legal moves for the passed position in the current board state.
      *
-     * Returned moves are assumed to be moves for the player whose turn it currently
-     * is.
+     * Returned moves are assumed to be moves for the player whose turn it currently is.
      */
     public ArrayList<Move> getLegalMovesForPosition(Coord start) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         // Check that the piece being requested actually belongs to the player.
         Pawn piece = getPawnAt(start);
-        if (piece.toString() != this.fromTurnPlayerToChar()) {
-            if (piece.equalsPawn("K") && this.getTurnPlayer()!=WHITE)     //the king belongs to the whites 
+        if(!this.pieceBelongsTo(piece, this.getTurnPlayer())){
             return legalMoves;
         }
 
@@ -220,8 +210,8 @@ public class BoardState implements  Cloneable {
         /*
          * Add the real moves now. We do not call isLegal here; this is because we
          * efficiently enforce legality by only adding those that are legal. This makes
-         * for a more efficient method so player aren't slowed down by just figuring out
-         * what they can do.
+         * for a more efficient method so player isn't slowed down by just figuring out
+         * what it can do.
          */
         for (Coord end : goodCoords) {
             legalMoves.add(new Move(start, end, this.turnPlayer));
@@ -292,14 +282,14 @@ public class BoardState implements  Cloneable {
         if (turnPlayer != BLACK && turnPlayer != WHITE) {
             return null;
         }
-        return new HashSet<Coord>(getPlayerCoordSet(turnPlayer)); // Copy the set so no funny business.
+        return new HashSet<Coord>(getPlayerCoordSet(turnPlayer)); // Copy the set so no weird things happen.
     }
 
     public HashSet<Coord> getOpponentPieceCoordinates() {
         if (turnPlayer != BLACK && turnPlayer != WHITE) {
             return null;
         }
-        return new HashSet<Coord>(getPlayerCoordSet(getOpponent())); // Copy the set so no funny business.
+        return new HashSet<Coord>(getPlayerCoordSet(getOpponent())); // Copy the set so no weird things happen.
     }
 
     private HashSet<Coord> getPlayerCoordSet() {
@@ -315,7 +305,7 @@ public class BoardState implements  Cloneable {
         if (turnPlayer != move.getPlayerId() || move.getPlayerId() == ILLEGAL)
             return false;
 
-        // Get useful things. TODO: cosa succede se la posizione non esiste??
+        //Now get the coords
         Coord from = move.getFromPosition();
         Coord to = move.getToPosition();
         Pawn piece = getPawnAt(from); // this will check if the position is on the board
@@ -352,7 +342,6 @@ public class BoardState implements  Cloneable {
         return true;
     }
 
-    /* ----- Useful helper functions. ----- */
     public Pawn getPawnAt(Coord c) {
         return board[c.x][c.y];
     }
@@ -409,7 +398,6 @@ public class BoardState implements  Cloneable {
 
     //check if a piece can move to a citadel or not 
     //returns TRUE when you can do the move , FALSE otherwise
-    //TODO: i Bianchi non possono mai andare in una cittadella
     public boolean citadelRules(Coord from , Coord to){
         
         // Check if i'm moving towards a citadel without coming from one 
@@ -464,9 +452,6 @@ public class BoardState implements  Cloneable {
         }
         return true;
     }
-
-    /*** Debugging functionality is found below. ***/
-
 
     // Useful method to show the board.
     public void printBoard() {

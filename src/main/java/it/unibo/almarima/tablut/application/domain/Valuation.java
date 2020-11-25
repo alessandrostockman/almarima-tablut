@@ -1,5 +1,6 @@
 package it.unibo.almarima.tablut.application.domain;
 
+/*this class is useful to model the value of the heuristic used by MinMax Algo , togheter with the depth at which it is found */
 public class Valuation {
 
 	private double hVal;
