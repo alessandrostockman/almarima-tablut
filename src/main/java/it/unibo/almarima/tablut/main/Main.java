@@ -1,4 +1,4 @@
-package it.unibo.almarima.tablut;
+package it.unibo.almarima.tablut.main;
 
 import java.io.IOException;
 import java.util.Scanner;

@@ -5,6 +5,7 @@ import java.util.List;
 import it.unibo.almarima.tablut.application.domain.BoardState;
 import it.unibo.almarima.tablut.application.domain.Move;
 import it.unibo.almarima.tablut.application.domain.Valuation;
+import it.unibo.almarima.tablut.application.heuristics.Heuristic;
 
 
 public class MiniMaxTree {
@@ -20,12 +21,14 @@ public class MiniMaxTree {
 
     public int maxDepth;
     public BoardState headBoardState;
-    public long endTime;
+	public long endTime;
+	public Heuristic h;
 
-    public MiniMaxTree(int maxDepth, BoardState headBoardState, long endTime) {
+    public MiniMaxTree(int maxDepth, BoardState headBoardState, long endTime,Heuristic h) {
         this.headBoardState = headBoardState;
         this.maxDepth = maxDepth;
-        this.endTime = endTime;
+		this.endTime = endTime;
+		this.h=h;
     }
 
     // This function differs from minimax as it needs to keep track of not just max and min
@@ -92,7 +95,7 @@ public class MiniMaxTree {
 		}
 		// if node is a leaf, then evaluate with h function
 		if (depth == this.maxDepth) {
-			return new Valuation(this.evaluate(nodeBS), depth);
+			return new Valuation(h.evaluate(nodeBS), depth);
 		}
 		// if there is a winner return the winner (corresponds to the max and min h values of 0 or 1)
 		if (nodeBS.getWinner() == BoardState.BLACK || nodeBS.getWinner() == BoardState.WHITE) {
@@ -164,9 +167,6 @@ public class MiniMaxTree {
         }
 	}
 
-	//TODO: implementare l'euristica che scegliamo alla fine 
-	private double evaluate(BoardState bs){
-		return 0.0;
-	}
+	
 	
 }

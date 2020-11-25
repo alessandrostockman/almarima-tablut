@@ -1,5 +1,6 @@
 package it.unibo.almarima.tablut.application.client;
 
+import it.unibo.almarima.tablut.application.heuristics.WeightedHeuristic;
 import it.unibo.almarima.tablut.application.player.*;
 import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.StateTablut;
@@ -33,7 +34,7 @@ public class TablutArtificialClient extends TablutClient {
 	public void run() {
 
 		// create a new player who will play the game according to his algo
-        TablutPlayer p=new ImplPlayer(this.getTimeout(),this.getPlayer());               
+        TablutPlayer p=new ImplPlayer(this.getTimeout(),this.getPlayer(),new WeightedHeuristic());               
 		
 		try {
 			this.declareName();
