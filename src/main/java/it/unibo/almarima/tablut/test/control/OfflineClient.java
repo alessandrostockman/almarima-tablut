@@ -5,13 +5,14 @@ import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.StateTablut;
 import it.unibo.almarima.tablut.external.TablutClient;
 import it.unibo.almarima.tablut.external.State.Turn;
+import it.unibo.almarima.tablut.test.exceptions.GameFinishedException;
 import it.unibo.almarima.tablut.application.heuristics.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
 /*extends TablutClient : used to handle communication from and to the Server*/
-public class OfflineClient extends TablutClient {
+public class OfflineClient extends TablutClient implements OfflineAgent {
 
 	private Shared shared;
 	private Heuristic heuristic;
@@ -23,8 +24,13 @@ public class OfflineClient extends TablutClient {
 		this.heuristic = heuristic;
 	}
 
-	@Override
-	public void run() {
+	/**
+	 * Not used
+	 * Required by TablutClient
+	 */
+	public void run() { }
+
+	public void execute() throws GameFinishedException {
 		synchronized (this.shared) {
 			System.out.println(this.getPlayer()+": Wait 1");
 			try {
@@ -68,18 +74,18 @@ public class OfflineClient extends TablutClient {
 					System.out.println("Waiting for your opponent move... ");
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITEWIN)) {
 					System.out.println("WHITE WINS");
-					System.exit(0);
+					throw new GameFinishedException();
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.BLACKWIN)) {
 					System.out.println("BLACK WINS");
-					System.exit(0);
+					throw new GameFinishedException();
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.DRAW)) {
 					System.out.println("DRAW!");
-					System.exit(0);
+					throw new GameFinishedException();
 				}
 
 			} catch (InterruptedException | IOException e) {
 				e.printStackTrace();
-				System.exit(1);
+				throw new GameFinishedException();
 			}
 		}
 

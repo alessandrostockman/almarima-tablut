@@ -12,11 +12,12 @@ import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.State;
 import it.unibo.almarima.tablut.external.StateTablut;
 import it.unibo.almarima.tablut.external.State.Turn;
+import it.unibo.almarima.tablut.test.exceptions.GameFinishedException;
 import it.unibo.almarima.tablut.test.game.Game;
 import it.unibo.almarima.tablut.test.game.GameAshtonTablut;
 import it.unibo.almarima.tablut.test.gui.Gui;
 
-public class OfflineServer implements Runnable {
+public class OfflineServer implements Runnable, OfflineAgent {
 
 	private Shared whiteShared;
 	private Shared blackShared;
@@ -82,11 +83,16 @@ public class OfflineServer implements Runnable {
 	}
 
 	/**
+	 * Not used
+	 */
+	public void run() { }
+
+	/**
 	 * This method starts the proper game. It waits the connections from 2 clients,
 	 * check the move and update the state. There is a timeout that interrupts games
 	 * that last too much
 	 */
-	public void run() {
+	public void execute() throws GameFinishedException {
 		/**
 		 * Number of hours that a game can last before the timeout
 		 */
@@ -118,7 +124,7 @@ public class OfflineServer implements Runnable {
 			loggSys.fine("Accensione server");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(1);
+			throw new GameFinishedException();
 		}
 
 		Date starttime = new Date();
@@ -149,7 +155,7 @@ public class OfflineServer implements Runnable {
 					System.out.println("S: Wake 1 (W)");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-					System.exit(1);
+					throw new GameFinishedException();
 				}
 			}
 			whiteName = this.sanitizeString(this.whiteShared.getName());
@@ -166,7 +172,7 @@ public class OfflineServer implements Runnable {
 					System.out.println("S: Wake 1 (B)");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-					System.exit(1);
+					throw new GameFinishedException();
 				}
 			}
 			blackName = this.sanitizeString(this.blackShared.getName());
@@ -210,7 +216,7 @@ public class OfflineServer implements Runnable {
 								this.whiteShared.wait();
 							} catch (InterruptedException e) {
 								e.printStackTrace();
-								System.exit(1);
+								throw new GameFinishedException();
 							}
 						}
 						move = this.whiteShared.getMove();
@@ -225,7 +231,7 @@ public class OfflineServer implements Runnable {
 								this.blackShared.wait();
 							} catch (InterruptedException e) {
 								e.printStackTrace();
-								System.exit(1);
+								throw new GameFinishedException();
 							}
 						}
 						move = this.blackShared.getMove();
@@ -249,7 +255,7 @@ public class OfflineServer implements Runnable {
 						System.out.println("TOO MANY ERRORS FOR BLACK PLAYER; PLAYER WHITE WIN!");
 						e.printStackTrace();
 						loggSys.warning("Chiusura sistema per troppi errori giocatore nero");
-						System.exit(1);
+						throw new GameFinishedException();
 					} else {
 						System.out.println("Error for black player...");
 					}
@@ -260,7 +266,7 @@ public class OfflineServer implements Runnable {
 						System.out.println("TOO MANY ERRORS FOR WHITE PLAYER; PLAYER BLACK WIN!");
 						e.printStackTrace();
 						loggSys.warning("Chiusura sistema per troppi errori giocatore bianco");
-						System.exit(1);
+						throw new GameFinishedException();
 					} else {
 						System.out.println("Error for white player...");
 					}
@@ -316,12 +322,12 @@ public class OfflineServer implements Runnable {
 				break;
 			default:
 				loggSys.warning("Chiusura sistema");
-				System.exit(4);
+				throw new GameFinishedException();
 			}
 
 		}
 		
-		System.exit(0);
+		throw new GameFinishedException();
 	}
 	
 	private String sanitizeString(String name) {
