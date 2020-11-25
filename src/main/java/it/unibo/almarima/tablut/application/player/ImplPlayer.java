@@ -1,8 +1,5 @@
 package it.unibo.almarima.tablut.application.player;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.unibo.almarima.tablut.application.domain.BoardState;
 import it.unibo.almarima.tablut.application.domain.Move;
 import it.unibo.almarima.tablut.application.heuristics.*;
@@ -19,7 +16,6 @@ public class ImplPlayer extends TablutPlayer{
     public ImplPlayer(int timeout, State.Turn role, Heuristic heuristic) {
 		super(timeout, role);
 		this.h = heuristic;
-		this.history = new ArrayList<>();
     }
     
     /*return best move computed from player*/
