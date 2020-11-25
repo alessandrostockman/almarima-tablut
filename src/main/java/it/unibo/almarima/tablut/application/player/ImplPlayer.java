@@ -17,11 +17,10 @@ public class ImplPlayer extends TablutPlayer{
 	Heuristic h;
 	public List<BoardState> history;
 
-    public ImplPlayer(int timeout, State.Turn role ) {
-
+    public ImplPlayer(int timeout, State.Turn role, Heuristic heuristic) {
 		super(timeout, role);
-		h= new WeightedHeuristic();
-		history = new ArrayList<>();
+		this.h = heuristic;
+		this.history = new ArrayList<>();
     }
     
     /*return best move computed from player*/

@@ -47,6 +47,10 @@ public class Move {
         return (player == 0) ? "Black" : "White";
     }
 
+    public String toString() {
+        return Integer.toString(this.xFrom) + Integer.toString(this.yFrom) + ":" + Integer.toString(this.xTo) + Integer.toString(this.yTo) + ":" + this.playerId;
+    }
+
     public String toPrettyString() {
         return String.format("%s (p%d) move (%d, %d) to (%d, %d)", getPlayerName(playerId), playerId, xFrom, yFrom, xTo, yTo);
     }
