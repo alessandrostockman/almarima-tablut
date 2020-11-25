@@ -245,7 +245,7 @@ public class BoardState implements  Cloneable {
         return legalMoves;
     }
 
-    private List<Coord> getLegalCoordsInDirection(Coord start, int x, int y) {
+    public List<Coord> getLegalCoordsInDirection(Coord start, int x, int y) {
         ArrayList<Coord> coords = new ArrayList<>();
         assert (!(x != 0 && y != 0));
         int startPos = (x != 0) ? start.x : start.y; // starting at x or y
@@ -265,11 +265,11 @@ public class BoardState implements  Cloneable {
     }
 
     // Determines whether or not this coord is a valid coord we can sandwich with.
-    private boolean canCaptureWithCoord(Coord c) {
+    public boolean canCaptureWithCoord(Coord c) {
         return this.canCaptureWithCoord(c,this.getTurnPlayer());
     }
 
-    private boolean canCaptureWithCoord(Coord c, int turn){
+    public boolean canCaptureWithCoord(Coord c, int turn){
         return Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar(turn);
     }
 

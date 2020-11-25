@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,10 +20,8 @@ import it.unibo.almarima.tablut.application.domain.BoardState;
 import it.unibo.almarima.tablut.application.domain.Coord;
 import it.unibo.almarima.tablut.application.domain.Coordinates;
 import it.unibo.almarima.tablut.application.domain.Move;
-import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.State;
 import it.unibo.almarima.tablut.external.State.Pawn;
-import it.unibo.almarima.tablut.external.State.Turn;
 import it.unibo.almarima.tablut.external.StateTablut;
 
 
@@ -354,11 +351,13 @@ public class BoardStateTest {
         
     }
 
+    @Test
     public void getLegalMovesForPositionTest() {
         List<Move> empty= new ArrayList<>();
         assertEquals(empty,b.getLegalMovesForPosition(Coordinates.get(4,4)));
     }
 
+    @Test
     public void getLegalMovesForPositionTest2() {
         List<Move> l= new ArrayList<>();
 
@@ -375,20 +374,61 @@ public class BoardStateTest {
         l.add(m4);
         l.add(m5);
         l.add(m6);
+
+        List<Move> testLegal = b.getLegalMovesForPosition(Coordinates.get(4,3));
+        testLegal = testLegal.stream().sorted((move1, move2) -> move1.toString().compareTo(move2.toString())).collect(Collectors.toList());
+        l = l.stream().sorted((move1, move2) -> move1.toString().compareTo(move2.toString())).collect(Collectors.toList());
+
         
-        assertEquals(l,b.getLegalMovesForPosition(Coordinates.get(4,3)));
+        assertEquals(l,testLegal);
     }
 
+    @Test
     public void getLegalCoordsInDirectionTest() {
+        List<Coord> l= new ArrayList<>();
+        l.add(Coordinates.get(5, 5));
+        l.add(Coordinates.get(6, 5));
+        l.add(Coordinates.get(7, 5));
+
+        assertEquals(l, b.getLegalCoordsInDirection(Coordinates.get(4,5), 1, 0));
+    }
+
+    @Test
+    public void getLegalCoordsInDirectionTest2() {
+        assertEquals(3, b.getLegalCoordsInDirection(Coordinates.get(3,4), 0, -1).size());
+    }
+
+    @Test
+    public void getLegalCoordsInDirectionTest3() {
+        assertEquals(0, b.getLegalCoordsInDirection(Coordinates.get(4,4), 1, 0).size());
+        assertEquals(0, b.getLegalCoordsInDirection(Coordinates.get(4,4), -1, 0).size());
+        assertEquals(0, b.getLegalCoordsInDirection(Coordinates.get(4,4), 0, -1).size());
+        assertEquals(0, b.getLegalCoordsInDirection(Coordinates.get(4,4), 0, 1).size());
 
     }
 
+    @Test
     public void canCaptureWithCoordTest() {
+        assertTrue(b.canCaptureWithCoord(Coordinates.get(3,8)));
+        assertTrue(b.canCaptureWithCoord(Coordinates.get(3,8),BoardState.BLACK));
+        assertFalse(b.canCaptureWithCoord(Coordinates.get(7,4)));
+        assertTrue(b.canCaptureWithCoord(Coordinates.get(7,4),BoardState.BLACK));
+        assertTrue(b.canCaptureWithCoord(Coordinates.get(4,6)));
+
 
     }
-
+    @Test
     public void canCaptureWithCoordTest2(){
+        assertTrue(b.canCaptureWithCoord(Coordinates.get(4,4)));
+        assertTrue(b.canCaptureWithCoord(Coordinates.get(4,4),BoardState.BLACK));
+    }
 
+    @Test
+    public void canCaptureWithCoordTest3(){
+        assertFalse(b.canCaptureWithCoord(Coordinates.get(1,8)));
+        assertFalse(b.canCaptureWithCoord(Coordinates.get(7,0),BoardState.BLACK));
+        assertFalse(b.canCaptureWithCoord(Coordinates.get(6,2)));
+        assertFalse(b.canCaptureWithCoord(Coordinates.get(6,2),BoardState.BLACK));
     }
 
     public void getPlayerPieceCoordinatesTest() {
