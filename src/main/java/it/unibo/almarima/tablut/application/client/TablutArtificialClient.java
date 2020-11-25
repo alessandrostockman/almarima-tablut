@@ -1,6 +1,6 @@
 package it.unibo.almarima.tablut.application.client;
 
-import it.unibo.almarima.tablut.application.heuristics.PawnsHeuristic;
+import it.unibo.almarima.tablut.application.heuristics.*;
 import it.unibo.almarima.tablut.application.player.*;
 import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.StateTablut;

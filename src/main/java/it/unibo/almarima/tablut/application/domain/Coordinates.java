@@ -83,7 +83,6 @@ public class Coordinates {
 
     public static Coord get(String position){
         if (position.length() == 2) {
-            
             int x = Integer.parseInt(position.charAt(1) + "") - 1;
 			int y = Character.toLowerCase(position.charAt(0)) - 97;
             return allCoordinates[x][y];

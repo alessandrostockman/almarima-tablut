@@ -80,9 +80,9 @@ public class BoardState implements  Cloneable {
             return false;
         }
         for (Coord c : Coordinates.iterCoordinates()){
-            if(!this.getPawnAt(c).equals(b.getPawnAt(c))) 
+            if(!this.getPawnAt(c).equals(b.getPawnAt(c)))
                 return false;
-            
+
         }
         return true;
     }
@@ -314,7 +314,7 @@ public class BoardState implements  Cloneable {
         // }
         
         // Check that the piece being requested actually belongs to the player.
-        if(!pieceBelongsTo(piece, this.getTurnPlayer())) 
+        if(!pieceBelongsTo(piece, this.getTurnPlayer()))
             return false;
 
         // Next, make sure move doesn't end on a piece.
@@ -441,9 +441,8 @@ public class BoardState implements  Cloneable {
         return moves.get(rand.nextInt(moves.size()));
     }
 
-    
-
     /*** Debugging functionality is found below. ***/
+
 
     // Useful method to show the board.
     public void printBoard() {
