@@ -199,7 +199,7 @@ public class BoardState implements  Cloneable {
     /**
      * Check if there are any legal move for the player.
      */
-    private boolean playerHasALegalMove(int player) {
+    public boolean playerHasALegalMove(int player) {
         for (Coord c : getPlayerCoordSet(player)) {
             for (Coord neighbor : Coordinates.getNeighbors(c)) {
                 if (coordIsEmpty(neighbor) && citadelRules(c, neighbor)) {

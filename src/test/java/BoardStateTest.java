@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -277,19 +278,99 @@ public class BoardStateTest {
 
     @Test
     public void getAllLegalMovesTest3() {
+        Move m1= new Move(Coordinates.get(5,4),Coordinates.get(5,5),b.getTurnPlayer());
+        b.processMove(m1);
+        assertEquals(BoardState.BLACK, b.getTurnPlayer());
+        assertEquals(80, b.getAllLegalMoves().size());
+
+
     }
 
     @Test
     public void getAllLegalMovesTest4() {
-
+        for (Move  m: b.getAllLegalMoves()){
+            assertTrue(b.isLegal(m));
+        }
     }
 
-    public void playerHasALegalMoveTest() {
+    @Test
+    public void getAllLegalMovesTest5() {
+        Move m1= new Move(Coordinates.get(4,5),Coordinates.get(5,5),b.getTurnPlayer());
+        b.processMove(m1);
+        Move m2 = new Move(Coordinates.get(4,7),Coordinates.get(3,7),b.getTurnPlayer());
+        b.processMove(m2);
+        Move m3= new Move(Coordinates.get(4,4),Coordinates.get(4,5),b.getTurnPlayer());
+        b.processMove(m3);
+        Move m4= new Move(Coordinates.get(3,7),Coordinates.get(2,7),b.getTurnPlayer());
+        b.processMove(m4);
+        Move m5= new Move(Coordinates.get(4,5),Coordinates.get(1,5),b.getTurnPlayer());
+        b.processMove(m5);
+        assertEquals(BoardState.BLACK, b.getTurnPlayer());
+        for (Move  m: b.getAllLegalMoves()){
+            assertTrue(b.isLegal(m));
+        }
+    }
 
+    @Test
+    public void playerHasALegalMoveTest() {
+        assertTrue(b.playerHasALegalMove(BoardState.BLACK));
+    }
+
+    @Test
+    public void playerHasALegalMoveTest2() {
+        assertTrue(b.playerHasALegalMove(BoardState.WHITE));
+    }
+
+    @Test
+    public void playerHasALegalMovetest3(){
+        Move m1= new Move(Coordinates.get(4,5),Coordinates.get(5,5),b.getTurnPlayer());
+        b.processMove(m1);
+        
+        Move m2 = new Move(Coordinates.get(4,7),Coordinates.get(3,7),b.getTurnPlayer());
+        b.processMove(m2);
+       
+        Move m3= new Move(Coordinates.get(4,4),Coordinates.get(4,5),b.getTurnPlayer());
+        b.processMove(m3);
+        
+        Move m4= new Move(Coordinates.get(3,7),Coordinates.get(1,7),b.getTurnPlayer());
+        b.processMove(m4);
+        
+        Move m5= new Move(Coordinates.get(4,5),Coordinates.get(1,5),b.getTurnPlayer());
+        b.processMove(m5);
+        
+        Move m6= new Move(Coordinates.get(1,7),Coordinates.get(1,6),b.getTurnPlayer());
+        b.processMove(m6);
+        
+        assertNull(b.getKingPosition());
+        assertEquals(BoardState.BLACK, b.getWinner());
+        
+        assertFalse(b.playerHasALegalMove(BoardState.WHITE));
+        
     }
 
     public void getLegalMovesForPositionTest() {
+        List<Move> empty= new ArrayList<>();
+        assertEquals(empty,b.getLegalMovesForPosition(Coordinates.get(4,4)));
+    }
 
+    public void getLegalMovesForPositionTest2() {
+        List<Move> l= new ArrayList<>();
+
+        Move m1= new Move(Coordinates.get(4,3),Coordinates.get(3,3),b.getTurnPlayer());
+        Move m2= new Move(Coordinates.get(4,3),Coordinates.get(2,3),b.getTurnPlayer());
+        Move m3= new Move(Coordinates.get(4,3),Coordinates.get(1,3),b.getTurnPlayer());
+        Move m4= new Move(Coordinates.get(4,3),Coordinates.get(5,3),b.getTurnPlayer());
+        Move m5= new Move(Coordinates.get(4,3),Coordinates.get(6,3),b.getTurnPlayer());
+        Move m6= new Move(Coordinates.get(4,3),Coordinates.get(7,3),b.getTurnPlayer());
+
+        l.add(m1);
+        l.add(m2);
+        l.add(m3);
+        l.add(m4);
+        l.add(m5);
+        l.add(m6);
+        
+        assertEquals(l,b.getLegalMovesForPosition(Coordinates.get(4,3)));
     }
 
     public void getLegalCoordsInDirectionTest() {
