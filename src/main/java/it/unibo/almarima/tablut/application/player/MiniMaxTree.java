@@ -89,7 +89,7 @@ public class MiniMaxTree {
                     minMove = move;
 				}
 			}
-			System.out.println("beta = "+beta.toString());
+			System.out.println("beta = "+alpha.toString());
 			return minMove;
 		}
     }
@@ -136,7 +136,7 @@ public class MiniMaxTree {
                 }
 			}
 			if (!updated) {
-				return new Valuation(alpha.gethVal(), depth+1);
+				return new Valuation(alpha.gethVal(), maxDepth);
 			}
 			return alpha;
         }
@@ -168,7 +168,7 @@ public class MiniMaxTree {
 				}
 			}
 			if (!updated) {
-				return new Valuation(beta.gethVal(), depth+1);
+				return new Valuation(beta.gethVal(), maxDepth);
 			}
 			return beta;
         }
