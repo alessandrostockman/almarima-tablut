@@ -37,6 +37,19 @@ public class CoordTest {
         
     }
 
+    @Test
+    public void distanceTest2(){
+        Coord c1= Coordinates.get(3, 3);
+        Coord c2= Coordinates.get(0, 2);
+
+        Coord c3= Coordinates.get(4, 4);
+        Coord c4= Coordinates.get(7, 7);
+
+        assertEquals(c1.distance(c2), 4);
+        assertEquals(c3.distance(c4), 6);
+        
+    }
+
 
     @Test
     public void getCoordsBetweenTest(){
@@ -62,6 +75,27 @@ public class CoordTest {
 
 
     @Test
+    public void getCoordsBetweenTest2(){
+        Coord c1 = Coordinates.get(4, 4);
+        Coord c2 = Coordinates.get(8, 4);
+        List<Coord> actual1= c1.getCoordsBetween(c2);
+        List<Coord> expected1 = new ArrayList<>();
+        expected1.add(Coordinates.get(5,4));
+        expected1.add(Coordinates.get(6,4));
+        expected1.add(Coordinates.get(7,4));
+        expected1.add(Coordinates.get(8,4));
+
+        Coord c3 = Coordinates.get(1, 1);
+        Coord c4 = Coordinates.get(6, 6);
+        List<Coord> actual2 = c3.getCoordsBetween(c4);
+        List<Coord> expected2 = new ArrayList<>();
+
+        assertEquals(expected1, actual1);
+        assertEquals(expected2, actual2);
+    }
+
+
+    @Test
     public void maxDifferenceTest(){
         Coord c1= Coordinates.get(6, 4);
         Coord c2= Coordinates.get(0,4);
@@ -71,6 +105,21 @@ public class CoordTest {
         int diff2= c3.maxDifference(c4);
 
         assertEquals(diff1, 6);
+        assertEquals(diff2, 3);
+
+    }
+
+
+    @Test
+    public void maxDifferenceTest2(){
+        Coord c1= Coordinates.get(2, 4);
+        Coord c2= Coordinates.get(7, 4);
+        int diff1= c1.maxDifference(c2);
+        Coord c3= Coordinates.get(5, 4);
+        Coord c4= Coordinates.get(5, 1);
+        int diff2= c3.maxDifference(c4);
+
+        assertEquals(diff1, 5);
         assertEquals(diff2, 3);
 
     }
