@@ -26,7 +26,7 @@ public class StateTablut extends State implements Serializable {
 
 		this.board[4][4] = Pawn.THRONE;
 
-		this.turn = Turn.BLACK;
+		this.turn = Turn.WHITE;
 
 		this.board[4][4] = Pawn.KING;
 
