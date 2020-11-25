@@ -6,7 +6,7 @@ import it.unibo.almarima.tablut.application.domain.*;
 import it.unibo.almarima.tablut.external.State.Pawn;
 
 public class heuristicFromInternet {
-    public int staticScore(BoardState b){
+    public double evaluate(BoardState b){
         if (b.getWinner() == 0 || b.getWinner() == 1) {
 			return b.getWinner();
 		}
@@ -22,7 +22,7 @@ public class heuristicFromInternet {
         else //black
             score -= 9 - b.getNumberPlayerPieces(1);
 
-        return score;
+        return (double) (score+19)/75;
     }
 
     /*returns the king's score based on the surroundings.*/
@@ -47,4 +47,6 @@ public class heuristicFromInternet {
         }
         return counter;
     }
+
+
 }

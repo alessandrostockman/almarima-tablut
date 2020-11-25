@@ -43,9 +43,9 @@ public class WeightedHeuristic extends Heuristic {
     }
 
 	public WeightedHeuristic() {
-		a = 5;
-		b = 1;
-		c = 3;
+		a = 1;
+		b = 0;
+		c = 1;
 		d = 0;
 	}
 
