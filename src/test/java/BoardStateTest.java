@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,13 +30,10 @@ public class BoardStateTest {
     private static State s;
     private static BoardState b;
     
-    @BeforeAll
-    public static void init(){
-        s = new StateTablut();
-    }
 
     @BeforeEach
     public void boardInit(){
+        s = new StateTablut();
         b = new BoardState(s);
     }
 
@@ -110,7 +106,7 @@ public class BoardStateTest {
         Move m5= new Move(Coordinates.get(4,5),Coordinates.get(1,5),b.getTurnPlayer());
         b.processMove(m5);
         assertEquals(Pawn.KING, b.getPawnAt(Coordinates.get(1,5)));
-        assertEquals(Pawn.THRONE, b.getPawnAt(Coordinates.get(4,5)));     
+        assertEquals(Pawn.THRONE, b.getPawnAt(Coordinates.get(4,4)));     
         assertEquals(Coordinates.get(1,5), b.getKingPosition());
         assertEquals(BoardState.BLACK, b.getTurnPlayer());
         Move m6= new Move(Coordinates.get(1,7),Coordinates.get(1,6),b.getTurnPlayer());
@@ -284,7 +280,7 @@ public class BoardStateTest {
         Move m1= new Move(Coordinates.get(5,4),Coordinates.get(5,5),b.getTurnPlayer());
         b.processMove(m1);
         assertEquals(BoardState.BLACK, b.getTurnPlayer());
-        assertEquals(80, b.getAllLegalMoves().size());
+        assertEquals(79, b.getAllLegalMoves().size());
 
 
     }
@@ -298,6 +294,7 @@ public class BoardStateTest {
 
     @Test
     public void getAllLegalMovesTest5() {
+        //b.printBoard();
         Move m1= new Move(Coordinates.get(4,5),Coordinates.get(5,5),b.getTurnPlayer());
         b.processMove(m1);
         Move m2 = new Move(Coordinates.get(4,7),Coordinates.get(3,7),b.getTurnPlayer());
@@ -324,32 +321,33 @@ public class BoardStateTest {
         assertTrue(b.playerHasALegalMove(BoardState.WHITE));
     }
 
-    @Test
-    public void playerHasALegalMovetest3(){
-        Move m1= new Move(Coordinates.get(4,5),Coordinates.get(5,5),b.getTurnPlayer());
-        b.processMove(m1);
+    //TODO: usare questo test per altro
+    // @Test
+    // public void playerHasALegalMovetest3(){
+    //     Move m1= new Move(Coordinates.get(4,5),Coordinates.get(5,5),b.getTurnPlayer());
+    //     b.processMove(m1);
         
-        Move m2 = new Move(Coordinates.get(4,7),Coordinates.get(3,7),b.getTurnPlayer());
-        b.processMove(m2);
+    //     Move m2 = new Move(Coordinates.get(4,7),Coordinates.get(3,7),b.getTurnPlayer());
+    //     b.processMove(m2);
        
-        Move m3= new Move(Coordinates.get(4,4),Coordinates.get(4,5),b.getTurnPlayer());
-        b.processMove(m3);
+    //     Move m3= new Move(Coordinates.get(4,4),Coordinates.get(4,5),b.getTurnPlayer());
+    //     b.processMove(m3);
         
-        Move m4= new Move(Coordinates.get(3,7),Coordinates.get(1,7),b.getTurnPlayer());
-        b.processMove(m4);
+    //     Move m4= new Move(Coordinates.get(3,7),Coordinates.get(1,7),b.getTurnPlayer());
+    //     b.processMove(m4);
         
-        Move m5= new Move(Coordinates.get(4,5),Coordinates.get(1,5),b.getTurnPlayer());
-        b.processMove(m5);
+    //     Move m5= new Move(Coordinates.get(4,5),Coordinates.get(1,5),b.getTurnPlayer());
+    //     b.processMove(m5);
         
-        Move m6= new Move(Coordinates.get(1,7),Coordinates.get(1,6),b.getTurnPlayer());
-        b.processMove(m6);
+    //     Move m6= new Move(Coordinates.get(1,7),Coordinates.get(1,6),b.getTurnPlayer());
+    //     b.processMove(m6);
         
-        assertNull(b.getKingPosition());
-        assertEquals(BoardState.BLACK, b.getWinner());
+    //     assertNull(b.getKingPosition());
+    //     assertEquals(BoardState.BLACK, b.getWinner());
         
-        assertFalse(b.playerHasALegalMove(BoardState.WHITE));
+    //     assertFalse(b.playerHasALegalMove(BoardState.WHITE));
         
-    }
+    // }
 
     @Test
     public void getLegalMovesForPositionTest() {
@@ -411,10 +409,12 @@ public class BoardStateTest {
     public void canCaptureWithCoordTest() {
         assertTrue(b.canCaptureWithCoord(Coordinates.get(3,8)));
         assertTrue(b.canCaptureWithCoord(Coordinates.get(3,8),BoardState.BLACK));
-        assertFalse(b.canCaptureWithCoord(Coordinates.get(7,4)));
+        assertTrue(b.canCaptureWithCoord(Coordinates.get(7,4)));
         assertTrue(b.canCaptureWithCoord(Coordinates.get(7,4),BoardState.BLACK));
         assertTrue(b.canCaptureWithCoord(Coordinates.get(4,6)));
-
+        assertFalse(b.canCaptureWithCoord(Coordinates.get(2,6)));
+        assertFalse(b.canCaptureWithCoord(Coordinates.get(2,0)));
+        assertFalse(b.canCaptureWithCoord(Coordinates.get(6,4),BoardState.BLACK));
 
     }
     @Test
@@ -429,6 +429,20 @@ public class BoardStateTest {
         assertFalse(b.canCaptureWithCoord(Coordinates.get(7,0),BoardState.BLACK));
         assertFalse(b.canCaptureWithCoord(Coordinates.get(6,2)));
         assertFalse(b.canCaptureWithCoord(Coordinates.get(6,2),BoardState.BLACK));
+    }
+
+    @Test
+    public void canCaptureWithCoordTest4(){
+        Move m1= new Move(Coordinates.get(4,5),Coordinates.get(5,5),b.getTurnPlayer());
+        b.processMove(m1);
+        
+        Move m2 = new Move(Coordinates.get(4,7),Coordinates.get(3,7),b.getTurnPlayer());
+        b.processMove(m2);
+       
+        Move m3= new Move(Coordinates.get(4,4),Coordinates.get(4,5),b.getTurnPlayer());
+        b.processMove(m3);
+        assertTrue(b.canCaptureWithCoord(Coordinates.get(4,5),BoardState.WHITE));
+        assertFalse(b.canCaptureWithCoord(Coordinates.get(4,5),BoardState.BLACK));
     }
 
     @Test
@@ -496,9 +510,9 @@ public class BoardStateTest {
 
         assertFalse(b.isLegal(new Move(Coordinates.get(3, 5), Coordinates.get(3, 8), b.getTurnPlayer())));
         assertFalse(b.isLegal(new Move(Coordinates.get(3, 5), Coordinates.get(3, 2), b.getTurnPlayer())));
-        assertFalse(b.isLegal(new Move(Coordinates.get(3, 5), Coordinates.get(7, 5), b.getTurnPlayer())));
+        assertTrue(b.isLegal(new Move(Coordinates.get(3, 5), Coordinates.get(7, 5), b.getTurnPlayer())));
         assertFalse(b.isLegal(new Move(Coordinates.get(3, 5), Coordinates.get(1, 7), b.getTurnPlayer())));
-        assertTrue(b.isLegal(new Move(Coordinates.get(7, 3), Coordinates.get(5, 3), b.getTurnPlayer())));
+        assertFalse(b.isLegal(new Move(Coordinates.get(7, 3), Coordinates.get(5, 3), b.getTurnPlayer())));
     }
 
     @Test
@@ -604,17 +618,33 @@ public class BoardStateTest {
 
     @Test
     public void IsOpponentPieceAtTest() {
-        
         assertTrue(b.isOpponentPieceAt(Coordinates.get(4, 0)));
         assertFalse(b.isOpponentPieceAt(Coordinates.get(4, 4)));
         assertFalse(b.isOpponentPieceAt(Coordinates.get(3, 4)));
         assertFalse(b.isOpponentPieceAt(Coordinates.get(0, 0)));
 
-        b.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1));
+        b.processMove(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), b.getTurnPlayer()));
         assertFalse(b.isOpponentPieceAt(Coordinates.get(4, 0)));
         assertTrue(b.isOpponentPieceAt(Coordinates.get(4, 4)));
-        assertFalse(b.isOpponentPieceAt(Coordinates.get(3, 4)));
+        assertTrue(b.isOpponentPieceAt(Coordinates.get(3, 4)));
         assertFalse(b.isOpponentPieceAt(Coordinates.get(0, 0)));
+        
+    }
+    @Test
+    public void IsOpponentPieceAtTest2() {
+        Move m1= new Move(Coordinates.get(4,5),Coordinates.get(3,5),b.getTurnPlayer());
+        b.processMove(m1);
+        Move m2= new Move(Coordinates.get(4,7),Coordinates.get(3,7),b.getTurnPlayer());
+        b.processMove(m2);
+        Move m3= new Move(Coordinates.get(4,4),Coordinates.get(4,5),b.getTurnPlayer());
+        b.processMove(m3);
+        assertFalse(b.isOpponentPieceAt(Coordinates.get(4, 4)));
+
+        Move m4= new Move(Coordinates.get(7,4),Coordinates.get(7,5),b.getTurnPlayer());
+        b.processMove(m4);
+
+        assertFalse(b.isOpponentPieceAt(Coordinates.get(4, 4)));
+
         
     }
 
@@ -731,6 +761,8 @@ public class BoardStateTest {
     @Test
     public void getRandomMoveTest() {
         BoardState bs = new BoardState(new StateTablut());
+       
+        assertTrue(bs.getAllLegalMoves().contains(bs.getRandomMove()));
         assertTrue(bs.getAllLegalMoves().stream().anyMatch(i -> bs.getRandomMove().equals(i)));
     }
 
