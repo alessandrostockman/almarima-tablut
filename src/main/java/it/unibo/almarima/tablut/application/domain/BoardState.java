@@ -155,7 +155,7 @@ public class BoardState implements  Cloneable {
             winner = BLACK;
         }
 
-        // Check if king is at corner -- WHITE WINS
+        // Check if king is at escape tile -- WHITE WINS
         // Also checking if the BLACKS even have any legal moves at all. If not,
         // they lose.
         else if (Coordinates.isEscape(kingPosition) || !playerHasALegalMove(BLACK)) {
@@ -291,10 +291,8 @@ public class BoardState implements  Cloneable {
         Pawn piece = getPawnAt(from); // this will check if the position is on the board
 
         // Check that the piece being requested actually belongs to the player.
-        if (piece.toString() != this.fromTurnPlayerToChar()){
-            if(piece.equalsPawn("K") && this.getTurnPlayer()!=WHITE)   //the king belongs to the whites 
-                return false;
-        }
+        if(!pieceBelongsTo(piece, this.getTurnPlayer()))
+            return false;
 
         // Next, make sure move doesn't end on a piece.
         if (!coordIsEmpty(to))
@@ -420,7 +418,25 @@ public class BoardState implements  Cloneable {
         return moves.get(rand.nextInt(moves.size()));
     }
 
+    
+    @Override
+    public boolean equals(Object o){
+        BoardState b ;
+        try{
+            b = (BoardState) o;
+        }catch(Exception e) {
+            return false;
+        }
+        for (Coord c : Coordinates.iterCoordinates()){
+            if(!this.getPawnAt(c).equals(b.getPawnAt(c)))
+                return false;
+
+        }
+        return true;
+    }
+
     /*** Debugging functionality is found below. ***/
+
 
     // Useful method to show the board.
     public void printBoard() {
