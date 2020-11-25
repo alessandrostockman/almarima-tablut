@@ -336,7 +336,7 @@ public class BoardStateTest {
         assertFalse(b.isLegal(new Move(Coordinates.get(3, 1), Coordinates.get(4, 1), -1)));
         assertFalse(b.isLegal(new Move(Coordinates.get(4, 3), Coordinates.get(5, 3), 0)));
         assertFalse(b.isLegal(new Move(Coordinates.get(4, 4), Coordinates.get(4, 3), 1)));
-        assertTrue(b.isLegal(new Move(Coordinates.get(4, 4), Coordinates.get(4, 3), 1)));
+        assertTrue(b.isLegal(new Move(Coordinates.get(4, 3), Coordinates.get(3, 3), 1)));
     }
 
     public void getPawnAtTest(){
