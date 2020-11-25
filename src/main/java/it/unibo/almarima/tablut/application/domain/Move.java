@@ -48,7 +48,7 @@ public class Move {
     }
 
     public String toString() {
-        return this.xFrom + this.yFrom + ":" + this.xTo + this.yTo + ":" + this.playerId;
+        return Integer.toString(this.xFrom) + Integer.toString(this.yFrom) + ":" + Integer.toString(this.xTo) + Integer.toString(this.yTo) + ":" + this.playerId;
     }
 
     public String toPrettyString() {

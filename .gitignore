@@ -35,4 +35,5 @@ target/*
 .vscode
 .factorypath
 
-logs/*
+#game_logs
+logs

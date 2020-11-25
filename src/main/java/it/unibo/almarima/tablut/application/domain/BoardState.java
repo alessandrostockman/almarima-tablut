@@ -270,7 +270,7 @@ public class BoardState implements  Cloneable {
     }
 
     public boolean canCaptureWithCoord(Coord c, int turn){
-        return Coordinates.isCenter(c) || Coordinates.isCitadel(c) || getPawnAt(c).toString() == this.fromTurnPlayerToChar(turn);
+        return Coordinates.isCenter(c) || Coordinates.isCitadel(c) || this.pieceBelongsTo(getPawnAt(c),turn);
     }
 
     // Returns all of the coordinates of pieces belonging to the current player.
@@ -353,7 +353,7 @@ public class BoardState implements  Cloneable {
     //check if the piece actually belongs to the given player
     public boolean pieceBelongsTo(Pawn p,int player){
         if (!p.toString().equals(fromTurnPlayerToChar(player))){           //if the letter doesn't match (W or B) check further if it's the king 
-            if(!isPawnKingAndTurnWhite(p, this.getTurnPlayer())){          
+            if(!isPawnKingAndTurnWhite(p, player)){          
                 return false;
             }
         }
@@ -376,11 +376,11 @@ public class BoardState implements  Cloneable {
     }
 
     public boolean turnPlayerCanMoveFrom(Coord position) {
-        return getPawnAt(position).toString() == this.fromTurnPlayerToChar();
+        return this.pieceBelongsTo(getPawnAt(position),this.getTurnPlayer());
     }
 
     public boolean isOpponentPieceAt(Coord position) {
-        return !(coordIsEmpty(position)) && getPawnAt(position).toString() != this.fromTurnPlayerToChar();
+        return !(coordIsEmpty(position)) && !pieceBelongsTo(getPawnAt(position), this.getTurnPlayer()) && !getPawnAt(position).equalsPawn("T");
     }
 
     public boolean coordIsEmpty(Coord c) {
