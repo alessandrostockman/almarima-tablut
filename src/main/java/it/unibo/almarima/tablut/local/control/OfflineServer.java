@@ -3,6 +3,7 @@ package it.unibo.almarima.tablut.local.control;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.logging.*;
 
@@ -120,7 +121,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 				logDir.mkdirs();
 			}
 
-			Path syslogPath = Paths.get(p.toString() + File.separator + "syslog_" + new Date().getTime() + ".txt");
+			Path syslogPath = Paths.get(p.toString() + File.separator + "syslog_" + new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString() + ".txt");
 			
 			File systemLog = new File(syslogPath.toString());
 			if (!systemLog.exists()) {
@@ -129,12 +130,12 @@ public class OfflineServer implements Runnable, OfflineAgent {
 			FileHandler fhSys = null;
 			fhSys = new FileHandler(syslogPath.toString(), true);
 			loggSys.addHandler(fhSys);
-			fhSys.setFormatter(new SimpleFormatter());
+			fhSys.setFormatter(new MyFormatter());
 			loggSys.setLevel(Level.FINE);
 			loggSys.fine("Accensione server");
 
 
-			Path gamelogPath = Paths.get(p.toString() + File.separator + "gamelog_" + new Date().getTime() + ".txt");
+			Path gamelogPath = Paths.get(p.toString() + File.separator + "gamelog_" + new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString() + ".txt");
 
 			File gameLog = new File(gamelogPath.toString());
 			if (!gameLog.exists()) {

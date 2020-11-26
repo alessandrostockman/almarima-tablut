@@ -23,7 +23,7 @@ public class Scheduler {
         OfflineAgent whiteClient = new OfflineClient(whiteShared, Turn.WHITE, hWhite);
         OfflineAgent blackClient = new OfflineClient(blackShared, Turn.BLACK, hBlack);
 
-        String twoHeurNames= hWhite.toString()+"[W]_vs"+hBlack.toString()+"[B]";
+        String twoHeurNames= hWhite.toString()+"[W]_vs_"+hBlack.toString()+"[B]";
 
         this.t1 = new OfflineThread(server, games,twoHeurNames);
         this.t2 = new OfflineThread(whiteClient, games,twoHeurNames);

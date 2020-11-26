@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -55,7 +56,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 				logDir.mkdirs();
 			}
 
-			clientlogPath = Paths.get(clientlogPath.toString() + File.separator + (this.getPlayer().equals(Turn.WHITE) ? "WHITE":"BLACK") + "_" + new Date().getTime() + ".txt");
+			clientlogPath = Paths.get(clientlogPath.toString() + File.separator + (this.getPlayer().equals(Turn.WHITE) ? "WHITE":"BLACK") + "_" + new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString() + ".txt");
 			
 			File log = new File(clientlogPath.toString());
 			if (!log.exists()) {
@@ -64,7 +65,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 			FileHandler fh = null;
 			fh = new FileHandler(clientlogPath.toString(), true);
 			loggClient.addHandler(fh);
-			fh.setFormatter(new SimpleFormatter());
+			fh.setFormatter(new MyFormatter());
 			loggClient.setLevel(Level.FINE);
 		} catch (Exception e) {
 			e.printStackTrace();
