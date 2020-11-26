@@ -98,7 +98,8 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 				if (this.isYourTurn()) {
 					System.out.println("Player " + this.getPlayer().toString() + ", do your move: ");
 					p.setBoardState(this.getCurrentState());
-					Action action = p.computeMove().moveToAction(this.getPlayer());
+					Action action = p.computeMove().getMove().moveToAction(this.getPlayer());
+					//TODO: loggare qualcosa 
 					System.out.println(action);
 
 					synchronized (this.shared) {

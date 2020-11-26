@@ -55,7 +55,7 @@ public class TablutArtificialClient extends TablutClient {
 
 				if (this.isYourTurn()) {
 					System.out.println("Player " + this.getPlayer().toString() + ", do your move: ");
-					Action action=p.computeMove().moveToAction(this.getPlayer());
+					Action action=p.computeMove().getMove().moveToAction(this.getPlayer());
 					this.write(action);
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITEWIN)) {
 					System.out.println("WHITE WINS");

@@ -2,9 +2,11 @@ package it.unibo.almarima.tablut.application.player;
 
 import it.unibo.almarima.tablut.application.domain.BoardState;
 import it.unibo.almarima.tablut.application.domain.Move;
+import it.unibo.almarima.tablut.application.domain.Valuation;
 import it.unibo.almarima.tablut.application.heuristics.Heuristic;
 import it.unibo.almarima.tablut.application.player.MiniMaxTree.TimeLimitException;
 import it.unibo.almarima.tablut.external.State;
+import it.unibo.almarima.tablut.local.game.Data;
 
 
 public class ImplPlayer extends TablutPlayer{
@@ -21,18 +23,21 @@ public class ImplPlayer extends TablutPlayer{
     }
     
     /*return best move computed from player*/
-    public  Move computeMove(){
+    public  Data computeMove(){
         // keep track of time started and time limit
     	long startTime = System.currentTimeMillis();
-    	long endTime = startTime + timeLimit;
+		long endTime = startTime + timeLimit;
+		
+		Data d;
 		
 		//TODO: decidere la depth iniziale
     	// start minimaxPruning algorithm with desired depth 
     	int iterDepth = 4;
-    	Move chosenMove = boardState.getRandomMove();
+		d=new Data(boardState.getRandomMove(),new Valuation(-1,-1),iterDepth);
+		
 		try {
 			// if move is chosen without time limit reached, set it to chosenMove
-			chosenMove = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime,h).getBestMove();
+			d = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime,h).getBestMove();
         } catch (TimeLimitException e) {}
 		
 		//keep running minimax-pruning with higher depth as long as there is time left
@@ -40,13 +45,13 @@ public class ImplPlayer extends TablutPlayer{
 			iterDepth++;
 			try {
 				// if move is chosen without time limit reached, set it to chosenMove
-	    		Move newMove = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime,h).getBestMove();
-				chosenMove = newMove;
+	    		Data newd = new MiniMaxTree(iterDepth, (BoardState) boardState.clone(), endTime,h).getBestMove();
+				d = newd;
 			} catch (TimeLimitException e) {}
 		}
 
 		
-        return chosenMove;
+		return d;
 
     }
 
