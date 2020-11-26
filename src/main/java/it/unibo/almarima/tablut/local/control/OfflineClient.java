@@ -6,7 +6,7 @@ import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.StateTablut;
 import it.unibo.almarima.tablut.external.TablutClient;
 import it.unibo.almarima.tablut.external.State.Turn;
-import it.unibo.almarima.tablut.local.exceptions.GameFinishedException;
+import it.unibo.almarima.tablut.local.exceptions.AgentStoppedException;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 	 */
 	public void run() { }
 
-	public void execute(String folder) throws GameFinishedException {
+	public void execute(String folder) throws AgentStoppedException {
 		String baseDirectory = "src/main/java/it/unibo/almarima/tablut/local/match_history";
 		Path clientlogPath = Paths.get(baseDirectory + File.separator + folder);
 		clientlogPath = clientlogPath.toAbsolutePath();
@@ -64,7 +64,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 			loggClient.setLevel(Level.FINE);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new GameFinishedException();
+			throw new AgentStoppedException();
 		}
 
 		synchronized (this.shared) {
@@ -108,20 +108,20 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 					}
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITEWIN)) {
 					System.out.println("WHITE WINS");
-					throw new GameFinishedException();
+					throw new AgentStoppedException();
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.BLACKWIN)) {
 					System.out.println("BLACK WINS");
-					throw new GameFinishedException();
+					throw new AgentStoppedException();
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.DRAW)) {
 					System.out.println("DRAW!");
-					throw new GameFinishedException();
+					throw new AgentStoppedException();
 				} else {
 					System.out.println("Waiting for your opponent move... ");
 				}
 
 			} catch (InterruptedException | IOException e) {
 				e.printStackTrace();
-				throw new GameFinishedException();
+				throw new AgentStoppedException();
 			}
 		}
 

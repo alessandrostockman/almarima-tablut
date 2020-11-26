@@ -1,12 +1,20 @@
 package it.unibo.almarima.tablut.local.exceptions;
 
-public class GameFinishedException extends Exception {
+import it.unibo.almarima.tablut.external.State.Turn;
+
+public class GameFinishedException extends AgentStoppedException {
 
 	private static final long serialVersionUID = 1L;
+
+	private Turn winner;
 	
-	public GameFinishedException()
+	public GameFinishedException(Turn winner)
 	{
-		super("Game is over");
+		this.winner = winner;
+	}
+
+	public Turn getWinner() {
+		return this.winner;
 	}
 
 }
