@@ -1,0 +1,44 @@
+package it.unibo.almarima.tablut.local.game;
+
+import it.unibo.almarima.tablut.application.domain.Move;
+import it.unibo.almarima.tablut.application.domain.Valuation;
+
+public class Data {
+
+    private Move m;
+    private Valuation v;
+    private int depth;
+	
+	public Data(Move m, Valuation v,int iterDepth) {
+        this.m=m;
+        this.v=v;
+        this.depth=iterDepth;
+    }
+
+    public Move getMove() {
+        return m;
+    }
+
+    public void setMove(Move m) {
+        this.m = m;
+    }
+
+    public Valuation getValuation() {
+        return v;
+    }
+
+    public void setValuation(Valuation v) {
+        this.v = v;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+    
+    
+    
+}

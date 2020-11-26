@@ -1,8 +1,8 @@
 package it.unibo.almarima.tablut.application.player;
 
 import it.unibo.almarima.tablut.application.domain.BoardState;
-import it.unibo.almarima.tablut.application.domain.Move;
 import it.unibo.almarima.tablut.external.State;
+import it.unibo.almarima.tablut.local.game.Data;
 
 /*abstract class that all player extend*/
 public abstract class TablutPlayer {
@@ -22,7 +22,7 @@ public abstract class TablutPlayer {
 
     
     /*return the best move as retured from MinMax Algo*/
-    public abstract Move computeMove();
+    public abstract Data computeMove();
 
             
     public void setBoardState(State st){

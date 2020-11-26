@@ -6,6 +6,7 @@ import it.unibo.almarima.tablut.application.domain.BoardState;
 import it.unibo.almarima.tablut.application.domain.Move;
 import it.unibo.almarima.tablut.application.domain.Valuation;
 import it.unibo.almarima.tablut.application.heuristics.Heuristic;
+import it.unibo.almarima.tablut.local.game.Data;
 
 
 public class MiniMaxTree {
@@ -33,7 +34,7 @@ public class MiniMaxTree {
 
     // This function differs from minimax as it needs to keep track of not just max and min
 	// but also the corresponding moves that led to those values.
-    public Move getBestMove() throws TimeLimitException {
+    public Data getBestMove() throws TimeLimitException {
         
         int depth = 0;
 		Valuation alpha = new Valuation(0.0, maxDepth+1);      
@@ -60,7 +61,7 @@ public class MiniMaxTree {
                     maxMove = move;
 				}
 			}
-			return maxMove;
+			return new Data(maxMove,alpha,maxDepth);
 		}
 		else {       // if the player with the turn is a BLACK then minimize
 			
@@ -82,7 +83,7 @@ public class MiniMaxTree {
                     minMove = move;
 				}
 			}
-			return minMove;
+			return new Data(minMove,beta,maxDepth);
 		}
     }
     
