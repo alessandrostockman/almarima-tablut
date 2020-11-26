@@ -3,6 +3,9 @@ package it.unibo.almarima.tablut.local.game;
 import it.unibo.almarima.tablut.application.domain.Move;
 import it.unibo.almarima.tablut.application.domain.Valuation;
 
+/*this class will be ONLY used for testing purposes
+  it keeps data that will be logged in a file*/
+  
 public class Data {
 
     private Move m;
