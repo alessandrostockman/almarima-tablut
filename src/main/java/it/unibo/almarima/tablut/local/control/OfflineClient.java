@@ -108,12 +108,11 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 
 					//TODO: loggare qualcosa 
 					System.out.println(action);
-					loggClient.fine("TurnNumber:\t"+this.shared.getTurnNumber());
-					loggClient.fine("Move:\t" + d.getMove().toFormat());
-					loggClient.fine("Action:\t" + action.toFormat());
-					loggClient.fine("Valuation:\t" + (this.getPlayer().equals(Turn.WHITE)? "alpha":"beta")+"="+ d.getValuation().gethVal() + " at depth: " + d.getValuation().getDepthAttained());
-					loggClient.fine("IterDepth reached:\t" + Integer.toString(d.getDepth()));
-					loggClient.fine("\n\n");
+					loggClient.fine("TurnNumber:  "+this.shared.getTurnNumber());
+					loggClient.fine("Move:  " + d.getMove().toFormat());
+					loggClient.fine("Action:  " + action.toFormat());
+					loggClient.fine("Valuation:  " + (this.getPlayer().equals(Turn.WHITE)? "alpha":"beta")+"="+ d.getValuation().gethVal() + " at depth: " + d.getValuation().getDepthAttained());
+					loggClient.fine("IterDepth reached:  " + Integer.toString(d.getDepth())+"\n\n");
 
 					synchronized (this.shared) {
 						this.shared.setTurnNumber(this.shared.getTurnNumber()+1);
