@@ -110,7 +110,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		Logger loggSys = Logger.getLogger("SysLog");
 		try {
 			//TODO: capire
-			new File("\src\main\java\it\unibo\almarima\tablut\match_history"+File.separator+folder).mkdirs();
+			new File("/src/main/java/it/unibo/almarima/tablut/match_history"+File.separator+folder).mkdirs();
 			System.out.println(sysLogName);
 			File systemLog = new File(sysLogName);
 			if (!systemLog.exists()) {
