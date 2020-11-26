@@ -101,27 +101,50 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		 * Endgame state reached?
 		 */
 		boolean endgame = false;
+
+		String baseDirectory = "src/main/java/it/unibo/almarima/tablut/local/match_history";
+
 		/**
 		 * Name of the systemlog
 		 */
-		Path p = Paths.get(folder + File.separator + new Date().getTime() + "_systemLog.txt");
+		Path p = Paths.get(baseDirectory + File.separator + folder);
 		p = p.toAbsolutePath();
-		String sysLogName = p.toString();
+
 		Logger loggSys = Logger.getLogger("SysLog");
+		Logger loggGame = Logger.getLogger("GameLog");
+
 		try {
-			//TODO: capire
-			new File("/src/main/java/it/unibo/almarima/tablut/match_history"+File.separator+folder).mkdirs();
-			System.out.println(sysLogName);
-			File systemLog = new File(sysLogName);
+			File logDir = new File(p.toString());
+			if (!logDir.exists()) {
+				logDir.mkdirs();
+			}
+
+			Path syslogPath = Paths.get(p.toString() + File.separator + "syslog_" + new Date().getTime() + ".txt");
+			
+			File systemLog = new File(syslogPath.toString());
 			if (!systemLog.exists()) {
 				systemLog.createNewFile();
 			}
-			FileHandler fh = null;
-			fh = new FileHandler(sysLogName, true);
-			loggSys.addHandler(fh);
-			fh.setFormatter(new SimpleFormatter());
+			FileHandler fhSys = null;
+			fhSys = new FileHandler(syslogPath.toString(), true);
+			loggSys.addHandler(fhSys);
+			fhSys.setFormatter(new SimpleFormatter());
 			loggSys.setLevel(Level.FINE);
 			loggSys.fine("Accensione server");
+
+
+			Path gamelogPath = Paths.get(p.toString() + File.separator + "gamelog_" + new Date().getTime() + ".txt");
+
+			File gameLog = new File(gamelogPath.toString());
+			if (!gameLog.exists()) {
+				gameLog.createNewFile();
+			}
+			FileHandler fhGame = null;
+			fhGame = new FileHandler(gamelogPath.toString(), true);
+			loggGame.addHandler(fhGame);
+			fhGame.setFormatter(new SimpleFormatter());
+			loggGame.setLevel(Level.FINE);
+			loggGame.fine("Accensione server");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new GameFinishedException();
@@ -182,8 +205,8 @@ public class OfflineServer implements Runnable, OfflineAgent {
 
 		state = new StateTablut();
 		state.setTurn(State.Turn.WHITE);
-		//TODO: capire logs folder
-		this.game = new GameAshtonTablut(state, repeated, this.cacheSize, "logs", whiteName, blackName);
+
+		this.game = new GameAshtonTablut(state, repeated, this.cacheSize, loggGame, whiteName, blackName);
 		this.initializeGUI(state);
 		System.out.println("Clients connected..");
 

@@ -41,7 +41,6 @@ public class GameAshtonTablut implements Game {
 	 * Counter for the moves without capturing that have occurred
 	 */
 	private int movesWithutCapturing;
-	private String gameLogName;
 	private File gameLog;
 	private FileHandler fh;
 	private Logger loggGame;
@@ -49,40 +48,19 @@ public class GameAshtonTablut implements Game {
 	// private List<String> strangeCitadels;
 	private List<State> drawConditions;
 
-	public GameAshtonTablut(int repeated_moves_allowed, int cache_size, String logs_folder, String whiteName,
+	public GameAshtonTablut(int repeated_moves_allowed, int cache_size, Logger loggGame, String whiteName,
 			String blackName) {
-		this(new StateTablut(), repeated_moves_allowed, cache_size, logs_folder, whiteName, blackName);
+		this(new StateTablut(), repeated_moves_allowed, cache_size, loggGame, whiteName, blackName);
 	}
 
-	public GameAshtonTablut(State state, int repeated_moves_allowed, int cache_size, String logs_folder,
+	public GameAshtonTablut(State state, int repeated_moves_allowed, int cache_size, Logger loggGame,
 			String whiteName, String blackName) {
 		super();
 		this.repeated_moves_allowed = repeated_moves_allowed;
 		this.cache_size = cache_size;
 		this.movesWithutCapturing = 0;
+		this.loggGame = loggGame;
 
-		Path p = Paths.get(logs_folder + File.separator + "_" + whiteName + "_vs_" + blackName + "_"
-				+ new Date().getTime() + "_gameLog.txt");
-		p = p.toAbsolutePath();
-		this.gameLogName = p.toString();
-		File gamefile = new File(this.gameLogName);
-		try {
-			File f = new File(logs_folder);
-			f.mkdirs();
-			if (!gamefile.exists()) {
-				gamefile.createNewFile();
-			}
-			this.gameLog = gamefile;
-			fh = null;
-			fh = new FileHandler(gameLogName, true);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		this.loggGame = Logger.getLogger("GameLog");
-		loggGame.addHandler(this.fh);
-		this.fh.setFormatter(new SimpleFormatter());
-		loggGame.setLevel(Level.FINE);
 		loggGame.fine("Players:\t" + whiteName + "\tvs\t" + blackName);
 		loggGame.fine("Repeated moves allowed:\t" + repeated_moves_allowed + "\tCache:\t" + cache_size);
 		loggGame.fine("Inizio partita");
