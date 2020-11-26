@@ -57,6 +57,10 @@ public class Action implements Serializable {
 		return "Turn: " + this.turn + " " + "Pawn from " + from + " to " + to;
 	}
 
+	public String toFormat(){
+		return "pawn from " + from + " to " + to;
+	}
+
 	/**
 	 * @return means the index of the column where the pawn is moved from
 	 */

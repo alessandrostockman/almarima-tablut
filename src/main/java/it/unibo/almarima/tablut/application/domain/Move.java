@@ -53,7 +53,11 @@ public class Move {
     }
 
     public String toPrettyString() {
-        return String.format("%s (p%d) move (%d, %d) to (%d, %d)", getPlayerName(playerId), playerId, xFrom, yFrom, xTo, yTo);
+        return String.format("%s [%d] move (%d, %d) to (%d, %d)", getPlayerName(playerId), playerId, xFrom, yFrom, xTo, yTo);
+    }
+
+    public String toFormat(){
+        return String.format("move from (%d, %d) to (%d, %d)",xFrom, yFrom, xTo, yTo);
     }
 
 	public int getxFrom() {

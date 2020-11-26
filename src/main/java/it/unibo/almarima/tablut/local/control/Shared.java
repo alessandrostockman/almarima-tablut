@@ -7,6 +7,7 @@ public class Shared {
 
     private Action move;
     private State state;
+    private int turnNumber=1;
 
     private boolean ping = false;
     private boolean serverStarted = false;
@@ -53,6 +54,14 @@ public class Shared {
 
     synchronized public void setName(String name) {
         this.name = name;
+    }
+
+    public int getTurnNumber() {
+        return turnNumber;
+    }
+
+    public void setTurnNumber(int turnNumber) {
+        this.turnNumber = turnNumber;
     }
     
 }

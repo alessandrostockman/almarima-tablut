@@ -7,6 +7,7 @@ import it.unibo.almarima.tablut.external.StateTablut;
 import it.unibo.almarima.tablut.external.TablutClient;
 import it.unibo.almarima.tablut.external.State.Turn;
 import it.unibo.almarima.tablut.local.exceptions.AgentStoppedException;
+import it.unibo.almarima.tablut.local.game.Data;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+
 
 /*extends TablutClient : used to handle communication from and to the Server*/
 public class OfflineClient extends TablutClient implements OfflineAgent {
@@ -39,6 +41,8 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 	public void run() { }
 
 	public void execute(String folder) throws AgentStoppedException {
+
+
 		String baseDirectory = "src/main/java/it/unibo/almarima/tablut/local/match_history";
 		Path clientlogPath = Paths.get(baseDirectory + File.separator + folder);
 		clientlogPath = clientlogPath.toAbsolutePath();
@@ -51,7 +55,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 				logDir.mkdirs();
 			}
 
-			clientlogPath = Paths.get(clientlogPath.toString() + File.separator + (this.getPlayer().equals(Turn.WHITE) ? "white":"black") + "_" + new Date().getTime() + ".txt");
+			clientlogPath = Paths.get(clientlogPath.toString() + File.separator + (this.getPlayer().equals(Turn.WHITE) ? "WHITE":"BLACK") + "_" + new Date().getTime() + ".txt");
 			
 			File log = new File(clientlogPath.toString());
 			if (!log.exists()) {
@@ -98,11 +102,20 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 				if (this.isYourTurn()) {
 					System.out.println("Player " + this.getPlayer().toString() + ", do your move: ");
 					p.setBoardState(this.getCurrentState());
-					Action action = p.computeMove().getMove().moveToAction(this.getPlayer());
+					Data d= p.computeMove();
+					Action action = d.getMove().moveToAction(this.getPlayer());
+
 					//TODO: loggare qualcosa 
 					System.out.println(action);
+					loggClient.fine("TurnNumber:\t"+this.shared.getTurnNumber());
+					loggClient.fine("Move:\t" + d.getMove().toFormat());
+					loggClient.fine("Action:\t" + action.toFormat());
+					loggClient.fine("Valuation:\t" + (this.getPlayer().equals(Turn.WHITE)? "alpha":"beta")+"="+ d.getValuation().gethVal() + " at depth: " + d.getValuation().getDepthAttained());
+					loggClient.fine("IterDepth reached:\t" + Integer.toString(d.getDepth()));
+					loggClient.fine("\n\n");
 
 					synchronized (this.shared) {
+						this.shared.setTurnNumber(this.shared.getTurnNumber()+1);
 						this.shared.setMove(action);
 						this.shared.notify();
 						System.out.println(this.getPlayer()+": Notify 3");
