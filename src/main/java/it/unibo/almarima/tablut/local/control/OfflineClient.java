@@ -19,7 +19,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 
 	public OfflineClient(Shared shared, Turn role, Heuristic heuristic)
 			throws UnknownHostException, IOException {
-		super("AlMaRiMa", role);
+		super(role.equals(Turn.WHITE) ? "WHITE":"BLACK", role);
 		this.shared = shared;
 		this.heuristic = heuristic;
 	}
@@ -30,7 +30,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 	 */
 	public void run() { }
 
-	public void execute() throws GameFinishedException {
+	public void execute(String folder) throws GameFinishedException {
 		synchronized (this.shared) {
 			System.out.println(this.getPlayer()+": Wait 1");
 			try {
@@ -70,8 +70,6 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 						this.shared.notify();
 						System.out.println(this.getPlayer()+": Notify 3");
 					}
-				} else if (!this.isYourTurn()) {
-					System.out.println("Waiting for your opponent move... ");
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITEWIN)) {
 					System.out.println("WHITE WINS");
 					throw new GameFinishedException();
@@ -81,6 +79,8 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.DRAW)) {
 					System.out.println("DRAW!");
 					throw new GameFinishedException();
+				} else {
+					System.out.println("Waiting for your opponent move... ");
 				}
 
 			} catch (InterruptedException | IOException e) {

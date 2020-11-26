@@ -92,7 +92,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 	 * check the move and update the state. There is a timeout that interrupts games
 	 * that last too much
 	 */
-	public void execute() throws GameFinishedException {
+	public void execute(String folder) throws GameFinishedException {
 		/**
 		 * Number of hours that a game can last before the timeout
 		 */
@@ -104,13 +104,13 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		/**
 		 * Name of the systemlog
 		 */
-		String logs_folder = "logs";
-		Path p = Paths.get(logs_folder + File.separator + new Date().getTime() + "_systemLog.txt");
+		Path p = Paths.get(folder + File.separator + new Date().getTime() + "_systemLog.txt");
 		p = p.toAbsolutePath();
 		String sysLogName = p.toString();
 		Logger loggSys = Logger.getLogger("SysLog");
 		try {
-			new File(logs_folder).mkdirs();
+			//TODO: capire
+			new File("\src\main\java\it\unibo\almarima\tablut\match_history"+File.separator+folder).mkdirs();
 			System.out.println(sysLogName);
 			File systemLog = new File(sysLogName);
 			if (!systemLog.exists()) {
@@ -182,6 +182,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 
 		state = new StateTablut();
 		state.setTurn(State.Turn.WHITE);
+		//TODO: capire logs folder
 		this.game = new GameAshtonTablut(state, repeated, this.cacheSize, "logs", whiteName, blackName);
 		this.initializeGUI(state);
 		System.out.println("Clients connected..");

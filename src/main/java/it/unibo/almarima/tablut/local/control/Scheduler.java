@@ -23,10 +23,11 @@ public class Scheduler {
         OfflineAgent whiteClient = new OfflineClient(whiteShared, Turn.WHITE, hWhite);
         OfflineAgent blackClient = new OfflineClient(blackShared, Turn.BLACK, hBlack);
 
-         
-        this.t1 = new OfflineThread(server, games);
-        this.t2 = new OfflineThread(whiteClient, games);
-        this.t3 = new OfflineThread(blackClient, games);
+        String two_heur_names= hWhite.toString()+"[W]_vs"+hBlack.toString()+"[B]";
+
+        this.t1 = new OfflineThread(server, games,two_heur_names);
+        this.t2 = new OfflineThread(whiteClient, games,two_heur_names);
+        this.t3 = new OfflineThread(blackClient, games,two_heur_names);
     }
 
     public void start() {

@@ -7,5 +7,9 @@ public abstract class Heuristic {
 	public Heuristic() {}
 
 	public abstract double evaluate(BoardState state);
+
+	public String toString(){
+		return this.getClass().getSimpleName();  
+	}
 	
 }
