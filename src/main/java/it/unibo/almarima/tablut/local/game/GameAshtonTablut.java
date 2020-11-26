@@ -1,15 +1,9 @@
 package it.unibo.almarima.tablut.local.game;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import it.unibo.almarima.tablut.local.exceptions.*;
 
@@ -42,7 +36,6 @@ public class GameAshtonTablut implements Game {
 	 */
 	private int movesWithutCapturing;
 	private File gameLog;
-	private FileHandler fh;
 	private Logger loggGame;
 	private List<String> citadels;
 	// private List<String> strangeCitadels;
