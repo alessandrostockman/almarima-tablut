@@ -46,7 +46,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 		System.out.println("You are player " + this.getPlayer().toString() + "!");
 		synchronized (this.shared) {
 			System.out.println(this.getPlayer()+": Notify 2");
-			this.shared.setName("AlMaRiMa");
+			this.shared.setName(this.getName());
 			this.shared.notify();
 		}
 

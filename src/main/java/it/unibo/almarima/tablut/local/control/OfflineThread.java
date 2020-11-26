@@ -8,10 +8,10 @@ public class OfflineThread extends Thread {
     private int maxGames;
     private String path;
 
-    public OfflineThread(OfflineAgent agent, int games,String two_heurs_name) {
+    public OfflineThread(OfflineAgent agent, int games,String twoHeurName) {
         this.agent = agent;
         this.maxGames = games;
-        this.path=two_heurs_name;
+        this.path=twoHeurName;
     }
 
     public void run(){
