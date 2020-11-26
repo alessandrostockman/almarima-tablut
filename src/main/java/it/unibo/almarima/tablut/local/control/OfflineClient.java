@@ -8,8 +8,16 @@ import it.unibo.almarima.tablut.external.TablutClient;
 import it.unibo.almarima.tablut.external.State.Turn;
 import it.unibo.almarima.tablut.local.exceptions.GameFinishedException;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /*extends TablutClient : used to handle communication from and to the Server*/
 public class OfflineClient extends TablutClient implements OfflineAgent {
@@ -31,6 +39,34 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 	public void run() { }
 
 	public void execute(String folder) throws GameFinishedException {
+		String baseDirectory = "src/main/java/it/unibo/almarima/tablut/local/match_history";
+		Path clientlogPath = Paths.get(baseDirectory + File.separator + folder);
+		clientlogPath = clientlogPath.toAbsolutePath();
+
+		Logger loggClient = Logger.getLogger("ClientLog");
+
+		try {
+			File logDir = new File(clientlogPath.toString());
+			if (!logDir.exists()) {
+				logDir.mkdirs();
+			}
+
+			clientlogPath = Paths.get(clientlogPath.toString() + File.separator + (this.getPlayer().equals(Turn.WHITE) ? "white":"black") + "_" + new Date().getTime() + ".txt");
+			
+			File log = new File(clientlogPath.toString());
+			if (!log.exists()) {
+				log.createNewFile();
+			}
+			FileHandler fh = null;
+			fh = new FileHandler(clientlogPath.toString(), true);
+			loggClient.addHandler(fh);
+			fh.setFormatter(new SimpleFormatter());
+			loggClient.setLevel(Level.FINE);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new GameFinishedException();
+		}
+
 		synchronized (this.shared) {
 			System.out.println(this.getPlayer()+": Wait 1");
 			try {
