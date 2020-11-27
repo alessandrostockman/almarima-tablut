@@ -9,17 +9,9 @@ import it.unibo.almarima.tablut.external.State.Turn;
 import it.unibo.almarima.tablut.local.exceptions.AgentStoppedException;
 import it.unibo.almarima.tablut.local.game.Data;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 
 /*extends TablutClient : used to handle communication from and to the Server*/
@@ -28,9 +20,9 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 	private Shared shared;
 	private Heuristic heuristic;
 
-	public OfflineClient(Shared shared, Turn role, Heuristic heuristic)
+	public OfflineClient(Shared shared, int timeout, Turn role, Heuristic heuristic)
 			throws UnknownHostException, IOException {
-		super(role.equals(Turn.WHITE) ? "WHITE":"BLACK", role);
+		super(timeout, role.equals(Turn.WHITE) ? "WHITE":"BLACK", role);
 		this.shared = shared;
 		this.heuristic = heuristic;
 	}
@@ -45,17 +37,19 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 		Logger loggClient = (new TablutLogger("Client"+this.getPlayer()+"Log", folder, this.getPlayer().equals(Turn.WHITE) ? "white":"black")).generate();
 
 		synchronized (this.shared) {
-			//TODO: Wait only if server hasnt already started (then reset the flag to false in preparation of future games)
-			System.out.println(this.getPlayer()+": Wait 1 [Server started]");
-			try {
-				this.shared.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				System.exit(1);
+			while (!this.shared.getServerStarted()) {
+				try {
+					System.out.println(this.getPlayer()+": Wait 1 [Server started]");
+					this.shared.wait();
+					System.out.println(this.getPlayer()+": Wake 1 [Server started]");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
 			}
-			System.out.println(this.getPlayer()+": Wake 1 [Server started]");
+			this.shared.setServerStarted(false);
 		}
-        TablutPlayer p = new ImplPlayer(this.getTimeout(),this.getPlayer(), this.heuristic);
+        TablutPlayer p = new ImplPlayer(this.getTimeout(), this.getPlayer(), this.heuristic);
 		
 		// System.out.println("You are player " + this.getPlayer().toString() + "!");
 		synchronized (this.shared) {

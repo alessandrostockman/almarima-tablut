@@ -50,9 +50,10 @@ public abstract class TablutClient implements Runnable {
 		return this.timeout;
 	}
 
-	public TablutClient(String name, State.Turn role){
-		this.name=name;
-		this.player=role;
+	public TablutClient(int timeout, String name, State.Turn role){
+		this.timeout = timeout;
+		this.name = name;
+		this.player = role;
 	}
 
 	/**

@@ -9,10 +9,9 @@ public class Shared {
     private State state;
     private int turnNumber=1;
 
-    private boolean ping = false;
     private boolean serverStarted = false;
-    private String name = "";
     private boolean moveRequired = false;
+    private String name = "";
 
     public Shared() {
     }
@@ -31,14 +30,6 @@ public class Shared {
 
     public void setState(State state) {
         this.state = state;
-    }
-
-    public boolean getPing() {
-        return this.ping;
-    }
-
-    public void setPing(boolean ping) {
-        this.ping = ping;
     }
 
     public boolean getServerStarted() {

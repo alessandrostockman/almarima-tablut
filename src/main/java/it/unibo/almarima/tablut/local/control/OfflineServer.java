@@ -1,9 +1,5 @@
 package it.unibo.almarima.tablut.local.control;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.logging.*;
 
@@ -164,7 +160,10 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		state.setTurn(State.Turn.WHITE);
 
 		this.game = new GameAshtonTablut(state, repeated, this.cacheSize, loggGame, whiteName, blackName);
-		this.initializeGUI(state);
+
+		if (this.enableGui) {
+			this.initializeGUI(state);
+		}
 		System.out.println("Clients connected..");
 
 		synchronized (this.whiteShared) {
@@ -223,7 +222,6 @@ public class OfflineServer implements Runnable, OfflineAgent {
 						this.blackShared.setMove(null);
 					}
 				}
-			
 			loggSys.fine("Move received.\t" + move.toString());
 			move.setTurn(state.getTurn());
 			// System.out.println("Suggested move: " + move.toString());
