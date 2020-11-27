@@ -48,7 +48,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 		Path clientlogPath = Paths.get(baseDirectory + File.separator + folder);
 		clientlogPath = clientlogPath.toAbsolutePath();
 
-		Logger loggClient = Logger.getLogger("ClientLog");
+		Logger loggClient = Logger.getLogger("Client"+this.getPlayer()+"Log");
 
 		try {
 			File logDir = new File(clientlogPath.toString());
