@@ -37,7 +37,6 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 		Logger loggClient = TablutLogger.get(this.getPlayer().equals(Turn.WHITE) ? TablutLogger.LogSpace.WHITE : TablutLogger.LogSpace.BLACK);
 
 		synchronized (this.shared) {
-			//TODO: Wait only if server hasnt already started (then reset the flag to false in preparation of future games)
 			while (!this.shared.getServerStarted()) {
 				try {
 					System.out.println(this.getPlayer()+": Wait 1 [Server started]");
