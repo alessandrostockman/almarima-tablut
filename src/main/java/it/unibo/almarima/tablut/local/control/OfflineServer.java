@@ -104,53 +104,8 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		 */
 		boolean endgame = false;
 
-		String baseDirectory = "src/main/java/it/unibo/almarima/tablut/local/match_history";
-
-		/**
-		 * Name of the systemlog
-		 */
-		Path p = Paths.get(baseDirectory + File.separator + folder);
-		p = p.toAbsolutePath();
-
-		Logger loggSys = Logger.getLogger("SysLog");
-		Logger loggGame = Logger.getLogger("GameLog");
-
-		try {
-			File logDir = new File(p.toString());
-			if (!logDir.exists()) {
-				logDir.mkdirs();
-			}
-
-			Path syslogPath = Paths.get(p.toString() + File.separator + "syslog_" + new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString() + ".txt");
-			
-			File systemLog = new File(syslogPath.toString());
-			if (!systemLog.exists()) {
-				systemLog.createNewFile();
-			}
-			FileHandler fhSys = null;
-			fhSys = new FileHandler(syslogPath.toString(), true);
-			loggSys.addHandler(fhSys);
-			fhSys.setFormatter(new MyFormatter());
-			loggSys.setLevel(Level.FINE);
-			loggSys.fine("Accensione server");
-
-
-			Path gamelogPath = Paths.get(p.toString() + File.separator + "gamelog_" + new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString() + ".txt");
-
-			File gameLog = new File(gamelogPath.toString());
-			if (!gameLog.exists()) {
-				gameLog.createNewFile();
-			}
-			FileHandler fhGame = null;
-			fhGame = new FileHandler(gamelogPath.toString(), true);
-			loggGame.addHandler(fhGame);
-			fhGame.setFormatter(new SimpleFormatter());
-			loggGame.setLevel(Level.FINE);
-			loggGame.fine("Accensione server");
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new AgentStoppedException();
-		}
+		Logger loggSys = (new TablutLogger("SysLog", folder, "syslog")).generate();
+		Logger loggGame = (new TablutLogger("GameLog", folder, "gamelog")).generate();
 
 		Date starttime = new Date();
 
@@ -162,22 +117,22 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		synchronized (this.whiteShared) {
 			this.whiteShared.setServerStarted(true);
 			this.whiteShared.notify();
-			System.out.println("S: Notify 1 (W)");
+			System.out.println("S: Notify 1 (W) [Server started]");
 		}
 
 		synchronized (this.blackShared) {
 			this.blackShared.setServerStarted(true);
 			this.blackShared.notify();
-			System.out.println("S: Notify 1 (B)");
+			System.out.println("S: Notify 1 (B) [Server started]");
 		}
 
 		// NAME READING
 		synchronized (this.whiteShared) {
 			while (this.whiteShared.getName() == "") {
 				try {
-					System.out.println("S: Wait 1 (W)");
+					System.out.println("S: Wait 2 (W) [Player name]");
 					this.whiteShared.wait();
-					System.out.println("S: Wake 1 (W)");
+					System.out.println("S: Wake 2 (W) [Player name]");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					throw new AgentStoppedException();
@@ -192,9 +147,9 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		synchronized (this.blackShared) {
 			while (this.blackShared.getName() == "") {
 				try {
-					System.out.println("S: Wait 1 (B)");
+					System.out.println("S: Wait 2 (B) [Player name]");
 					this.blackShared.wait();
-					System.out.println("S: Wake 1 (B)");
+					System.out.println("S: Wake 2 (B) [Player name]");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					throw new AgentStoppedException();
@@ -213,13 +168,13 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		System.out.println("Clients connected..");
 
 		synchronized (this.whiteShared) {
-			System.out.println("S: Notify 2 (W)");
+			System.out.println("S: Notify 3 (W) [First move processed]");
 			this.whiteShared.setState(state);
 			this.whiteShared.notify();
 		}
 
 		synchronized (this.blackShared) {
-			System.out.println("S: Notify 2 (B)");
+			System.out.println("S: Notify 3 (B) [First move processed]");
 			this.blackShared.setState(state);
 			this.blackShared.notify();
 		}
@@ -234,12 +189,14 @@ public class OfflineServer implements Runnable, OfflineAgent {
 			// RECEIVE MOVE
 
 			// System.out.println("State: \n"+state.toString());
-			System.out.println("Waiting for " + state.getTurn() + "...");
+			// System.out.println("Waiting for " + state.getTurn() + "...");
 				if (this.state.getTurn() == Turn.WHITE) {
 					synchronized (this.whiteShared) {
 						while (this.whiteShared.getMove() == null) {
 							try {
+								System.out.println("S: Wait 4 (W) [Player move]");
 								this.whiteShared.wait();
+								System.out.println("S: Wake 4 (W) [Player move]");
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 								throw new AgentStoppedException();
@@ -254,7 +211,9 @@ public class OfflineServer implements Runnable, OfflineAgent {
 					synchronized (this.blackShared) {
 						while (this.blackShared.getMove() == null) {
 							try {
+								System.out.println("S: Wait 4 (B) [Player move]");
 								this.blackShared.wait();
+								System.out.println("S: Wake 4 (B) [Player move]");
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 								throw new AgentStoppedException();
@@ -267,7 +226,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 			
 			loggSys.fine("Move received.\t" + move.toString());
 			move.setTurn(state.getTurn());
-			System.out.println("Suggested move: " + move.toString());
+			// System.out.println("Suggested move: " + move.toString());
 
 			try {
 				// aggiorna tutto e determina anche eventuali fine partita
@@ -278,23 +237,23 @@ public class OfflineServer implements Runnable, OfflineAgent {
 					this.blackErrors++;
 
 					if (this.blackErrors > errors) {
-						System.out.println("TOO MANY ERRORS FOR BLACK PLAYER; PLAYER WHITE WIN!");
+						// System.out.println("TOO MANY ERRORS FOR BLACK PLAYER; PLAYER WHITE WIN!");
 						e.printStackTrace();
 						loggSys.warning("Chiusura sistema per troppi errori giocatore nero");
 						throw new AgentStoppedException();
 					} else {
-						System.out.println("Error for black player...");
+						// System.out.println("Error for black player...");
 					}
 				}
 				if (state.getTurn().equalsTurn("W")) {
 					this.whiteErrors++;
 					if (this.whiteErrors > errors) {
-						System.out.println("TOO MANY ERRORS FOR WHITE PLAYER; PLAYER BLACK WIN!");
+						// System.out.println("TOO MANY ERRORS FOR WHITE PLAYER; PLAYER BLACK WIN!");
 						e.printStackTrace();
 						loggSys.warning("Chiusura sistema per troppi errori giocatore bianco");
 						throw new AgentStoppedException();
 					} else {
-						System.out.println("Error for white player...");
+						// System.out.println("Error for white player...");
 					}
 				}
 			}
@@ -303,20 +262,28 @@ public class OfflineServer implements Runnable, OfflineAgent {
 			Date ti = new Date();
 			long hoursoccurred = (ti.getTime() - starttime.getTime()) / 60 / 60 / 1000;
 			if (hoursoccurred > hourlimit) {
-				System.out.println("TIMEOUT! END OF THE GAME...");
+				// System.out.println("TIMEOUT! END OF THE GAME...");
 				loggSys.warning("Chiusura programma per timeout di " + hourlimit + " ore");
 				state.setTurn(Turn.DRAW);
 			}
 
 			// SEND STATE TO PLAYERS
 			synchronized(this.whiteShared) {
+				if (state.getTurn() == Turn.WHITE) {
+					this.whiteShared.setMoveRequired(true);
+				}
 				this.whiteShared.setState(state);
 				this.whiteShared.notify();
+				System.out.println("S: Notify 3 (W) [Move processed]");
 			}
 
 			synchronized(this.blackShared) {
+				if (state.getTurn() == Turn.BLACK) {
+					this.blackShared.setMoveRequired(true);
+				}
 				this.blackShared.setState(state);
 				this.blackShared.notify();
+				System.out.println("S: Notify 3 (B) [Move processed]");
 			}
 			loggSys.fine("Invio messaggio ai client");
 			if (enableGui) {

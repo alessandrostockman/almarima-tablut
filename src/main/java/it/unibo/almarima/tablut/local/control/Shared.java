@@ -12,47 +12,48 @@ public class Shared {
     private boolean ping = false;
     private boolean serverStarted = false;
     private String name = "";
+    private boolean moveRequired = false;
 
     public Shared() {
     }
 
-    synchronized public Action getMove() {
+    public Action getMove() {
         return this.move;
     }
 
-    synchronized public void setMove(Action move) {
+    public void setMove(Action move) {
         this.move = move;
     }
 
-    synchronized public State getState() {
+    public State getState() {
         return this.state;
     }
 
-    synchronized public void setState(State state) {
+    public void setState(State state) {
         this.state = state;
     }
 
-    synchronized public boolean getPing() {
+    public boolean getPing() {
         return this.ping;
     }
 
-    synchronized public void setPing(boolean ping) {
+    public void setPing(boolean ping) {
         this.ping = ping;
     }
 
-    synchronized public boolean getServerStarted() {
+    public boolean getServerStarted() {
         return this.serverStarted;
     }
 
-    synchronized public void setServerStarted(boolean serverStarted) {
+    public void setServerStarted(boolean serverStarted) {
         this.serverStarted = serverStarted;
     }
 
-    synchronized public String getName() {
+    public String getName() {
         return this.name;
     }
 
-    synchronized public void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -62,6 +63,14 @@ public class Shared {
 
     public void setTurnNumber(int turnNumber) {
         this.turnNumber = turnNumber;
+    }
+
+    public boolean getMoveRequired() {
+        return this.moveRequired;
+    }
+
+    public void setMoveRequired(boolean required) {
+        this.moveRequired = required;
     }
     
 }

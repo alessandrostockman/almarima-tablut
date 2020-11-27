@@ -42,72 +42,46 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 	public void run() { }
 
 	public void execute(String folder) throws AgentStoppedException {
-
-
-		String baseDirectory = "src/main/java/it/unibo/almarima/tablut/local/match_history";
-		Path clientlogPath = Paths.get(baseDirectory + File.separator + folder);
-		clientlogPath = clientlogPath.toAbsolutePath();
-
-		Logger loggClient = Logger.getLogger("Client"+this.getPlayer()+"Log");
-
-		try {
-			File logDir = new File(clientlogPath.toString());
-			if (!logDir.exists()) {
-				logDir.mkdirs();
-			}
-
-			clientlogPath = Paths.get(clientlogPath.toString() + File.separator + (this.getPlayer().equals(Turn.WHITE) ? "WHITE":"BLACK") + "_" + new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString() + ".txt");
-			
-			File log = new File(clientlogPath.toString());
-			if (!log.exists()) {
-				log.createNewFile();
-			}
-			FileHandler fh = null;
-			fh = new FileHandler(clientlogPath.toString(), true);
-			loggClient.addHandler(fh);
-			fh.setFormatter(new MyFormatter());
-			loggClient.setLevel(Level.FINE);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new AgentStoppedException();
-		}
+		Logger loggClient = (new TablutLogger("Client"+this.getPlayer()+"Log", folder, this.getPlayer().equals(Turn.WHITE) ? "white":"black")).generate();
 
 		synchronized (this.shared) {
-			System.out.println(this.getPlayer()+": Wait 1");
+			//TODO: Wait only if server hasnt already started (then reset the flag to false in preparation of future games)
+			System.out.println(this.getPlayer()+": Wait 1 [Server started]");
 			try {
 				this.shared.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
-			System.out.println(this.getPlayer()+": Wake 1");
+			System.out.println(this.getPlayer()+": Wake 1 [Server started]");
 		}
         TablutPlayer p = new ImplPlayer(this.getTimeout(),this.getPlayer(), this.heuristic);
 		
-		System.out.println("You are player " + this.getPlayer().toString() + "!");
+		// System.out.println("You are player " + this.getPlayer().toString() + "!");
 		synchronized (this.shared) {
-			System.out.println(this.getPlayer()+": Notify 2");
+			System.out.println(this.getPlayer()+": Notify 2 [Player name set]");
 			this.shared.setName(this.getName());
 			this.shared.notify();
 		}
 
 		while (true) {
 			try {
-				synchronized (this.shared) {
-					System.out.println(this.getPlayer()+": Wait 2");
-					this.shared.wait();
-					this.setCurrentState(this.shared.getState());
-					System.out.println(this.getPlayer()+": Wake 2");
+				if (!this.shared.getMoveRequired()) {
+					synchronized (this.shared) {
+						System.out.println(this.getPlayer()+": Wait 3 [Move processed]");
+						this.shared.wait();
+						System.out.println(this.getPlayer()+": Wake 3 [Move processed]");
+					}
 				}
+				this.setCurrentState(this.shared.getState());
 
 				if (this.isYourTurn()) {
-					System.out.println("Player " + this.getPlayer().toString() + ", do your move: ");
+					// System.out.println("Player " + this.getPlayer().toString() + ", do your move: ");
 					p.setBoardState(this.getCurrentState());
 					Data d= p.computeMove();
 					Action action = d.getMove().moveToAction(this.getPlayer());
 
-					//TODO: loggare qualcosa 
-					System.out.println(action);
+					// System.out.println(action);
 					loggClient.fine("TurnNumber:  "+this.shared.getTurnNumber());
 					loggClient.fine("Move:  " + d.getMove().toFormat());
 					loggClient.fine("Action:  " + action.toFormat());
@@ -117,8 +91,9 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 					synchronized (this.shared) {
 						this.shared.setTurnNumber(this.shared.getTurnNumber()+1);
 						this.shared.setMove(action);
+						this.shared.setMoveRequired(false);
 						this.shared.notify();
-						System.out.println(this.getPlayer()+": Notify 3");
+						System.out.println(this.getPlayer()+": Notify 4 [Player move]");
 					}
 				} else if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITEWIN)) {
 					System.out.println("WHITE WINS");
@@ -130,7 +105,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 					System.out.println("DRAW!");
 					throw new AgentStoppedException();
 				} else {
-					System.out.println("Waiting for your opponent move... ");
+					// System.out.println("Waiting for your opponent move... ");
 				}
 
 			} catch (InterruptedException | IOException e) {
