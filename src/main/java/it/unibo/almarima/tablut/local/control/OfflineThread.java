@@ -18,23 +18,20 @@ public class OfflineThread extends Thread {
 
     private OfflineAgent agent;
     private int maxGames;
-    private String path;
     private List<String> logBuffer;
 
-    public OfflineThread(OfflineAgent agent, int games, String twoHeurName) {
+    public OfflineThread(OfflineAgent agent, int games) {
         this.agent = agent;
         this.maxGames = games;
-        this.path = twoHeurName;
         this.logBuffer = new ArrayList<>();
     }
 
     public void run(){
         int games = 0;
-        String p;
         while (games < this.maxGames) {
             try {
-                p=path.concat("_"+games);
-                this.agent.execute(p);
+                TablutLogger.setup(games);
+                this.agent.execute();
                 return;
             } catch (AgentStoppedException e) { 
                 if (e instanceof GameFinishedException) {
@@ -45,34 +42,15 @@ public class OfflineThread extends Thread {
             }
         }
 
-        String baseDirectory = "src/main/java/it/unibo/almarima/tablut/local/stats_history";
-		Path reportlogPath = Paths.get(baseDirectory);
-		reportlogPath = reportlogPath.toAbsolutePath();
-
-		Logger loggReport = Logger.getLogger("ReportLog");
-
         if (logBuffer.size() > 0) {
+            Logger loggReport;
             try {
-                File logDir = new File(reportlogPath.toString());
-                if (!logDir.exists()) {
-                    logDir.mkdirs();
-                }
-    
-                reportlogPath = Paths.get(reportlogPath.toString() + File.separator + "report_" + new Date().getTime() + ".txt");
-                
-                File log = new File(reportlogPath.toString());
-                if (!log.exists()) {
-                    log.createNewFile();
-                }
-                FileHandler fh = null;
-                fh = new FileHandler(reportlogPath.toString(), true);
-                loggReport.addHandler(fh);
-                fh.setFormatter(new SimpleFormatter());
+                loggReport = TablutLogger.get(TablutLogger.LogSpace.REPORT);
                 loggReport.setLevel(Level.FINE);
                 for (String s : this.logBuffer) {
                     loggReport.fine(s);
                 }
-            } catch (Exception e) {
+            } catch (AgentStoppedException e) {
                 e.printStackTrace();
             }
         }

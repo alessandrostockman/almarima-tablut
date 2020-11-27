@@ -90,7 +90,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 	 * check the move and update the state. There is a timeout that interrupts games
 	 * that last too much
 	 */
-	public void execute(String folder) throws AgentStoppedException {
+	public void execute() throws AgentStoppedException {
 		/**
 		 * Number of hours that a game can last before the timeout
 		 */
@@ -100,8 +100,8 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		 */
 		boolean endgame = false;
 
-		Logger loggSys = (new TablutLogger("SysLog", folder, "syslog")).generate();
-		Logger loggGame = (new TablutLogger("GameLog", folder, "gamelog")).generate();
+		Logger loggSys = TablutLogger.get(TablutLogger.LogSpace.SYSTEM);
+		Logger loggGame = TablutLogger.get(TablutLogger.LogSpace.GAME);
 
 		Date starttime = new Date();
 

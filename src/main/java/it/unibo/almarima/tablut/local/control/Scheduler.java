@@ -2,6 +2,9 @@ package it.unibo.almarima.tablut.local.control;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.util.Date;
 
 import it.unibo.almarima.tablut.application.heuristics.*;
 import it.unibo.almarima.tablut.external.State.Turn;
@@ -23,11 +26,11 @@ public class Scheduler {
         OfflineAgent whiteClient = new OfflineClient(whiteShared, 60, Turn.WHITE, hWhite);
         OfflineAgent blackClient = new OfflineClient(blackShared, 60, Turn.BLACK, hBlack);
 
-        String twoHeurNames= hWhite.toString()+"[W]_vs_"+hBlack.toString()+"[B]";
+        TablutLogger.init(hWhite, hBlack);
 
-        this.t1 = new OfflineThread(server, games,twoHeurNames);
-        this.t2 = new OfflineThread(whiteClient, games,twoHeurNames);
-        this.t3 = new OfflineThread(blackClient, games,twoHeurNames);
+        this.t1 = new OfflineThread(server, games);
+        this.t2 = new OfflineThread(whiteClient, games);
+        this.t3 = new OfflineThread(blackClient, games);
     }
 
     public void start() {
