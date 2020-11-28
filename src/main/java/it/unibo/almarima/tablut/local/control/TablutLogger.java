@@ -28,11 +28,27 @@ public class TablutLogger {
 	private static String matchDirectory = "";
 	private static String runDirectory = "";
 	
+	public static void reset() {
+		if (instance == null) {
+			return;
+		}
+		
+		try {
+			TablutLogger tl = TablutLogger.get();
+			for (LogSpace s : tl.loggers.keySet()) {
+				Logger l = tl.loggers.get(s);
+				l.removeHandler(tl.handlers.get(s));
+				tl.loggers.remove(s);
+			}
+		} catch (Exception e) { }
+	}
+	
 	public static void init(Heuristic hWhite, Heuristic hBlack) {
 		TablutLogger.matchDirectory = hWhite.toString() + "[W]_vs_" + hBlack.toString() + "[B]_" + (new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss")).format(new Date());
 	}
 
 	public static void setup(int game) {
+		TablutLogger.reset();
 		TablutLogger.runDirectory = "game_" + game;
 	}
 
@@ -54,9 +70,11 @@ public class TablutLogger {
     
     private String baseDirectory; 
 	private Map<LogSpace, Logger> loggers;
+	private Map<LogSpace, FileHandler> handlers;
 
     private TablutLogger() throws AgentStoppedException {
 		this.loggers = new HashMap<>();
+		this.handlers = new HashMap<>();
 		this.baseDirectory = "src/main/java/it/unibo/almarima/tablut/local/match_history";
 	}
 	
@@ -98,14 +116,16 @@ public class TablutLogger {
 			fh = new FileHandler(path.toString(), true);
 			logger.addHandler(fh);
 			fh.setFormatter(new TablutFormatter());
-            logger.setLevel(Level.FINE);
+			logger.setLevel(Level.FINE);
+			
+			handlers.put(logSpace, fh);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new AgentStoppedException();
         }
         
         return logger;
-    }
+	}
 
    
 }

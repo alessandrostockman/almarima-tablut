@@ -25,7 +25,7 @@ public class Scheduler {
 
         TablutLogger.init(hWhite, hBlack);
 
-        this.t1 = new OfflineThread(server, games);
+        this.t1 = new OfflineMainThread(server, games);
         this.t2 = new OfflineThread(whiteClient, games);
         this.t3 = new OfflineThread(blackClient, games);
     }

@@ -33,6 +33,10 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 	 */
 	public void run() { }
 
+	public void restart() {
+		
+	}
+
 	public void execute() throws AgentStoppedException {
 		Logger loggClient = TablutLogger.get(this.getPlayer().equals(Turn.WHITE) ? TablutLogger.LogSpace.WHITE : TablutLogger.LogSpace.BLACK);
 

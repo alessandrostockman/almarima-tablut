@@ -85,6 +85,10 @@ public class OfflineServer implements Runnable, OfflineAgent {
 	 */
 	public void run() { }
 
+	public void restart() {
+
+	}
+
 	/**
 	 * This method starts the proper game. It waits the connections from 2 clients,
 	 * check the move and update the state. There is a timeout that interrupts games
@@ -119,6 +123,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 
 		synchronized (this.blackShared) {
 			this.blackShared.setServerStarted(true);
+			this.blackShared.setGameOver(false);
 			this.blackShared.notify();
 			System.out.println("S: Notify 1 (B) [Server started]");
 		}
@@ -136,6 +141,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 				}
 			}
 			whiteName = this.sanitizeString(this.whiteShared.getName());
+			this.whiteShared.setName("");
 		}
 		System.out.println("White player name:\t" + whiteName);
 		loggSys.fine("White player name:\t" + whiteName);
@@ -153,6 +159,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 				}
 			}
 			blackName = this.sanitizeString(this.blackShared.getName());
+			this.blackShared.setName("");
 		}
 		System.out.println("Black player name:\t" + blackName);
 		loggSys.fine("Black player name:\t" + blackName);
@@ -318,8 +325,19 @@ public class OfflineServer implements Runnable, OfflineAgent {
 			}
 
 		}
-		
-		this.whiteShared.setGameOver(true);
+
+		synchronized (this.whiteShared) {
+			this.whiteShared.setGameOver(true);
+			this.whiteShared.notify();
+			System.out.println("S: Notify 5 (W) [Player won]");
+		}
+
+		synchronized (this.blackShared) {
+			this.blackShared.setGameOver(true);
+			this.blackShared.notify();
+			System.out.println("S: Notify 5 (B) [Player won]");
+		}
+
 		throw new GameFinishedException(state.getTurn());
 	}
 	
