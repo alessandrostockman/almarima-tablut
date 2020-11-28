@@ -60,6 +60,10 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 
 		while (true) {
 			try {
+				if (this.shared.getGameOver()) {
+					throw new AgentStoppedException();
+				}
+
 				if (!this.shared.getMoveRequired()) {
 					synchronized (this.shared) {
 						System.out.println(this.getPlayer()+": Wait 3 [Move processed]");

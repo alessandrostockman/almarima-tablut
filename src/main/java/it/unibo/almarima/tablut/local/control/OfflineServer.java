@@ -112,6 +112,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 
 		synchronized (this.whiteShared) {
 			this.whiteShared.setServerStarted(true);
+			this.whiteShared.setGameOver(false);
 			this.whiteShared.notify();
 			System.out.println("S: Notify 1 (W) [Server started]");
 		}
@@ -318,7 +319,8 @@ public class OfflineServer implements Runnable, OfflineAgent {
 
 		}
 		
-		throw new AgentStoppedException();
+		this.whiteShared.setGameOver(true);
+		throw new GameFinishedException(state.getTurn());
 	}
 	
 	private String sanitizeString(String name) {

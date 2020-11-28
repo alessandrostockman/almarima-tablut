@@ -11,6 +11,7 @@ public class Shared {
 
     private boolean serverStarted = false;
     private boolean moveRequired = false;
+    private boolean gameOver = false;
     private String name = "";
 
     public Shared() {
@@ -62,6 +63,14 @@ public class Shared {
 
     public void setMoveRequired(boolean required) {
         this.moveRequired = required;
+    }
+
+    public boolean getGameOver() {
+        return this.gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
     
 }
