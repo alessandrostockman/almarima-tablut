@@ -276,6 +276,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 			// SEND STATE TO PLAYERS
 			synchronized(this.whiteShared) {
 				if (state.getTurn() == Turn.WHITE) {
+					System.out.println("");
 					this.whiteShared.setMoveRequired(true);
 				}
 				this.whiteShared.setState(state);

@@ -38,8 +38,10 @@ public class TablutLogger {
 			for (LogSpace s : tl.loggers.keySet()) {
 				Logger l = tl.loggers.get(s);
 				l.removeHandler(tl.handlers.get(s));
-				tl.loggers.remove(s);
+				FileHandler fh = tl.handlers.get(s);
+				fh.close();
 			}
+			tl.loggers.clear();
 		} catch (Exception e) { }
 	}
 	
