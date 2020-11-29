@@ -1,34 +1,24 @@
 package it.unibo.almarima.tablut;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import it.unibo.almarima.tablut.application.client.TablutArtificialClient;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Choose your role (BLACK or WHITE): ");
-        String role = scan.nextLine();
-        role=role.toLowerCase();
-
-
-        System.out.println("Enter IP Address or 'localhost': ");
-        String ip = scan.nextLine();
-        
-    
-        System.out.println("Enter Port or 0 for default: ");
-        String port = scan.nextLine();
-
-        scan.close();
-        if (role.equals("black") || role.equals("white")){
-            String[] array = new String[]{role,ip,port};
-            TablutArtificialClient.main(array);
+        if (args.length != 3) {
+            System.out.println("Number of arguments not valid. Usage: AlMaRiMa.jar [black/white] [ip] [port]");
+            System.exit(1);
         }
-        else System.out.println("chosen role not valid");
-        return ;
-        
+
+        String role = args[0].toLowerCase();
+        if (!role.equals("black") && !role.equals("white")) {
+            System.out.println("Player role not valid. Must be 'black' or 'white'.");
+            System.exit(1);
+        }
+
+        TablutArtificialClient.main(args);
     }
 
     
