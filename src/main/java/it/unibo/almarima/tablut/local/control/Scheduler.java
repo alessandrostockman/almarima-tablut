@@ -13,7 +13,7 @@ public class Scheduler {
     private Thread t3;
 
     public Scheduler() throws UnknownHostException, IOException {
-        this(1, new WeightedHeuristic(), new Ric_heur());
+        this(1,new Ric_heur(),new WeightedHeuristic());
     }
 
     public Scheduler(int games, Heuristic hWhite, Heuristic hBlack) throws UnknownHostException, IOException {
