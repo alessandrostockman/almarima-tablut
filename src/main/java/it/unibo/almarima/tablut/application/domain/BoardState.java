@@ -436,6 +436,21 @@ public class BoardState implements  Cloneable {
         return moves.get(rand.nextInt(moves.size()));
     }
 
+    //returns the i-th row[Pawn]
+    public List<Pawn> getRow(int i){
+        ArrayList<Pawn> ret = new ArrayList<>();
+        for(int j=0; j<board[0].length; j++)
+            ret.add(board[i][j]);
+        return ret;
+    }
+
+    //returns the i-th column [Pawn]
+    public List<Pawn> getColumn(int i){
+        ArrayList<Pawn> ret = new ArrayList<>();
+        for(int j=0; j<board[0].length; j++)
+            ret.add(board[j][i]);
+        return ret;
+    }
     
     @Override
     public boolean equals(Object o){

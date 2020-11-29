@@ -24,7 +24,7 @@ public class Ric_heur extends Heuristic {
 		double distToEscape= ((maxDistToEscape-kingDistToEscape)*1.0/maxDistToEscape);
 		
 		// weigh the two h values calculated above
-		double h = pieceH*0.7 + distToEscape*0.3;     //TODO: forse 0,4 distEscape perchè spesso ha la possibilità di vincere e non lo fa 
+		double h = pieceH*0.8 + distToEscape*0.2;     //TODO: forse 0,3 distEscape perchè spesso ha la possibilità di vincere e non lo fa 
 
 		return h;
 	}
