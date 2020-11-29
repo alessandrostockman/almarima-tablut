@@ -17,7 +17,7 @@ public class OfflineThread extends Thread {
         int games = 0;
         while (games < this.maxGames) {
             try {
-                TablutLogger.setup(games);
+                this.setupLogs(games);
                 this.agent.execute();
                 return;
             } catch (GameFinishedException e) {
@@ -30,6 +30,8 @@ public class OfflineThread extends Thread {
 
         this.endGameReport(games);
     }
+
+    public void setupLogs(int games) { }
 
     public void endRunReport(GameFinishedException e) {}
 

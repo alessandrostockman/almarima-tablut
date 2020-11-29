@@ -38,8 +38,6 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 	}
 
 	public void execute() throws AgentStoppedException {
-		Logger loggClient = TablutLogger.get(this.getPlayer().equals(Turn.WHITE) ? TablutLogger.LogSpace.WHITE : TablutLogger.LogSpace.BLACK);
-
 		synchronized (this.shared) {
 			while (!this.shared.getServerStarted()) {
 				try {
@@ -53,6 +51,8 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 			}
 			this.shared.setServerStarted(false);
 		}
+
+		Logger loggClient = TablutLogger.get(this.getPlayer().equals(Turn.WHITE) ? TablutLogger.LogSpace.WHITE : TablutLogger.LogSpace.BLACK);
         TablutPlayer p = new ImplPlayer(this.getTimeout(), this.getPlayer(), this.heuristic);
 		
 		// System.out.println("You are player " + this.getPlayer().toString() + "!");

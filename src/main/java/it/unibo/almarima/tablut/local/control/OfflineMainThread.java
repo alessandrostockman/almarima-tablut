@@ -31,6 +31,10 @@ public class OfflineMainThread extends OfflineThread {
         }
     }
 
+    public void setupLogs(int games) { 
+        TablutLogger.setup(games);
+    }
+
     public void endGameReport(int games) {
         Logger loggReport;
         try {
