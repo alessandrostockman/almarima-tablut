@@ -19,7 +19,7 @@ public abstract class WeightHeuristic extends Heuristic {
 		this.initVariables(state);
 
 		double score = 0;
-		for (Parameter p : this.getEnabledParameters()) {
+		for (Parameter p : this.w.getEnabledParameters()) {
 			score += this.computeParameterValue(p, state) * this.w.getWeight(p);
 		}
 		return score / this.w.getSum();
@@ -28,8 +28,6 @@ public abstract class WeightHeuristic extends Heuristic {
 	public abstract WeightBag createWeightBag();
 
 	public abstract void initVariables(BoardState state);
-
-	public abstract Parameter[] getEnabledParameters();
 
 	public abstract double computeParameterValue(Parameter p, BoardState state);
 

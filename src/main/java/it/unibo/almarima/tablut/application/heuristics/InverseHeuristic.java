@@ -25,11 +25,6 @@ public class InverseHeuristic extends WeightHeuristic {
 	}
 
 	@Override
-	public Parameter[] getEnabledParameters() {
-		return this.other.getEnabledParameters();
-	}
-
-	@Override
 	public double computeParameterValue(Parameter p, BoardState state) {
 		return 1 - this.other.computeParameterValue(p, state);
 	}

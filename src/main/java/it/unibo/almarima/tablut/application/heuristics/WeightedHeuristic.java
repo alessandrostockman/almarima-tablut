@@ -7,27 +7,66 @@ import it.unibo.almarima.tablut.application.domain.Coord;
 import it.unibo.almarima.tablut.application.domain.Coordinates;
 import it.unibo.almarima.tablut.external.State.Pawn;
 
-public class WeightedHeuristic extends Heuristic {
+public class WeightedHeuristic extends WeightHeuristic {
 	public final int STARTING_WHITE_PAWNS = 8;
 	public final int STARTING_BLACK_PAWNS = 16;
 	private final int MAX_KING_ESCAPE_DISTANCE = 6; 
+	
+	private int blackPieces;
+	private int whitePieces;
+	private int blackPiecesEndangered;
+	private int whitePiecesEndangered;
 
-	private double a;
-	private double b;
-	private double c;
-	private double d;
-	private double KE;
-	private double KK;
-	private double PD;
-	private double EP;
+	@Override
+	public void initVariables(BoardState state) {
+		this.blackPieces = state.getNumberPlayerPieces(BoardState.BLACK);
+		this.whitePieces = state.getNumberPlayerPieces(BoardState.WHITE)-1;
 
-	private int scoreKing(BoardState b){
-        int score = checkSurroundings(b, b.getKingPosition());
-        if(Coordinates.isCenterOrNeighborCenter(b.getKingPosition()))
-            return (4-score)/4;
-        return (3-score)/4;
-    }
+		this.blackPiecesEndangered = state.numEndangeredPieces(BoardState.BLACK);
+		this.whitePiecesEndangered = state.numEndangeredPieces(BoardState.WHITE);
+	}
 
+	@Override
+	public WeightBag createWeightBag() {
+		w = new WeightBag(false);
+		w.addWeight(Parameter.KING_ESCAPE, 1);
+		w.addWeight(Parameter.KING_SAFETY, 0);
+		w.addWeight(Parameter.PAWN_NUMBER, 1);
+		w.addWeight(Parameter.ENDANGERED_PAWNS, 0);
+		return w;
+	}
+
+	@Override
+	public double computeParameterValue(Parameter p, BoardState state) {
+		switch (p) {
+			case KING_ESCAPE:
+				return this.getKE(state);
+			case KING_SAFETY:
+				return this.getKK(state);
+			case PAWN_NUMBER:
+				return this.getPD(state);
+			case ENDANGERED_PAWNS:
+				return this.getEP(state);
+			default:
+				return 0.5;
+		}
+	}
+
+	private double getKE(BoardState state) {
+		return (double) (MAX_KING_ESCAPE_DISTANCE - Coordinates.distanceToClosestEscape(state.getKingPosition()))/MAX_KING_ESCAPE_DISTANCE;
+	}
+
+	private double getKK(BoardState state) {
+		return (double) this.scoreKing(state);
+	}
+
+	private double getPD(BoardState state) {
+		return (double) (STARTING_BLACK_PAWNS+2*whitePieces-blackPieces)/(2*STARTING_BLACK_PAWNS);
+	}
+
+	private double getEP(BoardState state) {
+		return (double) (STARTING_BLACK_PAWNS-2*whitePiecesEndangered+blackPiecesEndangered)/(2*STARTING_BLACK_PAWNS);
+	}
 
     /*Checks the numbers of black Pawns surrounding the king*/
     private int checkSurroundings(BoardState b, Coord kingPos){
@@ -42,46 +81,11 @@ public class WeightedHeuristic extends Heuristic {
         return counter;
     }
 
-	public WeightedHeuristic() {
-		a = 1;
-		b = 0;
-		c = 1;
-		d = 0;
-	}
+	private int scoreKing(BoardState b){
+        int score = checkSurroundings(b, b.getKingPosition());
+        if(Coordinates.isCenterOrNeighborCenter(b.getKingPosition()))
+            return (4-score)/4;
+        return (3-score)/4;
+    }
 
-	public double evaluate(BoardState state) {
-		if (state.getWinner() == 0 || state.getWinner() == 1) {
-		//	System.out.println("HO TROVATO UNO 0/1");
-			return state.getWinner();
-		}
-
-		int blackPieces = state.getNumberPlayerPieces(BoardState.BLACK);
-		int whitePieces = state.getNumberPlayerPieces(BoardState.WHITE)-1;
-
-		int blackPiecesEndangered = state.numEndangeredPieces(BoardState.BLACK);
-		int whitePiecesEndangered = state.numEndangeredPieces(BoardState.WHITE);
-        
-
-		KE = (double) (MAX_KING_ESCAPE_DISTANCE - Coordinates.distanceToClosestEscape(state.getKingPosition()))/MAX_KING_ESCAPE_DISTANCE;
-		KK = (double) this.scoreKing(state);
-		PD = (double) (STARTING_BLACK_PAWNS+2*whitePieces-blackPieces)/(2*STARTING_BLACK_PAWNS);
-		EP = (double) (STARTING_BLACK_PAWNS-2*whitePiecesEndangered+blackPiecesEndangered)/(2*STARTING_BLACK_PAWNS);
-
-		// System.out.println("KE = "+KE);
-		// System.out.println("KK = "+KK);
-		// System.out.println("PD = "+PD);
-		// System.out.println("EP = "+EP);
-		// System.out.println("score = "+((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d)));
-		// if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) == 0 || (a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) == 1){
-		// 	System.out.println("HO TROVATO UNO 0/1");
-		// }
-		// if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) > 1){
-		// 	System.out.println("HO TROVATO UNO > 1");
-		// }
-		// if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) < 0){
-		// 	System.out.println("HO TROVATO UNO < 0");
-		// }
-		return (a*KE+b*KK+c*PD+d*EP)/(a+b+c+d);
-	}
-	
 }

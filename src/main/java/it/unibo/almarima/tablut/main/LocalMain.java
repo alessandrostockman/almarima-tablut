@@ -14,8 +14,8 @@ public class LocalMain {
     public static void main(String[] args) throws UnknownHostException, IOException {
         /** Game Parameters */
         int gamesNumber = 2;
-        WeightHeuristic firstHeuristic = new StockHeuristic();
-        WeightHeuristic secondHeuristic = new InverseHeuristic(new StockHeuristic());
+        WeightHeuristic firstHeuristic = new RicHeur();
+        WeightHeuristic secondHeuristic = new WeightedHeuristic();
 
         /** Server Configs */
         int serverTimeout = 300;

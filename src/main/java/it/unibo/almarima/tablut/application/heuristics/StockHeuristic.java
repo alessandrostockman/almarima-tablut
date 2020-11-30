@@ -16,34 +16,26 @@ public class StockHeuristic extends WeightHeuristic {
 	private int blackPieces;
 	private Coord king;
 
-	public StockHeuristic() {
-	}
-
-	enum PawnState {
-		Safe(0), Empty(1), Reachable(2), Dangerous(3);
-
-		private int val;
-		
-		PawnState(int val) {
-			this.val = val;
-		}
-	
-		public int getValue() {
-			return val;
-		}
-	}
-
+	@Override
 	public void initVariables(BoardState state) {
 		this.whitePieces = state.getNumberPlayerPieces(BoardState.WHITE);
 		this.blackPieces = state.getNumberPlayerPieces(BoardState.BLACK);
 		this.king = state.getKingPosition();
 	}
 
-	public Parameter[] getEnabledParameters() {
-		Parameter[] ps = {Parameter.KING_SAFETY, Parameter.KING_ESCAPE, Parameter.WHITE_ENDANGERED_PAWNS, Parameter.BLACK_ENDANGERED_PAWNS, Parameter.WHITE_PAWN_NUMBER, Parameter.BLACK_PAWN_NUMBER};
-		return ps;
+	@Override
+	public WeightBag createWeightBag() {
+		w = new WeightBag(false);
+		w.addWeight(Parameter.KING_SAFETY, 1);
+		w.addWeight(Parameter.KING_ESCAPE, 1);
+		w.addWeight(Parameter.WHITE_ENDANGERED_PAWNS, 1);
+		w.addWeight(Parameter.BLACK_ENDANGERED_PAWNS, 1);
+		w.addWeight(Parameter.WHITE_PAWN_NUMBER, 1);
+		w.addWeight(Parameter.BLACK_PAWN_NUMBER, 1);
+		return w;
 	}
 
+	@Override
 	public double computeParameterValue(Parameter p, BoardState state) {
 		switch (p) {
 			case KING_SAFETY:
@@ -63,6 +55,20 @@ public class StockHeuristic extends WeightHeuristic {
 		}
 	}
 
+	enum PawnState {
+		Safe(0), Empty(1), Reachable(2), Dangerous(3);
+
+		private int val;
+		
+		PawnState(int val) {
+			this.val = val;
+		}
+	
+		public int getValue() {
+			return val;
+		}
+	}
+
 	private double getKingSafetyIndex(BoardState bs) {
 		return
 			(this.getStateByCoord(bs, this.king, Turn.WHITE, false, false).getValue() +
@@ -74,8 +80,6 @@ public class StockHeuristic extends WeightHeuristic {
 
 	private double getKingEscaping(BoardState bs) {
 		double points = 0;
-
-
 
 		if (this.king.x < 3 || this.king.x > 4) {
 			points += 2;
@@ -92,18 +96,6 @@ public class StockHeuristic extends WeightHeuristic {
 		}
 
 		return points / 10;
-	}
-
-	@Override
-	public WeightBag createWeightBag() {
-		w = new WeightBag(false);
-		w.addWeight(Parameter.KING_SAFETY, 1);
-		w.addWeight(Parameter.KING_ESCAPE, 1);
-		w.addWeight(Parameter.WHITE_ENDANGERED_PAWNS, 1);
-		w.addWeight(Parameter.BLACK_ENDANGERED_PAWNS, 1);
-		w.addWeight(Parameter.WHITE_PAWN_NUMBER, 1);
-		w.addWeight(Parameter.BLACK_PAWN_NUMBER, 1);
-		return w;
 	}
 
 	private double getWeightedPawnNumber() {

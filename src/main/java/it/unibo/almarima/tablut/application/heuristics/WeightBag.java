@@ -75,6 +75,11 @@ public class WeightBag {
 		return this.sum;
 	}
 
+	public Parameter[] getEnabledParameters() {
+		Parameter[] ps = this.weights.keySet().toArray(new Parameter[this.weights.size()]);
+		return ps;
+	}
+
 	public String toString() {
 		return this.weights.values().stream()
 			.map(String::valueOf)
