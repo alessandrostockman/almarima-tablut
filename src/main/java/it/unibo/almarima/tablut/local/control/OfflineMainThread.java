@@ -1,6 +1,8 @@
 package it.unibo.almarima.tablut.local.control;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,8 +21,7 @@ public class OfflineMainThread extends Thread {
     protected Heuristic h1;
     protected Heuristic h2;
 
-    private int whiteWins = 0;
-    private int blackWins = 0;
+    private Map<String, Integer> wins;
     private int draws = 0;
 
     private Thread whiteThread;
@@ -41,6 +42,8 @@ public class OfflineMainThread extends Thread {
         this.whiteShared = whiteShared;
         this.blackShared = blackShared;
         this.config = config;
+
+        this.wins = new HashMap<>();
     }
 
     public void run() {
@@ -80,7 +83,7 @@ public class OfflineMainThread extends Thread {
                         this.agent.execute();
                         return;
                     } catch (GameFinishedException e) {
-                        this.endRunReport(e);
+                        this.endRunReport(e, hWhite, hBlack);
                         games++;
                     } catch (AgentStoppedException e) { 
                         games++;
@@ -92,16 +95,32 @@ public class OfflineMainThread extends Thread {
         this.endGameReport();
     }
     
-    public void endRunReport(GameFinishedException e) {
+    public void endRunReport(GameFinishedException e, Heuristic hWhite, Heuristic hBlack) {
+        String whiteKey = hWhite.toString();
+        String blackKey = hBlack.toString();
+        String drawKey = "Draws";
+
+        if (!this.wins.containsKey(whiteKey)) {
+            this.wins.put(whiteKey, 0);
+        }
+
+        if (!this.wins.containsKey(blackKey)) {
+            this.wins.put(blackKey, 0);
+        }
+
+        if (!this.wins.containsKey(drawKey)) {
+            this.wins.put(drawKey, 0);
+        }
+
         switch (e.getWinner()) {
             case WHITEWIN:
-                whiteWins++;
+                this.wins.put(whiteKey, this.wins.get(whiteKey) + 1);
                 break;
             case BLACKWIN:
-                blackWins++;
+                this.wins.put(blackKey, this.wins.get(blackKey) + 1);
                 break;
             case DRAW:
-                draws++;
+                this.wins.put(drawKey, this.wins.get(drawKey) + 1);
                 break;
             default:
                 break;
@@ -118,10 +137,13 @@ public class OfflineMainThread extends Thread {
             loggReport = TablutLogger.get(TablutLogger.LogSpace.REPORT);
             loggReport.setLevel(Level.FINE);
 
-            loggReport.fine("Games played:  " + (whiteWins+blackWins+draws));
-            loggReport.fine("White wins:    " + whiteWins);
-            loggReport.fine("Black wins:    " + blackWins);
-            loggReport.fine("Draws:         " + draws);
+            int total = 0;
+            for (String key : this.wins.keySet()) {
+                total += this.wins.get(key);
+                loggReport.fine(key + ":                   " + this.wins.get(key));
+            }
+
+            loggReport.fine("Total games played:                   " + total);
         } catch (AgentStoppedException e) {
             e.printStackTrace();
         }
