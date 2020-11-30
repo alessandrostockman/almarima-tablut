@@ -70,6 +70,15 @@ public class TablutLogger {
 	public static Logger get(LogSpace space) throws AgentStoppedException {
 		return get().getSpace(space);
 	}
+
+	public static void log(LogSpace s, String message) {
+		try {
+			TablutLogger.get().logMessage(s, message);
+		} catch (AgentStoppedException e) {
+			System.out.println("Impossible to log");
+			e.printStackTrace();
+		}
+	}
     
     private String baseDirectory; 
 	private Map<LogSpace, Logger> loggers;
@@ -79,6 +88,14 @@ public class TablutLogger {
 		this.loggers = new HashMap<>();
 		this.handlers = new HashMap<>();
 		this.baseDirectory = "src/main/java/it/unibo/almarima/tablut/local/match_history";
+	}
+
+	public void logMessage(LogSpace space, String message) {
+		try {
+			this.getSpace(space).fine(message);
+		} catch (AgentStoppedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Logger getSpace(LogSpace space) throws AgentStoppedException {

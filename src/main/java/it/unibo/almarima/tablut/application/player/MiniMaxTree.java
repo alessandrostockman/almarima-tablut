@@ -24,6 +24,8 @@ public class MiniMaxTree {
     public BoardState headBoardState;
 	public long endTime;
 	public Heuristic h;
+	
+	private int heuristicsComputed = 0;
 
     public MiniMaxTree(int maxDepth, BoardState headBoardState, long endTime,Heuristic h) {
         this.headBoardState = headBoardState;
@@ -35,7 +37,8 @@ public class MiniMaxTree {
     // This function differs from minimax as it needs to keep track of not just max and min
 	// but also the corresponding moves that led to those values.
     public Data getBestMove() throws TimeLimitException {
-        
+		this.heuristicsComputed = 0;
+		
         int depth = 0;
 		Valuation alpha = new Valuation(0.0, maxDepth+1);      
         Valuation beta = new Valuation(1.0, maxDepth+1);
@@ -61,7 +64,7 @@ public class MiniMaxTree {
                     maxMove = move;
 				}
 			}
-			return new Data(maxMove,alpha,maxDepth);
+			return new Data(maxMove, alpha, maxDepth, this.heuristicsComputed);
 		}
 		else {       // if the player with the turn is a BLACK then minimize
 			
@@ -83,7 +86,7 @@ public class MiniMaxTree {
                     minMove = move;
 				}
 			}
-			return new Data(minMove,beta,maxDepth);
+			return new Data(minMove,beta,maxDepth, this.heuristicsComputed);
 		}
     }
     
@@ -96,6 +99,7 @@ public class MiniMaxTree {
 		}
 		// if node is a leaf, then evaluate with h function
 		if (depth == this.maxDepth) {
+			this.heuristicsComputed++;
 			return new Valuation(h.evaluate(nodeBS), depth);
 		}
 		// if there is a winner return the winner (corresponds to the max and min h values of 0 or 1)
@@ -123,8 +127,11 @@ public class MiniMaxTree {
 					updated = true;
 
 				}
-				//if alpha>=beta prune the tree
-                if (alpha.gethVal()>=beta.gethVal()){
+				// if alpha>beta prune the tree
+				// if alpha == beta we don't prune if we are searching for a better (minor depth) winning path, so if alpha is equal to the current player
+				// TODO: Check if it's correct to prune with > depth
+				// TODO: if correct replicate these changes to main branches
+				if (alpha.gethVal() > beta.gethVal() || alpha.gethVal() == beta.gethVal() && (alpha.gethVal() != this.headBoardState.getTurnPlayer() /* || depth >= alpha.getDepthAttained() */)){
                     break;
                 }
 			}
@@ -156,7 +163,10 @@ public class MiniMaxTree {
 
 				}
 				//if alpha>=beta prune the tree
-                if (beta.gethVal()<=alpha.gethVal()){
+				// if alpha == beta we don't prune if we are searching for a better (minor depth) winning path, so if beta is equal to the current player
+				// TODO: Check if it's correct to prune with > depth
+				// TODO: if correct replicate these changes to main branches
+                if (beta.gethVal() < alpha.gethVal() || beta.gethVal() == alpha.gethVal() && (beta.gethVal() != this.headBoardState.getTurnPlayer() /* || depth >= beta.getDepthAttained() */)){
                     break;
 				}
 			}
