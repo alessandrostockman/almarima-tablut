@@ -118,7 +118,7 @@ public class OfflineMainThread extends Thread {
             loggReport = TablutLogger.get(TablutLogger.LogSpace.REPORT);
             loggReport.setLevel(Level.FINE);
 
-            loggReport.fine("Games played:  " + whiteWins + blackWins + draws);
+            loggReport.fine("Games played:  " + (whiteWins+blackWins+draws));
             loggReport.fine("White wins:    " + whiteWins);
             loggReport.fine("Black wins:    " + blackWins);
             loggReport.fine("Draws:         " + draws);
