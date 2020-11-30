@@ -131,7 +131,7 @@ public class MiniMaxTree {
 				// if alpha == beta we don't prune if we are searching for a better (minor depth) winning path, so if alpha is equal to the current player
 				// TODO: Check if it's correct to prune with > depth
 				// TODO: if correct replicate these changes to main branches
-				if (alpha.gethVal() > beta.gethVal() || alpha.gethVal() == beta.gethVal() && (alpha.gethVal() != this.headBoardState.getTurnPlayer() /* || depth >= alpha.getDepthAttained() */)){
+				if (alpha.gethVal() > beta.gethVal() || alpha.gethVal() == beta.gethVal() && (alpha.gethVal() != this.headBoardState.getTurnPlayer() || depth >= alpha.getDepthAttained())){
                     break;
                 }
 			}
@@ -166,7 +166,7 @@ public class MiniMaxTree {
 				// if alpha == beta we don't prune if we are searching for a better (minor depth) winning path, so if beta is equal to the current player
 				// TODO: Check if it's correct to prune with > depth
 				// TODO: if correct replicate these changes to main branches
-                if (beta.gethVal() < alpha.gethVal() || beta.gethVal() == alpha.gethVal() && (beta.gethVal() != this.headBoardState.getTurnPlayer() /* || depth >= beta.getDepthAttained() */)){
+                if (beta.gethVal() < alpha.gethVal() || beta.gethVal() == alpha.gethVal() && (beta.gethVal() != this.headBoardState.getTurnPlayer() || depth >= beta.getDepthAttained())){
                     break;
 				}
 			}
