@@ -96,7 +96,7 @@ public class StockHeuristic extends WeightHeuristic {
 
 	@Override
 	public WeightBag createWeightBag() {
-		w = new WeightBag(true);
+		w = new WeightBag(false);
 		w.addWeight(Parameter.KING_SAFETY, 1);
 		w.addWeight(Parameter.KING_ESCAPE, 1);
 		w.addWeight(Parameter.WHITE_ENDANGERED_PAWNS, 1);

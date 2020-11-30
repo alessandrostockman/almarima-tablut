@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.unibo.almarima.tablut.application.heuristics.Heuristic;
+import it.unibo.almarima.tablut.application.heuristics.WeightHeuristic;
 import it.unibo.almarima.tablut.local.exceptions.AgentStoppedException;
 
 public class TablutLogger {
@@ -49,10 +50,11 @@ public class TablutLogger {
 		TablutLogger.matchDirectory = "match_" + (new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss")).format(new Date());
 	}
 
-	public static void setup(Heuristic hWhite, Heuristic hBlack, int tuning, int game) {
+	public static void setup(WeightHeuristic hWhite, WeightHeuristic hBlack, int game) {
 		TablutLogger.reset();
-        //TODO Add tuning directory
-		TablutLogger.runDirectory = "run_" + hWhite.toString() + "[W]_vs_" + hBlack.toString() + "[B]" + File.separator + /*"tuning_" + tuning + File.separator + */ "game_" + game;
+		TablutLogger.runDirectory += "heur_" + hWhite.toString() + "[W]_vs_" + hBlack.toString() + "[B]";
+		TablutLogger.runDirectory += File.separator + "tuning_" + hWhite.getWeightBag().toString() + "[W]_vs_" + hBlack.getWeightBag().toString() + "[B]";
+		TablutLogger.runDirectory +=  File.separator + "game_" + game;
 	}
 
 	public static TablutLogger get() throws AgentStoppedException {

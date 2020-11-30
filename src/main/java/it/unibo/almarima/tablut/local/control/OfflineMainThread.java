@@ -59,36 +59,36 @@ public class OfflineMainThread extends Thread {
             hWhite.getWeightBag().reset();
             hBlack.getWeightBag().reset();
 
-            int tuning = 1;
             //TODO: Add tuning loop
-            // while (tuning <= 1) { // loop throug heuristic weights
-                // tuning += 1;
-                int games = 1;
-                while (games <= this.maxGames) {
-                    try {
-                        this.whiteThread = new OfflineThread(new OfflineClient(whiteShared, Turn.WHITE, hWhite, this.config));
-                        this.blackThread = new OfflineThread(new OfflineClient(blackShared, Turn.BLACK, hBlack, this.config));
-                    } catch (IOException e) {
-                        System.exit(1);
-                    }
+            while (hWhite.getWeightBag().retune()) { // loop throug white heuristic weights
+                while (hBlack.getWeightBag().retune()) { // loop throug black heuristic weights
+                    int games = 1;
+                    while (games <= this.maxGames) {
+                        try {
+                            this.whiteThread = new OfflineThread(new OfflineClient(whiteShared, Turn.WHITE, hWhite, this.config));
+                            this.blackThread = new OfflineThread(new OfflineClient(blackShared, Turn.BLACK, hBlack, this.config));
+                        } catch (IOException e) {
+                            System.exit(1);
+                        }
 
-                    try {
-                        this.setupLogs(hWhite, hBlack, tuning, games + (run * this.maxGames));
+                        try {
+                            this.setupLogs(hWhite, hBlack, games + (run * this.maxGames));
 
-                        this.whiteThread.start();
-                        this.blackThread.start();
+                            this.whiteThread.start();
+                            this.blackThread.start();
 
-                        //TODO: Substitute exception with returning object?
-                        this.agent.execute();
-                        return;
-                    } catch (GameFinishedException e) {
-                        this.endRunReport(e, hWhite, hBlack);
-                        games++;
-                    } catch (AgentStoppedException e) { 
-                        games++;
+                            //TODO: Substitute exception with returning object?
+                            this.agent.execute();
+                            return;
+                        } catch (GameFinishedException e) {
+                            this.endRunReport(e, hWhite, hBlack);
+                            games++;
+                        } catch (AgentStoppedException e) { 
+                            games++;
+                        }
                     }
                 }
-            // }
+            }
         }
 
         this.endGameReport();
@@ -126,8 +126,8 @@ public class OfflineMainThread extends Thread {
         }
     }
 
-    public void setupLogs(Heuristic hWhite, Heuristic hBlack, int tuningNumber, int games) { 
-        TablutLogger.setup(hWhite, hBlack, tuningNumber, games);
+    public void setupLogs(WeightHeuristic hWhite, WeightHeuristic hBlack, int games) { 
+        TablutLogger.setup(hWhite, hBlack, games);
     }
 
     public void endGameReport() {
