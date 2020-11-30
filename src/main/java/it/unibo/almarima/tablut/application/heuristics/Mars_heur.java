@@ -3,7 +3,7 @@ package it.unibo.almarima.tablut.application.heuristics;
 import it.unibo.almarima.tablut.application.domain.BoardState;
 import it.unibo.almarima.tablut.application.domain.Coordinates;
 
-public class Ric_heur extends Heuristic {
+public class Mars_heur extends Heuristic {
 
 	public double evaluate(BoardState state)  {
 		
@@ -12,22 +12,21 @@ public class Ric_heur extends Heuristic {
 			return state.getWinner();
 		}
 		
-		// calculate a ratio of white to black pieces remaining on the board
-		int whitePieceCount = state.getNumberPlayerPieces(BoardState.WHITE);
+		// calculate a pieces score
+		int whitePieceCount = state.getNumberPlayerPieces(BoardState.WHITE)-1;
 		int blackPieceCount = state.getNumberPlayerPieces(BoardState.BLACK);
-		int totalPieceCount = whitePieceCount + blackPieceCount;
-		double pieceH = (whitePieceCount*1.0/totalPieceCount);
+		double pieceH = (double) (16+2*whitePieceCount-blackPieceCount)/32;
 		
 		// calculate the distance of the king to the closest escape
 		int kingDistToEscape = Coordinates.distanceToClosestEscape(state.getKingPosition());
 		int maxDistToEscape = 6;
-		double distToEscape= ((maxDistToEscape-kingDistToEscape)*1.0/maxDistToEscape);
+		double distToEscape= (double) (maxDistToEscape-kingDistToEscape)/maxDistToEscape;
 		
-		double pieceHWeight = 0.8;
-		double distToEscapeWeight = 0.2;
+		double pieceHWeight = 8;
+		double distToEscapeWeight = 2;
 
 		// weigh the two h values calculated above
-		double h = (pieceH*pieceHWeight + distToEscape*distToEscapeWeight)/(pieceHWeight+distToEscapeWeight);     //TODO: forse 0,3 distEscape perchè spesso ha la possibilità di vincere e non lo fa 
+		double h = (pieceH*pieceHWeight + distToEscape*distToEscapeWeight)/(pieceHWeight+distToEscapeWeight);
 
 		return h;
 	}
