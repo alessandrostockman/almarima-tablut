@@ -25,7 +25,7 @@ public class LocalMain {
         boolean gui = false;
 
         /** Client Configs */
-        int clientTimeout = 6;
+        int clientTimeout = 60;
 
         Scheduler s = new Scheduler(
             gamesNumber,
