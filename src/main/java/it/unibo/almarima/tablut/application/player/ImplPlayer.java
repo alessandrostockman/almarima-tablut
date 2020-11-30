@@ -34,7 +34,7 @@ public class ImplPlayer extends TablutPlayer{
 		
 		//TODO: decidere la depth iniziale
     	// start minimaxPruning algorithm with desired depth 
-    	int iterDepth = 3;
+    	int iterDepth = 4;
 		d=new Data(boardState.getRandomMove(),new Valuation(-1,-1),iterDepth, 0);
 		
 		try {
