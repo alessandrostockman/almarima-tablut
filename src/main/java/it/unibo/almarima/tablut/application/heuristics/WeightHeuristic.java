@@ -1,6 +1,8 @@
 package it.unibo.almarima.tablut.application.heuristics;
 
 import it.unibo.almarima.tablut.application.domain.BoardState;
+import it.unibo.almarima.tablut.local.logging.TablutLogger;
+import it.unibo.almarima.tablut.local.logging.TablutLogger.LogSpace;
 
 public abstract class WeightHeuristic extends Heuristic {
 
@@ -22,7 +24,13 @@ public abstract class WeightHeuristic extends Heuristic {
 		for (Parameter p : this.w.getEnabledParameters()) {
 			score += this.computeParameterValue(p, state) * this.w.getWeight(p);
 		}
-		return score / this.w.getSum();
+
+		score = score / this.w.getSum();
+
+		if (score == 0 || score == 1) {
+			TablutLogger.log(LogSpace.SYSTEM, "Trovato score di " + score + " in " + this.toString());
+		}
+		return score;
 	}
 
 	public abstract WeightBag createWeightBag();

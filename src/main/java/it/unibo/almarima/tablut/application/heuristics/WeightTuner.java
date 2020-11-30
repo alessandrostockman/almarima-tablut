@@ -26,6 +26,10 @@ public class WeightTuner {
 		return this.last;
 	}
 
+	public void reset() {
+		this.last = this.min;
+	}
+
 	public String toString() {
 		return "Tuner [" + this.min + ":" + this.max  + ":" + this.step + "], Value: " + this.last;
 	}

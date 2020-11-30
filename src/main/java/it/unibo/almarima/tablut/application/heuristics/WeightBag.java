@@ -50,6 +50,10 @@ public class WeightBag {
 			for (double d : this.weights.values()) {
 				this.sum += d;
 			}
+
+			for (WeightTuner t : this.tuners.values()) {
+				t.reset();
+			}
 		}
 	}
 
