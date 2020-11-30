@@ -13,7 +13,7 @@ public class LocalMain {
 
     public static void main(String[] args) throws UnknownHostException, IOException {
         /** Game Parameters */
-        int gamesNumber = 2;
+        int gamesNumber = 1;
         Heuristic firstHeuristic = new Ric_heur();
         Heuristic secondHeuristic = new WeightedHeuristic();
 
@@ -25,7 +25,7 @@ public class LocalMain {
         boolean gui = false;
 
         /** Client Configs */
-        int clientTimeout = 6;
+        int clientTimeout = 60;
 
         Scheduler s = new Scheduler(
             gamesNumber,
