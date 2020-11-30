@@ -181,6 +181,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 
 		synchronized (this.whiteShared) {
 			System.out.println("S: Notify 3 (W) [First move processed]");
+			this.blackShared.setMoveRequired(true);
 			this.whiteShared.setState(state);
 			this.whiteShared.notify();
 		}
