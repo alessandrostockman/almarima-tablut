@@ -33,10 +33,6 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 	 */
 	public void run() { }
 
-	public void restart() {
-		
-	}
-
 	public void execute() throws AgentStoppedException {
 		synchronized (this.shared) {
 			while (!this.shared.getServerStarted()) {
@@ -91,7 +87,6 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 					loggClient.fine("IterDepth reached:  " + Integer.toString(d.getDepth())+"\n\n");
 
 					synchronized (this.shared) {
-						this.shared.setTurnNumber(this.shared.getTurnNumber()+1);
 						this.shared.setMove(action);
 						this.shared.setMoveRequired(false);
 						this.shared.notify();
@@ -108,6 +103,10 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 					throw new AgentStoppedException();
 				} else {
 					// System.out.println("Waiting for your opponent move... ");
+				}
+
+				synchronized (this.shared) {
+					this.shared.incrementTurnNumber();
 				}
 
 			} catch (InterruptedException | IOException e) {
