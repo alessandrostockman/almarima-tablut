@@ -1,7 +1,7 @@
 package it.unibo.almarima.tablut.application.heuristics;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 import it.unibo.almarima.tablut.application.domain.BoardState;
 import it.unibo.almarima.tablut.application.domain.Coord;
@@ -13,31 +13,31 @@ public class PickleRicksheuristic extends Heuristic{
     public final int STARTING_BLACK_PAWNS = 16;
     
 
-    public double evaluate(BoardState state){
-        if (state.getWinner() == 0 || state.getWinner() == 1) {
+    public double evaluate(BoardState bs){
+        if (bs.getWinner() == 0 || bs.getWinner() == 1) {
             //	System.out.println("HO TROVATO UNO 0/1");
-                return state.getWinner();
+                return bs.getWinner();
             }
         
         double score =0;
         
 
-        if(state.getTurnPlayer() == BoardState.WHITE){
+        if(bs.getTurnPlayer() == BoardState.WHITE){
             //For each black piece being near to king, -5 on score 
-            score -= checkSurroundings(state, state.getKingPosition())*5;
+            score -= checkSurroundings(bs, bs.getKingPosition())*5;
             //value of white pieces + 50 (the king)
-            score += state.getNumberPlayerPieces(BoardState.WHITE) * 50 + 50;
+            score += bs.getNumberPlayerPieces(BoardState.WHITE) * 50 + 50;
             //being black pieces more, i'll give them less value of the number
-            score -= state.getNumberPlayerPieces(BoardState.WHITE) * 50;
-            score += isKingOnEscapeLine(state, state.getKingPosition());
+            score -= bs.getNumberPlayerPieces(BoardState.WHITE) * 50;
+            score += isKingOnEscapeLine(bs, bs.getKingPosition());
 
         }else{
-            score-=checkSurroundings(state, state.getKingPosition())*5;
-            score+=checkKingLines(state, state.getKingPosition())*3;
+            score-=checkSurroundings(bs, bs.getKingPosition())*5;
+            score+=checkKingLines(bs, bs.getKingPosition())*3;
             //value of white pieces + 50 (the king)
-            score += state.getNumberPlayerPieces(BoardState.WHITE) * 50 + 50;
+            score += bs.getNumberPlayerPieces(BoardState.WHITE) * 50 + 50;
             //being black pieces more, i'll give them less value of the number
-            score -= state.getNumberPlayerPieces(BoardState.WHITE) * 50;
+            score -= bs.getNumberPlayerPieces(BoardState.WHITE) * 50;
         }
         return (score+1000)/2000;
     }
@@ -55,44 +55,44 @@ public class PickleRicksheuristic extends Heuristic{
         return counter;
     }
     //checks if on the above/under + left/right lines w.r.t. the king there are black pieces
-    private int checkKingLines(BoardState state, Coord kingPos){
+    private int checkKingLines(BoardState bs, Coord kingPos){
         int value=0;
-        if(!state.getRow(kingPos.x+1).contains(Pawn.BLACK))
+        if(!this.getRow(kingPos.x+1,bs).contains(Pawn.BLACK))
             value++;
-        if(!state.getRow(kingPos.x-1).contains(Pawn.BLACK))
+        if(!this.getRow(kingPos.x-1,bs).contains(Pawn.BLACK))
             value ++;
-        if (!state.getColumn(kingPos.y+1).contains(Pawn.BLACK))
+        if (!this.getColumn(kingPos.y+1,bs).contains(Pawn.BLACK))
             value++;
-        if (!state.getColumn(kingPos.y-1).contains(Pawn.BLACK))
+        if (!this.getColumn(kingPos.y-1,bs).contains(Pawn.BLACK))
             value++;
         return value;
     }
-    private double isKingOnEscapeLine(BoardState state, Coord kingPos){
+    private double isKingOnEscapeLine(BoardState bs, Coord kingPos){
         double value = 0;
         //verifies the rows
         switch (kingPos.x) {
                 case 6:
-                    if(!state.getRow(6).contains(Pawn.BLACK))
+                    if(!this.getRow(6,bs).contains(Pawn.BLACK))
                         value+=10;
-                        if(state.getRow(6).contains(Pawn.WHITE))
+                        if(this.getRow(6,bs).contains(Pawn.WHITE))
                             value+= 500;
                     break;
                 case 7:
-                    if(!state.getRow(7).contains(Pawn.BLACK))
+                    if(!this.getRow(7,bs).contains(Pawn.BLACK))
                             value+=10;
-                            if(state.getRow(7).contains(Pawn.WHITE))
+                            if(this.getRow(7,bs).contains(Pawn.WHITE))
                                 value+= 500;
                     break;
                 case 1:
-                    if(!state.getRow(1).contains(Pawn.BLACK))
+                    if(!this.getRow(1,bs).contains(Pawn.BLACK))
                         value+=10;
-                    if(state.getRow(1).contains(Pawn.WHITE))
+                    if(this.getRow(1,bs).contains(Pawn.WHITE))
                         value+= 500;
                     break;
                 case 2:
-                    if(!state.getRow(2).contains(Pawn.BLACK))
+                    if(!this.getRow(2,bs).contains(Pawn.BLACK))
                             value+=10;
-                        if(state.getRow(2).contains(Pawn.WHITE))
+                        if(this.getRow(2,bs).contains(Pawn.WHITE))
                             value+= 500;
                     break;
                 default:
@@ -103,27 +103,27 @@ public class PickleRicksheuristic extends Heuristic{
         //verifies the columns
         switch (kingPos.y) {
             case 6:
-                if(!state.getColumn(6).contains(Pawn.BLACK))
+                if(!this.getColumn(6,bs).contains(Pawn.BLACK))
                     value+=10;
-                    if(state.getColumn(6).contains(Pawn.WHITE))
+                    if(this.getColumn(6,bs).contains(Pawn.WHITE))
                         value+= 500;
                 break;
             case 7:
-                if(!state.getColumn(7).contains(Pawn.BLACK))
+                if(!this.getColumn(7,bs).contains(Pawn.BLACK))
                         value+=10;
-                        if(state.getColumn(7).contains(Pawn.WHITE))
+                        if(this.getColumn(7,bs).contains(Pawn.WHITE))
                             value+= 500;
                 break;
             case 1:
-                if(!state.getColumn(1).contains(Pawn.BLACK))
+                if(!this.getColumn(1,bs).contains(Pawn.BLACK))
                     value+=10;
-                if(state.getColumn(1).contains(Pawn.WHITE))
+                if(this.getColumn(1,bs).contains(Pawn.WHITE))
                     value+= 500;
                 break;
             case 2:
-                if(!state.getColumn(2).contains(Pawn.BLACK))
+                if(!this.getColumn(2,bs).contains(Pawn.BLACK))
                         value+=10;
-                    if(state.getColumn(2).contains(Pawn.WHITE))
+                    if(this.getColumn(2,bs).contains(Pawn.WHITE))
                         value+= 500;
                 break;
             default:
@@ -132,5 +132,23 @@ public class PickleRicksheuristic extends Heuristic{
         }
         return value;
     }
+
+
+    //returns the i-th row[Pawn]
+    public List<Pawn> getRow(int i,BoardState b){
+        ArrayList<Pawn> ret = new ArrayList<>();
+        for(int j=0; j<9; j++)
+            ret.add(b.getPawnAt(Coordinates.get(i,j)));
+        return ret;
+    }
+
+    //returns the i-th column [Pawn]
+    public List<Pawn> getColumn(int i,BoardState b){
+        ArrayList<Pawn> ret = new ArrayList<>();
+        for(int j=0; j<9; j++)
+            ret.add(b.getPawnAt(Coordinates.get(j,i)));
+        return ret;
+    }
+    
     
 }
