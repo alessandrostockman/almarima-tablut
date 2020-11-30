@@ -8,14 +8,16 @@ import it.unibo.almarima.tablut.application.domain.Coordinates;
 import it.unibo.almarima.tablut.external.State.Pawn;
 
 public class WeightedHeuristic extends Heuristic {
+
 	public final int STARTING_WHITE_PAWNS = 8;
 	public final int STARTING_BLACK_PAWNS = 16;
 	private final int MAX_KING_ESCAPE_DISTANCE = 6; 
 
-	private double a;
-	private double b;
-	private double c;
-	private double d;
+	private final static int a = 1;
+	private final static int b = 1;
+	private final static int c = 1;
+	private final static int d = 0;
+	
 	private double KE;
 	private double KK;
 	private double PD;
@@ -43,10 +45,7 @@ public class WeightedHeuristic extends Heuristic {
     }
 
 	public WeightedHeuristic() {
-		a = 1;
-		b = 1;
-		c = 1;
-		d = 0;
+		
 	}
 
 	public double evaluate(BoardState state) {
@@ -67,21 +66,13 @@ public class WeightedHeuristic extends Heuristic {
 		PD = (double) (STARTING_BLACK_PAWNS+2*whitePieces-blackPieces)/(2*STARTING_BLACK_PAWNS);
 		EP = (double) (STARTING_BLACK_PAWNS-2*whitePiecesEndangered+blackPiecesEndangered)/(2*STARTING_BLACK_PAWNS);
 
-		// System.out.println("KE = "+KE);
-		// System.out.println("KK = "+KK);
-		// System.out.println("PD = "+PD);
-		// System.out.println("EP = "+EP);
-		// System.out.println("score = "+((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d)));
-		// if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) == 0 || (a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) == 1){
-		// 	System.out.println("HO TROVATO UNO 0/1");
-		// }
-		// if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) > 1){
-		// 	System.out.println("HO TROVATO UNO > 1");
-		// }
-		// if ((a*KE+b*KK+c*PD+d*EP)/(a+b+c+d) < 0){
-		// 	System.out.println("HO TROVATO UNO < 0");
-		// }
 		return (a*KE+b*KK+c*PD+d*EP)/(a+b+c+d);
 	}
+
+	@Override
+	public String printInfo() {
+		return this.toString()+"\na: "+a+"\nb: "+b+"\nc: "+c+"\nd: "+d;
+	}
+	
 	
 }

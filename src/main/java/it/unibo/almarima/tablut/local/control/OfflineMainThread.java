@@ -57,9 +57,6 @@ public class OfflineMainThread extends Thread {
                 hBlack = this.h1;
             }
 
-            hWhite.getWeightBag().reset();
-            hBlack.getWeightBag().reset();
-
             int tuning = 1;
             //TODO: Add tuning loop
             // while (tuning <= 1) { // loop throug heuristic weights

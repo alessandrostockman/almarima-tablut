@@ -5,6 +5,9 @@ import it.unibo.almarima.tablut.application.domain.Coordinates;
 
 public class Mars_heur extends Heuristic {
 
+	private final static double pieceHWeight = 8;
+	private final static double distToEscapeWeight = 2; 
+
 	public double evaluate(BoardState state)  {
 		
 		// if there is a winner return the winner (corresponds to the max and min h values of 0 or 1)
@@ -21,13 +24,15 @@ public class Mars_heur extends Heuristic {
 		int kingDistToEscape = Coordinates.distanceToClosestEscape(state.getKingPosition());
 		int maxDistToEscape = 6;
 		double distToEscape= (double) (maxDistToEscape-kingDistToEscape)/maxDistToEscape;
-		
-		double pieceHWeight = 8;
-		double distToEscapeWeight = 2;
 
 		// weigh the two h values calculated above
 		double h = (pieceH*pieceHWeight + distToEscape*distToEscapeWeight)/(pieceHWeight+distToEscapeWeight);
 
 		return h;
+	}
+
+	@Override
+	public String printInfo() {
+		return "pieceHWeigt: "+ pieceHWeight + "\ndistToEscapeWeight: "+ distToEscapeWeight;
 	}
 }
