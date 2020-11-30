@@ -1,4 +1,4 @@
-package it.unibo.almarima.tablut.local.control;
+package it.unibo.almarima.tablut.local.logging;
 
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;

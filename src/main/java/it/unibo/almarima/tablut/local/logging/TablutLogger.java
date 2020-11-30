@@ -1,4 +1,4 @@
-package it.unibo.almarima.tablut.local.control;
+package it.unibo.almarima.tablut.local.logging;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -16,7 +16,7 @@ import it.unibo.almarima.tablut.local.exceptions.AgentStoppedException;
 
 public class TablutLogger {
 
-	enum LogSpace {
+	public enum LogSpace {
 		GAME,
 		SYSTEM,
 		WHITE,
@@ -45,13 +45,14 @@ public class TablutLogger {
 		} catch (Exception e) { }
 	}
 	
-	public static void init(Heuristic hWhite, Heuristic hBlack) {
-		TablutLogger.matchDirectory = hWhite.toString() + "[W]_vs_" + hBlack.toString() + "[B]_" + (new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss")).format(new Date());
+	public static void init() {
+		TablutLogger.matchDirectory = "match_" + (new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss")).format(new Date());
 	}
 
-	public static void setup(int game) {
+	public static void setup(Heuristic hWhite, Heuristic hBlack, int tuning, int game) {
 		TablutLogger.reset();
-		TablutLogger.runDirectory = "game_" + game;
+        //TODO Add tuning directory
+		TablutLogger.runDirectory = "run_" + hWhite.toString() + "[W]_vs_" + hBlack.toString() + "[B]" + File.separator + /*"tuning_" + tuning + File.separator + */ "game_" + game;
 	}
 
 	public static TablutLogger get() throws AgentStoppedException {

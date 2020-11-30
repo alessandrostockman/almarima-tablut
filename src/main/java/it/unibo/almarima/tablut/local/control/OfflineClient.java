@@ -6,8 +6,10 @@ import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.StateTablut;
 import it.unibo.almarima.tablut.external.TablutClient;
 import it.unibo.almarima.tablut.external.State.Turn;
+import it.unibo.almarima.tablut.local.config.ClientConfig;
 import it.unibo.almarima.tablut.local.exceptions.AgentStoppedException;
 import it.unibo.almarima.tablut.local.game.Data;
+import it.unibo.almarima.tablut.local.logging.TablutLogger;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -20,11 +22,16 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 	private Shared shared;
 	private Heuristic heuristic;
 
-	public OfflineClient(Shared shared, int timeout, Turn role, Heuristic heuristic)
+	public OfflineClient(Shared shared, int timeout, Turn role, Heuristic h)
 			throws UnknownHostException, IOException {
 		super(timeout, role.equals(Turn.WHITE) ? "WHITE":"BLACK", role);
 		this.shared = shared;
-		this.heuristic = heuristic;
+		this.heuristic = h;
+	}
+
+	public OfflineClient(Shared shared, Turn role, Heuristic h, ClientConfig config)
+			throws UnknownHostException, IOException {
+		this(shared, config.getTimeout(), role, h);
 	}
 
 	/**

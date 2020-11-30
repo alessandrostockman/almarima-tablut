@@ -4,36 +4,29 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import it.unibo.almarima.tablut.application.heuristics.*;
-import it.unibo.almarima.tablut.external.State.Turn;
+import it.unibo.almarima.tablut.local.config.*;
+import it.unibo.almarima.tablut.local.logging.TablutLogger;
 
 public class Scheduler {
 
-    private Thread t1;
-    private Thread t2;
-    private Thread t3;
+    private Thread thread;
 
     public Scheduler() throws UnknownHostException, IOException {
-        this(1, new WeightedHeuristic(), new Ric_heur());
+        this(2, new WeightedHeuristic(), new Ric_heur(), new ServerConfig(), new ClientConfig());
     }
 
-    public Scheduler(int games, Heuristic hWhite, Heuristic hBlack) throws UnknownHostException, IOException {
+    public Scheduler(int games, Heuristic h1, Heuristic h2, ServerConfig sConfig, ClientConfig cConfig) throws UnknownHostException, IOException {
         Shared whiteShared = new Shared();
         Shared blackShared = new Shared();
-        OfflineAgent server = new OfflineServer(whiteShared, blackShared, 300, 0, 0, 0, 4, false);
-        OfflineAgent whiteClient = new OfflineClient(whiteShared, 60, Turn.WHITE, hWhite);
-        OfflineAgent blackClient = new OfflineClient(blackShared, 60, Turn.BLACK, hBlack);
+        OfflineAgent server = new OfflineServer(whiteShared, blackShared, sConfig);
 
-        TablutLogger.init(hWhite, hBlack);
+        TablutLogger.init();
 
-        this.t1 = new OfflineMainThread(server, games);
-        this.t2 = new OfflineThread(whiteClient, games);
-        this.t3 = new OfflineThread(blackClient, games);
+        this.thread = new OfflineMainThread(server, games, h1, h2, whiteShared, blackShared, cConfig);
     }
 
     public void start() {
-        this.t1.start();
-        this.t2.start();
-        this.t3.start();
+        this.thread.start();
     }
 
 }

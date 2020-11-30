@@ -9,11 +9,13 @@ import it.unibo.almarima.tablut.external.Action;
 import it.unibo.almarima.tablut.external.State;
 import it.unibo.almarima.tablut.external.StateTablut;
 import it.unibo.almarima.tablut.external.State.Turn;
+import it.unibo.almarima.tablut.local.config.ServerConfig;
 import it.unibo.almarima.tablut.local.exceptions.AgentStoppedException;
 import it.unibo.almarima.tablut.local.exceptions.GameFinishedException;
 import it.unibo.almarima.tablut.local.game.Game;
 import it.unibo.almarima.tablut.local.game.GameAshtonTablut;
 import it.unibo.almarima.tablut.local.gui.Gui;
+import it.unibo.almarima.tablut.local.logging.TablutLogger;
 
 public class OfflineServer implements Runnable, OfflineAgent {
 
@@ -65,14 +67,17 @@ public class OfflineServer implements Runnable, OfflineAgent {
 	 */
 	private int gameC;
 
-	public OfflineServer(Shared whiteShared, Shared blackShared, int timeout, int cacheSize, int numErrors, int repeated, int game,
+	public OfflineServer(Shared whiteShared, Shared blackShared, int timeout, int cacheSize, int numErrors, int repeated,
 			boolean gui) {
 		this.whiteShared = whiteShared;
 		this.blackShared = blackShared;
-		this.gameC = game;
 		this.enableGui = gui;
 		this.errors = numErrors;
 		this.cacheSize = cacheSize;
+	}
+
+	public OfflineServer(Shared whiteShared, Shared blackShared, ServerConfig config) {
+		this(whiteShared, blackShared, config.getTimeout(), config.getCacheSize(), config.getMaxErrors(), config.getRepeated(), config.getGui());
 	}
 
 	public void initializeGUI(State state) {
@@ -276,7 +281,6 @@ public class OfflineServer implements Runnable, OfflineAgent {
 			// SEND STATE TO PLAYERS
 			synchronized(this.whiteShared) {
 				if (state.getTurn() == Turn.WHITE) {
-					System.out.println("");
 					this.whiteShared.setMoveRequired(true);
 				}
 				this.whiteShared.setState(state);
