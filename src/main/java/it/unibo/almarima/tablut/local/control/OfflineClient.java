@@ -112,10 +112,6 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 					// System.out.println("Waiting for your opponent move... ");
 				}
 
-				synchronized (this.shared) {
-					this.shared.incrementTurnNumber();
-				}
-
 			} catch (InterruptedException | IOException e) {
 				e.printStackTrace();
 				throw new AgentStoppedException();

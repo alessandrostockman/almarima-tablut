@@ -126,7 +126,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		synchronized (this.blackShared) {
 			this.blackShared.setServerStarted(true);
 			this.blackShared.setGameOver(false);
-			this.whiteShared.resetTurnNumber();
+			this.blackShared.resetTurnNumber();
 			this.blackShared.notify();
 			System.out.println("S: Notify 1 (B) [Server started]");
 		}
@@ -282,6 +282,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 				if (state.getTurn() == Turn.WHITE) {
 					this.whiteShared.setMoveRequired(true);
 				}
+				this.whiteShared.incrementTurnNumber();
 				this.whiteShared.setState(state);
 				this.whiteShared.notify();
 				System.out.println("S: Notify 3 (W) [Move processed]");
@@ -291,6 +292,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 				if (state.getTurn() == Turn.BLACK) {
 					this.blackShared.setMoveRequired(true);
 				}
+				this.blackShared.incrementTurnNumber();
 				this.blackShared.setState(state);
 				this.blackShared.notify();
 				System.out.println("S: Notify 3 (B) [Move processed]");
