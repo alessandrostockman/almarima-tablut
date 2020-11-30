@@ -140,10 +140,10 @@ public class OfflineMainThread extends Thread {
             int total = 0;
             for (String key : this.wins.keySet()) {
                 total += this.wins.get(key);
-                loggReport.fine(key + ":                   " + this.wins.get(key));
+                loggReport.fine(key + ": " + this.wins.get(key));
             }
 
-            loggReport.fine("Total games played:                   " + total);
+            loggReport.fine("Total games played: " + total);
         } catch (AgentStoppedException e) {
             e.printStackTrace();
         }
