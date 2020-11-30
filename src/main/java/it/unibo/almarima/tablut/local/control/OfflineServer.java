@@ -90,10 +90,6 @@ public class OfflineServer implements Runnable, OfflineAgent {
 	 */
 	public void run() { }
 
-	public void restart() {
-
-	}
-
 	/**
 	 * This method starts the proper game. It waits the connections from 2 clients,
 	 * check the move and update the state. There is a timeout that interrupts games
@@ -122,6 +118,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		synchronized (this.whiteShared) {
 			this.whiteShared.setServerStarted(true);
 			this.whiteShared.setGameOver(false);
+			this.whiteShared.resetTurnNumber();
 			this.whiteShared.notify();
 			System.out.println("S: Notify 1 (W) [Server started]");
 		}
@@ -129,6 +126,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		synchronized (this.blackShared) {
 			this.blackShared.setServerStarted(true);
 			this.blackShared.setGameOver(false);
+			this.whiteShared.resetTurnNumber();
 			this.blackShared.notify();
 			System.out.println("S: Notify 1 (B) [Server started]");
 		}
