@@ -12,13 +12,13 @@ public class Ric_heur extends Heuristic {
 			return state.getWinner();
 		}
 		
-		// calculate a ratio of swede to musco pieces remaining on the board
+		// calculate a ratio of white to black pieces remaining on the board
 		int whitePieceCount = state.getNumberPlayerPieces(BoardState.WHITE);
 		int blackPieceCount = state.getNumberPlayerPieces(BoardState.BLACK);
 		int totalPieceCount = whitePieceCount + blackPieceCount;
 		double pieceH = (whitePieceCount*1.0/totalPieceCount);
 		
-		// calculate the distance of the king to a corner
+		// calculate the distance of the king to the closest escape
 		int kingDistToEscape = Coordinates.distanceToClosestEscape(state.getKingPosition());
 		int maxDistToEscape = 6;
 		double distToEscape= ((maxDistToEscape-kingDistToEscape)*1.0/maxDistToEscape);
