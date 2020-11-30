@@ -59,7 +59,6 @@ public class OfflineMainThread extends Thread {
             hWhite.getWeightBag().reset();
             hBlack.getWeightBag().reset();
 
-            //TODO: Add tuning loop
             while (hWhite.getWeightBag().retune()) { // loop throug white heuristic weights
                 while (hBlack.getWeightBag().retune()) { // loop throug black heuristic weights
                     int games = 1;

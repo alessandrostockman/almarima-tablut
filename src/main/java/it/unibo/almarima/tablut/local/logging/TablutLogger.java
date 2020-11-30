@@ -11,7 +11,6 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.unibo.almarima.tablut.application.heuristics.Heuristic;
 import it.unibo.almarima.tablut.application.heuristics.WeightHeuristic;
 import it.unibo.almarima.tablut.local.exceptions.AgentStoppedException;
 
@@ -52,7 +51,7 @@ public class TablutLogger {
 
 	public static void setup(WeightHeuristic hWhite, WeightHeuristic hBlack, int game) {
 		TablutLogger.reset();
-		TablutLogger.runDirectory += "heur_" + hWhite.toString() + "[W]_vs_" + hBlack.toString() + "[B]";
+		TablutLogger.runDirectory = "heur_" + hWhite.toString() + "[W]_vs_" + hBlack.toString() + "[B]";
 		TablutLogger.runDirectory += File.separator + "tuning_" + hWhite.getWeightBag().toString() + "[W]_vs_" + hBlack.getWeightBag().toString() + "[B]";
 		TablutLogger.runDirectory +=  File.separator + "game_" + game;
 	}

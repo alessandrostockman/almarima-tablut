@@ -25,13 +25,13 @@ public class StockHeuristic extends WeightHeuristic {
 
 	@Override
 	public WeightBag createWeightBag() {
-		w = new WeightBag(false);
-		w.addWeight(Parameter.KING_SAFETY, 1);
-		w.addWeight(Parameter.KING_ESCAPE, 1);
-		w.addWeight(Parameter.WHITE_ENDANGERED_PAWNS, 1);
-		w.addWeight(Parameter.BLACK_ENDANGERED_PAWNS, 1);
-		w.addWeight(Parameter.WHITE_PAWN_NUMBER, 1);
-		w.addWeight(Parameter.BLACK_PAWN_NUMBER, 1);
+		w = new WeightBag(true);
+		w.addWeight(Parameter.KING_SAFETY, 0.7, new WeightTuner(0.7, 0.8, 0.1));
+		w.addWeight(Parameter.KING_ESCAPE, 0.9);
+		w.addWeight(Parameter.WHITE_ENDANGERED_PAWNS, 0.6);
+		w.addWeight(Parameter.BLACK_ENDANGERED_PAWNS, 0.5);
+		w.addWeight(Parameter.WHITE_PAWN_NUMBER, 0.3);
+		w.addWeight(Parameter.BLACK_PAWN_NUMBER, 0.2);
 		return w;
 	}
 

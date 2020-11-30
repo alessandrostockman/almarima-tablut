@@ -15,7 +15,7 @@ public class LocalMain {
         /** Game Parameters */
         int gamesNumber = 2;
         WeightHeuristic firstHeuristic = new RicHeur();
-        WeightHeuristic secondHeuristic = new WeightedHeuristic();
+        WeightHeuristic secondHeuristic = new StockHeuristic();
 
         /** Server Configs */
         int serverTimeout = 300;
