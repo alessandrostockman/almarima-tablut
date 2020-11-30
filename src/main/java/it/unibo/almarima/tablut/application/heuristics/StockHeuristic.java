@@ -8,16 +8,15 @@ import it.unibo.almarima.tablut.application.domain.Coordinates;
 import it.unibo.almarima.tablut.external.State.Pawn;
 import it.unibo.almarima.tablut.external.State.Turn;
 
-public class StockHeuristic extends Heuristic {
+public class StockHeuristic extends WeightHeuristic {
 
-	private int[] weights = {1, 1, 1, 1, 1};
+	private WeightBag w;
 
 	private int whitePieces;
 	private int blackPieces;
 	private Coord king;
 
 	public StockHeuristic() {
-		super();
 	}
 
 	enum PawnState {
@@ -34,26 +33,34 @@ public class StockHeuristic extends Heuristic {
 		}
 	}
 
-	public double evaluate(BoardState state) {
-		if (state.getWinner() == 0 || state.getWinner() == 1) {
-			return state.getWinner();
-		}
-
+	public void initVariables(BoardState state) {
 		this.whitePieces = state.getNumberPlayerPieces(BoardState.WHITE);
 		this.blackPieces = state.getNumberPlayerPieces(BoardState.BLACK);
 		this.king = state.getKingPosition();
+	}
 
-		double kingSafety = this.getKingSafetyIndex(state);
-		double kingEscaping = this.getKingEscaping(state);
-		double endangeredWhitePawns = this.getEndangeredPawns(state, Turn.WHITE);
-		double endangeredBlackPawns = this.getEndangeredPawns(state, Turn.BLACK);
-		double pawnNumber = this.getWeightedPawnNumber();
+	public Parameter[] getEnabledParameters() {
+		Parameter[] ps = {Parameter.KING_SAFETY, Parameter.KING_ESCAPE, Parameter.WHITE_ENDANGERED_PAWNS, Parameter.BLACK_ENDANGERED_PAWNS, Parameter.WHITE_PAWN_NUMBER, Parameter.BLACK_PAWN_NUMBER};
+		return ps;
+	}
 
-		double weightSum = 0;
-		for (double w : this.weights) {
-			weightSum += w;
+	public double computeParameterValue(Parameter p, BoardState state) {
+		switch (p) {
+			case KING_SAFETY:
+				return this.getKingSafetyIndex(state);
+			case KING_ESCAPE:
+				return this.getKingEscaping(state);
+			case WHITE_ENDANGERED_PAWNS:
+				return this.getEndangeredPawns(state, Turn.WHITE);
+			case BLACK_ENDANGERED_PAWNS:
+				return this.getEndangeredPawns(state, Turn.WHITE);
+			case WHITE_PAWN_NUMBER:
+				return this.getWeightedPawnNumber();
+			case BLACK_PAWN_NUMBER:
+				return this.getWeightedPawnNumber();
+			default:
+				return 0.5;
 		}
-		return (kingSafety * weights[0] + kingEscaping * weights[1] + endangeredWhitePawns * weights[2] + endangeredBlackPawns * weights[3] + pawnNumber * weights[4]) / weightSum;
 	}
 
 	private double getKingSafetyIndex(BoardState bs) {
@@ -67,6 +74,8 @@ public class StockHeuristic extends Heuristic {
 
 	private double getKingEscaping(BoardState bs) {
 		double points = 0;
+
+
 
 		if (this.king.x < 3 || this.king.x > 4) {
 			points += 2;
@@ -83,6 +92,18 @@ public class StockHeuristic extends Heuristic {
 		}
 
 		return points / 10;
+	}
+
+	@Override
+	public WeightBag createWeightBag() {
+		w = new WeightBag(true);
+		w.addWeight(Parameter.KING_SAFETY, 1);
+		w.addWeight(Parameter.KING_ESCAPE, 1);
+		w.addWeight(Parameter.WHITE_ENDANGERED_PAWNS, 1);
+		w.addWeight(Parameter.BLACK_ENDANGERED_PAWNS, 1);
+		w.addWeight(Parameter.WHITE_PAWN_NUMBER, 1);
+		w.addWeight(Parameter.BLACK_PAWN_NUMBER, 1);
+		return w;
 	}
 
 	private double getWeightedPawnNumber() {
@@ -137,6 +158,6 @@ public class StockHeuristic extends Heuristic {
 		} else {
 			return PawnState.Dangerous;
 		}
-	} 
+	}
 	
 }

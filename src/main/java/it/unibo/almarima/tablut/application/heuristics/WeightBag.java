@@ -1,12 +1,18 @@
 package it.unibo.almarima.tablut.application.heuristics;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WeightBag {
 
-	private List<Double> weights;
+	private boolean tuning;
+	private Map<Parameter, Double> weights;
+	private double sum;
 
-	public WeightBag() {}
+	public WeightBag(boolean tuning) {
+		this.tuning = tuning;
+		this.weights = new HashMap<>();
+	}
 
 	private boolean retune = true;
 	public boolean retune() {
@@ -18,15 +24,21 @@ public class WeightBag {
 	}
 
 	public void reset() {
-		
+		//this.weights.clear();
+		//this.sum = 0;
 	}
 
-	public List<Double> getWeights() {
-		return this.weights;
+	public void addWeight(Parameter p, double w) {
+		this.weights.put(p, w);
+		this.sum += w;
 	}
 
-	public void setWeights(List<Double> weights) {
-		this.weights = weights;
+	public double getWeight(Parameter p) {
+		return this.weights.get(p);
+	}
+
+	public double getSum() {
+		return this.sum;
 	}
 	
 }

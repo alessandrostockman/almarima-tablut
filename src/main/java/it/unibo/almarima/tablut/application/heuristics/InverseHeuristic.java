@@ -2,17 +2,36 @@ package it.unibo.almarima.tablut.application.heuristics;
 
 import it.unibo.almarima.tablut.application.domain.BoardState;
 
-public class InverseHeuristic extends Heuristic {
+public class InverseHeuristic extends WeightHeuristic {
 
-	private Heuristic other;
+	private WeightHeuristic other;
 
-	public InverseHeuristic(Heuristic other) {
-		super();
+	public InverseHeuristic(WeightHeuristic other) {
 		this.other = other;
+		this.w = other.getWeightBag();
 	}
 
-	public double evaluate(BoardState state) {
-		return 1 - this.other.evaluate(state);
+	@Override
+	public WeightBag createWeightBag() {
+		if (other == null) {
+			return null;
+		}
+		return this.other.getWeightBag();
+	}
+
+	@Override
+	public void initVariables(BoardState state) { 
+		this.other.initVariables(state);
+	}
+
+	@Override
+	public Parameter[] getEnabledParameters() {
+		return this.other.getEnabledParameters();
+	}
+
+	@Override
+	public double computeParameterValue(Parameter p, BoardState state) {
+		return 1 - this.other.computeParameterValue(p, state);
 	}
 
 }

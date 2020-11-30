@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.unibo.almarima.tablut.application.heuristics.Heuristic;
+import it.unibo.almarima.tablut.application.heuristics.*;
 import it.unibo.almarima.tablut.external.State.Turn;
 import it.unibo.almarima.tablut.local.config.ClientConfig;
 import it.unibo.almarima.tablut.local.exceptions.AgentStoppedException;
@@ -16,8 +16,8 @@ public class OfflineMainThread extends Thread {
     private OfflineAgent agent;
     private int maxGames;
 
-    protected Heuristic h1;
-    protected Heuristic h2;
+    protected WeightHeuristic h1;
+    protected WeightHeuristic h2;
 
     private int whiteWins = 0;
     private int blackWins = 0;
@@ -32,7 +32,7 @@ public class OfflineMainThread extends Thread {
     private ClientConfig config;
 
     //TODO: Think better to object passed here
-    public OfflineMainThread(OfflineAgent agent, int games, Heuristic h1, Heuristic h2, Shared whiteShared,
+    public OfflineMainThread(OfflineAgent agent, int games, WeightHeuristic h1, WeightHeuristic h2, Shared whiteShared,
             Shared blackShared, ClientConfig config) {
         this.agent = agent;
         this.maxGames = games;
@@ -44,7 +44,7 @@ public class OfflineMainThread extends Thread {
     }
 
     public void run() {
-        Heuristic hWhite, hBlack;
+        WeightHeuristic hWhite, hBlack;
         for (int run = 0; run < 2; run++) { // loop throug h1 and h2
             if (run == 0) {
                 hWhite = this.h1;
