@@ -58,6 +58,46 @@ public class StateTablut extends State implements Serializable {
 
 	}
 
+	// //TODO: per debug
+	// public StateTablut(){
+	// 	super();
+	// 	this.board = new Pawn[9][9];
+
+	// 	for (int i = 0; i < 9; i++) {
+	// 		for (int j = 0; j < 9; j++) {
+	// 			this.board[i][j] = Pawn.EMPTY;
+	// 		}
+	// 	}
+
+	// 	this.turn = Turn.WHITE;
+
+
+	// 	this.board[4][4] = Pawn.THRONE;
+	// 	this.board[6][1] = Pawn.KING;
+
+
+	// 	this.board[2][2] = Pawn.WHITE;
+	// 	this.board[2][3] = Pawn.WHITE;
+	// 	this.board[3][4] = Pawn.WHITE;
+	// 	this.board[4][5] = Pawn.WHITE;
+	// 	this.board[4][6] = Pawn.WHITE;
+	// 	this.board[6][0] = Pawn.WHITE;
+	// 	this.board[8][1] = Pawn.WHITE;
+		
+
+	// 	this.board[0][0] = Pawn.BLACK;
+	// 	this.board[0][4] = Pawn.BLACK;
+	// 	this.board[1][2] = Pawn.BLACK;
+	// 	this.board[1][5] = Pawn.BLACK;
+	// 	this.board[3][8] = Pawn.BLACK;
+	// 	this.board[4][7] = Pawn.BLACK;
+	// 	this.board[5][2] = Pawn.BLACK;
+	// 	this.board[5][8] = Pawn.BLACK;
+	// 	this.board[6][4] = Pawn.BLACK;
+	// 	this.board[8][2] = Pawn.BLACK;	
+
+	// }
+
 	public StateTablut clone() {
 		StateTablut result = new StateTablut();
 

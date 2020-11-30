@@ -7,7 +7,7 @@ public class Shared {
 
     private Action move;
     private State state;
-    private int turnNumber=1;
+    private int turnNumber = 1;
 
     private boolean serverStarted = false;
     private boolean moveRequired = false;
@@ -53,8 +53,12 @@ public class Shared {
         return turnNumber;
     }
 
-    public void setTurnNumber(int turnNumber) {
-        this.turnNumber = turnNumber;
+    public void incrementTurnNumber() {
+        this.turnNumber++;
+    }
+
+    public void resetTurnNumber() {
+        this.turnNumber = 1;
     }
 
     public boolean getMoveRequired() {

@@ -11,10 +11,6 @@ public class Scheduler {
 
     private Thread thread;
 
-    public Scheduler() throws UnknownHostException, IOException {
-        this(2, new StockHeuristic(), new InverseHeuristic(new StockHeuristic()), new ServerConfig(), new ClientConfig());
-    }
-
     public Scheduler(int games, WeightHeuristic h1, WeightHeuristic h2, ServerConfig sConfig, ClientConfig cConfig) throws UnknownHostException, IOException {
         Shared whiteShared = new Shared();
         Shared blackShared = new Shared();
