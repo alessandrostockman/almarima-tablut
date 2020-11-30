@@ -5,7 +5,7 @@ import it.unibo.almarima.tablut.application.domain.Valuation;
 import it.unibo.almarima.tablut.application.heuristics.Heuristic;
 import it.unibo.almarima.tablut.application.player.MiniMaxTree.TimeLimitException;
 import it.unibo.almarima.tablut.external.State;
-import it.unibo.almarima.tablut.local.control.TablutLogger;
+import it.unibo.almarima.tablut.local.logging.TablutLogger;
 import it.unibo.almarima.tablut.local.game.Data;
 
 
