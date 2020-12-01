@@ -66,7 +66,7 @@ public class ImplPlayer extends TablutPlayer{
 		TablutLogger.log(s, "Computed move at depth " + d.getDepth() + " in " + time + " ms");
 		TablutLogger.log(s, "Heuristics evaluated: " + d.getHeuristics());
 		TablutLogger.log(s, "Prunes applied: " + d.getPrunings());;
-		TablutLogger.log(s, "Moves considered: " + d.getMoves());
+		TablutLogger.log(s, "Moves considered: " + d.getMoves() + "\n");
 	}
 
             
