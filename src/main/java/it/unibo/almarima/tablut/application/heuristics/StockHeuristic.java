@@ -141,7 +141,7 @@ public class StockHeuristic extends Heuristic {
 
 	@Override
 	public String printInfo() {
-		return this.toString()+"\nAlessandro fallo tu io non lo so ";
+		return this.toString()+"\nHere without any use for sentimental reasons ";
 	}
 	
 }
