@@ -8,6 +8,7 @@ public class Shared {
     private Action move;
     private State state;
     private int turnNumber = 1;
+    private int randomMoves = 0;
 
     private boolean serverStarted = false;
     private boolean moveRequired = false;
@@ -15,6 +16,13 @@ public class Shared {
     private String name = "";
 
     public Shared() {
+    }
+
+    public void reset() {
+        this.turnNumber = 1;
+        this.randomMoves = 0;
+        this.setServerStarted(true);
+        this.setGameOver(false);
     }
 
     public Action getMove() {
@@ -57,8 +65,12 @@ public class Shared {
         this.turnNumber++;
     }
 
-    public void resetTurnNumber() {
-        this.turnNumber = 1;
+    public int getRandomMoves() {
+        return this.randomMoves;
+    }
+
+    public void incrementRandomMoves() {
+        this.randomMoves++;
     }
 
     public boolean getMoveRequired() {

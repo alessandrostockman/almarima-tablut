@@ -70,15 +70,14 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 				if (this.shared.getGameOver()) {
 					throw new AgentStoppedException();
 				}
-
-				if (!this.shared.getMoveRequired()) {
-					synchronized (this.shared) {
+				synchronized (this.shared) {
+					if (!this.shared.getMoveRequired()) {
 						System.out.println(this.getPlayer()+": Wait 3 [Move processed]");
 						this.shared.wait();
 						System.out.println(this.getPlayer()+": Wake 3 [Move processed]");
 					}
+					this.setCurrentState(this.shared.getState());
 				}
-				this.setCurrentState(this.shared.getState());
 
 				if (this.isYourTurn()) {
 					// System.out.println("Player " + this.getPlayer().toString() + ", do your move: ");
@@ -94,6 +93,9 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 					loggClient.fine("IterDepth reached:  " + Integer.toString(d.getDepth())+"\n\n");
 
 					synchronized (this.shared) {
+						if (d.getValuation().gethVal() == -1 && d.getValuation().getDepthAttained() == -1) {
+							this.shared.incrementRandomMoves();
+						}
 						this.shared.setMove(action);
 						this.shared.setMoveRequired(false);
 						this.shared.notify();

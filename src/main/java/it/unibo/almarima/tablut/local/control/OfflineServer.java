@@ -116,17 +116,13 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		String blackName = "BP";
 
 		synchronized (this.whiteShared) {
-			this.whiteShared.setServerStarted(true);
-			this.whiteShared.setGameOver(false);
-			this.whiteShared.resetTurnNumber();
+			this.whiteShared.reset();
 			this.whiteShared.notify();
 			System.out.println("S: Notify 1 (W) [Server started]");
 		}
 
 		synchronized (this.blackShared) {
-			this.blackShared.setServerStarted(true);
-			this.blackShared.setGameOver(false);
-			this.blackShared.resetTurnNumber();
+			this.blackShared.reset();
 			this.blackShared.notify();
 			System.out.println("S: Notify 1 (B) [Server started]");
 		}
@@ -179,7 +175,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 
 		synchronized (this.whiteShared) {
 			System.out.println("S: Notify 3 (W) [First move processed]");
-			this.blackShared.setMoveRequired(true);
+			this.whiteShared.setMoveRequired(true);
 			this.whiteShared.setState(state);
 			this.whiteShared.notify();
 		}
@@ -196,7 +192,9 @@ public class OfflineServer implements Runnable, OfflineAgent {
 		}
 
 		// GAME CYCLE
+		int turns = 0;
 		while (!endgame) {
+			turns++;
 			// RECEIVE MOVE
 
 			// System.out.println("State: \n"+state.toString());
@@ -327,7 +325,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 				break;
 			default:
 				loggSys.warning("Chiusura sistema");
-				throw new GameFinishedException(state.getTurn());
+				throw new GameFinishedException(state.getTurn(), whiteShared.getRandomMoves(), blackShared.getRandomMoves(), turns);
 			}
 
 		}
@@ -344,7 +342,7 @@ public class OfflineServer implements Runnable, OfflineAgent {
 			System.out.println("S: Notify 5 (B) [Player won]");
 		}
 
-		throw new GameFinishedException(state.getTurn());
+		throw new GameFinishedException(state.getTurn(), whiteShared.getRandomMoves(), blackShared.getRandomMoves(), turns);
 	}
 	
 	private String sanitizeString(String name) {

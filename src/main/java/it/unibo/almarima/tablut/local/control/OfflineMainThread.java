@@ -15,14 +15,25 @@ import it.unibo.almarima.tablut.local.logging.TablutLogger;
 
 public class OfflineMainThread extends Thread {
 
+    private Map<Integer, Integer> runTurns;
+    private int h1RandomMoves = 0;
+    private int h2RandomMoves = 0;
+    private int totalGames = 0;
+    private int h1Wins = 0;
+    private int h2Wins = 0;
+    private int whiteWins = 0;
+    private int whiteH1Wins = 0;
+    private int whiteH2Wins = 0;
+    private int blackWins = 0;
+    private int blackH1Wins = 0;
+    private int blackH2Wins = 0;
+    private int draws = 0;
+
     private OfflineAgent agent;
     private int maxGames;
 
     protected Heuristic h1;
     protected Heuristic h2;
-
-    private Map<String, Integer> wins;
-    private int draws = 0;
 
     private Thread whiteThread;
     private Thread blackThread;
@@ -43,7 +54,7 @@ public class OfflineMainThread extends Thread {
         this.blackShared = blackShared;
         this.config = config;
 
-        this.wins = new HashMap<>();
+        this.runTurns = new HashMap<>();
     }
 
     public void run() {
@@ -80,7 +91,7 @@ public class OfflineMainThread extends Thread {
                         this.agent.execute();
                         return;
                     } catch (GameFinishedException e) {
-                        this.endRunReport(e, hWhite, hBlack);
+                        this.endRunReport(e, hWhite, hBlack, games + (run * this.maxGames));
                         games++;
                     } catch (AgentStoppedException e) { 
                         games++;
@@ -92,32 +103,41 @@ public class OfflineMainThread extends Thread {
         this.endGameReport();
     }
     
-    public void endRunReport(GameFinishedException e, Heuristic hWhite, Heuristic hBlack) {
-        String whiteKey = hWhite.toString();
-        String blackKey = hBlack.toString();
-        String drawKey = "Draws";
+    public void endRunReport(GameFinishedException e, Heuristic hWhite, Heuristic hBlack, int run) {
+        this.runTurns.put(run, e.getTurnNumber());
+        this.totalGames++;
 
-        if (!this.wins.containsKey(whiteKey)) {
-            this.wins.put(whiteKey, 0);
-        }
-
-        if (!this.wins.containsKey(blackKey)) {
-            this.wins.put(blackKey, 0);
-        }
-
-        if (!this.wins.containsKey(drawKey)) {
-            this.wins.put(drawKey, 0);
+        if (hWhite.equals(this.h1)) {
+            this.h1RandomMoves += e.getWhiteRandomMoves();
+            this.h2RandomMoves += e.getBlackRandomMoves();
+        } else {
+            this.h1RandomMoves += e.getBlackRandomMoves();
+            this.h2RandomMoves += e.getWhiteRandomMoves();
         }
 
         switch (e.getWinner()) {
             case WHITEWIN:
-                this.wins.put(whiteKey, this.wins.get(whiteKey) + 1);
+                if (this.h1.equals(hWhite)) {
+                    this.h1Wins++;
+                    this.whiteH1Wins++;
+                } else {
+                    this.h2Wins++;
+                    this.whiteH2Wins++;
+                }
+                this.whiteWins++;
                 break;
             case BLACKWIN:
-                this.wins.put(blackKey, this.wins.get(blackKey) + 1);
+                if (this.h1.equals(hBlack)) {
+                    this.h1Wins++;
+                    this.blackH1Wins++;
+                } else {
+                    this.h2Wins++;
+                    this.blackH2Wins++;
+                }
+                this.blackWins++;
                 break;
             case DRAW:
-                this.wins.put(drawKey, this.wins.get(drawKey) + 1);
+                this.draws++;
                 break;
             default:
                 break;
@@ -134,13 +154,31 @@ public class OfflineMainThread extends Thread {
             loggReport = TablutLogger.get(TablutLogger.LogSpace.REPORT);
             loggReport.setLevel(Level.FINE);
 
-            int total = 0;
-            for (String key : this.wins.keySet()) {
-                total += this.wins.get(key);
-                loggReport.fine(key + ": " + this.wins.get(key));
-            }
+            loggReport.fine(this.h1.toString() + " Details: " + this.h1.printInfo() + "\n\n");
+            loggReport.fine(this.h2.toString() + " Details: " + this.h2.printInfo() + "\n\n");
 
-            loggReport.fine("Total games played: " + total);
+            int tot = 0;
+            loggReport.fine("Number of Games: " + this.totalGames);
+            for (int key : this.runTurns.keySet()) {
+                tot += this.runTurns.get(key);
+                loggReport.fine("Run " + key + " turns: " + this.runTurns.get(key));
+            }
+            loggReport.fine("Average Turns Number: " + tot / this.totalGames + "\n\n");
+
+            
+            loggReport.fine(this.h1.toString() + ": " + this.h1Wins);
+            loggReport.fine(this.h1.toString() + " (as White): " + this.whiteH1Wins);
+            loggReport.fine(this.h1.toString() + " (as Black): " + this.blackH1Wins);
+            loggReport.fine(this.h2.toString() + ": " + this.h2Wins);
+            loggReport.fine(this.h2.toString() + " (as White): " + this.whiteH2Wins);
+            loggReport.fine(this.h2.toString() + " (as Black): " + this.blackH2Wins);
+            loggReport.fine("Total White wins: " + this.whiteWins);
+            loggReport.fine("Total Black wins: " + this.blackWins);
+            loggReport.fine("Draws: " + this.draws + "\n\n");
+            
+            loggReport.fine("Random moves played (" + this.h1.toString() + "): " + this.h1RandomMoves);
+            loggReport.fine("Random moves played (" + this.h2.toString() + "): " + this.h2RandomMoves);
+
         } catch (AgentStoppedException e) {
             e.printStackTrace();
         }
