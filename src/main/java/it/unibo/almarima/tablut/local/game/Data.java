@@ -12,12 +12,14 @@ public class Data {
     private Valuation v;
     private int depth;
     private int heuristics;
+    private int prunings;
 	
-	public Data(Move m, Valuation v,int iterDepth, int heuristics) {
+	public Data(Move m, Valuation v,int iterDepth, int heuristics, int prunings) {
         this.m=m;
         this.v=v;
         this.depth=iterDepth;
         this.heuristics = heuristics;
+        this.prunings = prunings;
     }
 
     public Move getMove() {
@@ -44,8 +46,12 @@ public class Data {
         this.depth = depth;
     }
 
-    public int getheuristics() {
-        return heuristics;
+    public int getHeuristics() {
+        return this.heuristics;
+    }
+
+    public int getPrunings() {
+        return this.prunings;
     }
     
     

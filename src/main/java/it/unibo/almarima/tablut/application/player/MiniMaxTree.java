@@ -26,6 +26,7 @@ public class MiniMaxTree {
 	public Heuristic h;
 	
 	private int heuristicsComputed = 0;
+	private int pruningsDone = 0;
 
     public MiniMaxTree(int maxDepth, BoardState headBoardState, long endTime,Heuristic h) {
         this.headBoardState = headBoardState;
@@ -64,7 +65,7 @@ public class MiniMaxTree {
                     maxMove = move;
 				}
 			}
-			return new Data(maxMove, alpha, maxDepth, this.heuristicsComputed);
+			return new Data(maxMove, alpha, maxDepth, this.heuristicsComputed, this.pruningsDone);
 		}
 		else {       // if the player with the turn is a BLACK then minimize
 			
@@ -86,7 +87,7 @@ public class MiniMaxTree {
                     minMove = move;
 				}
 			}
-			return new Data(minMove,beta,maxDepth, this.heuristicsComputed);
+			return new Data(minMove,beta,maxDepth, this.heuristicsComputed, this.pruningsDone);
 		}
     }
     
@@ -132,6 +133,7 @@ public class MiniMaxTree {
 				// TODO: Check if it's correct to prune with > depth
 				// TODO: if correct replicate these changes to main branches
 				if (alpha.gethVal() > beta.gethVal() || alpha.gethVal() == beta.gethVal() && (alpha.gethVal() != this.headBoardState.getTurnPlayer() || depth >= alpha.getDepthAttained())){
+					this.pruningsDone++;
                     break;
                 }
 			}
@@ -167,6 +169,7 @@ public class MiniMaxTree {
 				// TODO: Check if it's correct to prune with > depth
 				// TODO: if correct replicate these changes to main branches
                 if (beta.gethVal() < alpha.gethVal() || beta.gethVal() == alpha.gethVal() && (beta.gethVal() != this.headBoardState.getTurnPlayer() || depth >= beta.getDepthAttained())){
+					this.pruningsDone++;
                     break;
 				}
 			}
