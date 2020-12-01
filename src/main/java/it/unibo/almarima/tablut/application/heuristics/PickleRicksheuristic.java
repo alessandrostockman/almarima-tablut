@@ -94,7 +94,7 @@ public class PickleRicksheuristic extends Heuristic{
                     break;
                 case 2:
                     if(!this.getRow(2,bs).contains(Pawn.BLACK)){
-                            value+=10;
+                        value+=10;
                         if(!this.getRow(2,bs).contains(Pawn.WHITE))
                             value+= 500;
                     }
@@ -107,28 +107,32 @@ public class PickleRicksheuristic extends Heuristic{
         //verifies the columns
         switch (kingPos.y) {
             case 6:
-                if(!this.getColumn(6,bs).contains(Pawn.BLACK))
+                if(!this.getColumn(6,bs).contains(Pawn.BLACK)){
                     value+=10;
-                    if(this.getColumn(6,bs).contains(Pawn.WHITE))
+                    if(!this.getColumn(6,bs).contains(Pawn.WHITE))
                         value+= 500;
+                }
                 break;
             case 7:
-                if(!this.getColumn(7,bs).contains(Pawn.BLACK))
+                if(!this.getColumn(7,bs).contains(Pawn.BLACK)){
                         value+=10;
-                        if(this.getColumn(7,bs).contains(Pawn.WHITE))
+                        if(!this.getColumn(7,bs).contains(Pawn.WHITE))
                             value+= 500;
+                }
                 break;
             case 1:
-                if(!this.getColumn(1,bs).contains(Pawn.BLACK))
+                if(!this.getColumn(1,bs).contains(Pawn.BLACK)){
                     value+=10;
-                if(this.getColumn(1,bs).contains(Pawn.WHITE))
-                    value+= 500;
+                    if(this.getColumn(1,bs).contains(Pawn.WHITE))
+                        value+= 500;
+                }
                 break;
             case 2:
-                if(!this.getColumn(2,bs).contains(Pawn.BLACK))
-                        value+=10;
-                    if(this.getColumn(2,bs).contains(Pawn.WHITE))
+                if(!this.getColumn(2,bs).contains(Pawn.BLACK)){
+                    value+=10;
+                    if(!this.getColumn(2,bs).contains(Pawn.WHITE))
                         value+= 500;
+                }
                 break;
             default:
                 //the king is now on escape rows
