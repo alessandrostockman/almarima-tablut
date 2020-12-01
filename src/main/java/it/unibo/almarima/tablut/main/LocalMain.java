@@ -15,7 +15,7 @@ public class LocalMain {
         /** Game Parameters */
         int gamesNumber = 3;
         Heuristic firstHeuristic = new PickleRicksheuristic();
-        Heuristic secondHeuristic = new WeightedHeuristic();
+        Heuristic secondHeuristic = new Mars_heur();
 
         /** Server Configs */
         int serverTimeout = 300;
