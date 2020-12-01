@@ -27,6 +27,7 @@ public class MiniMaxTree {
 	
 	private int heuristicsComputed = 0;
 	private int pruningsDone = 0;
+	private int movesNumber = 0;
 
     public MiniMaxTree(int maxDepth, BoardState headBoardState, long endTime,Heuristic h) {
         this.headBoardState = headBoardState;
@@ -39,6 +40,8 @@ public class MiniMaxTree {
 	// but also the corresponding moves that led to those values.
     public Data getBestMove() throws TimeLimitException {
 		this.heuristicsComputed = 0;
+		this.pruningsDone = 0;
+		this.movesNumber = 0;
 		
         int depth = 0;
 		Valuation alpha = new Valuation(0.0, maxDepth+1);      
@@ -52,6 +55,7 @@ public class MiniMaxTree {
 
 			// iterate through all possible moves
 			for (Move move : nextMoves) {
+				this.movesNumber++;
 
 				// clone the bs and process the move to generate a new board
 				BoardState childBS = (BoardState) this.headBoardState.clone();
@@ -65,7 +69,7 @@ public class MiniMaxTree {
                     maxMove = move;
 				}
 			}
-			return new Data(maxMove, alpha, maxDepth, this.heuristicsComputed, this.pruningsDone);
+			return new Data(maxMove, alpha, maxDepth, this.heuristicsComputed, this.pruningsDone, this.movesNumber);
 		}
 		else {       // if the player with the turn is a BLACK then minimize
 			
@@ -74,6 +78,7 @@ public class MiniMaxTree {
 
 			// iterate through all possible moves
 			for (Move move : nextMoves) {
+				this.movesNumber++;
 
 				// clone the bs and process the move to generate a new board
 				BoardState childBS = (BoardState) this.headBoardState.clone();
@@ -87,7 +92,7 @@ public class MiniMaxTree {
                     minMove = move;
 				}
 			}
-			return new Data(minMove,beta,maxDepth, this.heuristicsComputed, this.pruningsDone);
+			return new Data(minMove,beta,maxDepth, this.heuristicsComputed, this.pruningsDone, this.movesNumber);
 		}
     }
     
@@ -115,6 +120,7 @@ public class MiniMaxTree {
 
 			// iterate through all possible moves
 			for (Move move : nextMoves) {
+				this.movesNumber++;
 
 				// clone the bs and process the move to generate a new board
 				BoardState childBS = (BoardState) nodeBS.clone();
@@ -151,6 +157,7 @@ public class MiniMaxTree {
 
 			// iterate through all possible moves
 			for (Move move : nextMoves) {
+				this.movesNumber++;
 
 				// clone the bs and process the move to generate a new board
 				BoardState childBS = (BoardState) nodeBS.clone();

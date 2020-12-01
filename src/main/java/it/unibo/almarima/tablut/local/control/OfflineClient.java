@@ -58,6 +58,7 @@ public class OfflineClient extends TablutClient implements OfflineAgent {
 		Logger loggClient = TablutLogger.get(this.getPlayer().equals(Turn.WHITE) ? TablutLogger.LogSpace.WHITE : TablutLogger.LogSpace.BLACK);
         TablutPlayer p = new ImplPlayer(this.getTimeout(), this.getPlayer(), this.heuristic);
 		
+		loggClient.fine("Heuristic " + this.heuristic.printInfo() + "\n\n");
 		// System.out.println("You are player " + this.getPlayer().toString() + "!");
 		synchronized (this.shared) {
 			System.out.println(this.getPlayer()+": Notify 2 [Player name set]");
