@@ -157,6 +157,11 @@ public class PickleRicksheuristic extends Heuristic{
             ret.add(b.getPawnAt(Coordinates.get(j,i)));
         return ret;
     }
+
+    @Override
+    public String printInfo() {
+        return this.toString() +"\nboooh";
+    }
     
     
 }

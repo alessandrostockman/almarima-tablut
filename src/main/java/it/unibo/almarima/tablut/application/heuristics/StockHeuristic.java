@@ -137,6 +137,11 @@ public class StockHeuristic extends Heuristic {
 		} else {
 			return PawnState.Dangerous;
 		}
-	} 
+	}
+
+	@Override
+	public String printInfo() {
+		return this.toString()+"\nAlessandro fallo tu io non lo so ";
+	}
 	
 }
