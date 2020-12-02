@@ -48,7 +48,7 @@ public class Mars_heur extends Heuristic {
 		double escapeLine = this.checkKingEscapeLine(state);
         
 		// weigh the two h values calculated above
-		double h = (pieceH*pieceHWeight + distToEscape*distToEscapeWeight+surrKing*dangerKingWeight+escapeLine*escapeLineWeight); 
+		double h = (pieceH*pieceHWeight + distToEscape*distToEscapeWeight+surrKing*dangerKingWeight+escapeLine*escapeLineWeight)/(pieceHWeight+distToEscapeWeight+dangerKingWeight+escapeLineWeight); 
 
 		return h;
 	}
