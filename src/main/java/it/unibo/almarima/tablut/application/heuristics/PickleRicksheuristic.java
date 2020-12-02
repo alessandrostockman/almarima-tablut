@@ -57,13 +57,21 @@ public class PickleRicksheuristic extends Heuristic{
     //checks if on the above/under + left/right lines w.r.t. the king there are black pieces
     private int checkKingLines(BoardState bs, Coord kingPos){
         int value=0;
-        if(!this.getRow(kingPos.x+1,bs).contains(Pawn.BLACK))
+        if(!this.getRow(2,bs).contains(Pawn.BLACK))
             value++;
-        if(!this.getRow(kingPos.x-1,bs).contains(Pawn.BLACK))
+        if(!this.getRow(3,bs).contains(Pawn.BLACK))
             value ++;
-        if (!this.getColumn(kingPos.y+1,bs).contains(Pawn.BLACK))
+        if (!this.getColumn(2,bs).contains(Pawn.BLACK))
             value++;
-        if (!this.getColumn(kingPos.y-1,bs).contains(Pawn.BLACK))
+        if (!this.getColumn(3,bs).contains(Pawn.BLACK))
+            value++;
+        if(!this.getRow(5,bs).contains(Pawn.BLACK))
+            value++;
+        if(!this.getRow(6,bs).contains(Pawn.BLACK))
+            value ++;
+        if (!this.getColumn(5,bs).contains(Pawn.BLACK))
+            value++;
+        if (!this.getColumn(6,bs).contains(Pawn.BLACK))
             value++;
         return value;
     }
@@ -78,20 +86,20 @@ public class PickleRicksheuristic extends Heuristic{
                             value+= 500;
                     }
                     break;
-                case 7:
+                /*case 7:
                     if(!this.getRow(7,bs).contains(Pawn.BLACK)){
                             value+=10;
                             if(!this.getRow(7,bs).contains(Pawn.WHITE))
                                 value+= 500;
                     }
-                    break;
-                case 1:
+                    break;*/
+                /*case 1:
                     if(!this.getRow(1,bs).contains(Pawn.BLACK)){
                         value+=10;
                         if(!this.getRow(1,bs).contains(Pawn.WHITE))
                             value+= 500;
                     }
-                    break;
+                    break;*/
                 case 2:
                     if(!this.getRow(2,bs).contains(Pawn.BLACK)){
                         value+=10;
@@ -113,20 +121,20 @@ public class PickleRicksheuristic extends Heuristic{
                         value+= 500;
                 }
                 break;
-            case 7:
+            /*case 7:
                 if(!this.getColumn(7,bs).contains(Pawn.BLACK)){
                         value+=10;
                         if(!this.getColumn(7,bs).contains(Pawn.WHITE))
                             value+= 500;
                 }
-                break;
-            case 1:
+                break;*/
+            /*case 1:
                 if(!this.getColumn(1,bs).contains(Pawn.BLACK)){
                     value+=10;
                     if(this.getColumn(1,bs).contains(Pawn.WHITE))
                         value+= 500;
                 }
-                break;
+                break;*/
             case 2:
                 if(!this.getColumn(2,bs).contains(Pawn.BLACK)){
                     value+=10;

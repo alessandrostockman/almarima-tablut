@@ -73,6 +73,4 @@ public class WeightedHeuristic extends Heuristic {
 	public String printInfo() {
 		return this.toString()+"\na: "+a+"\nb: "+b+"\nc: "+c+"\nd: "+d;
 	}
-	
-	
 }

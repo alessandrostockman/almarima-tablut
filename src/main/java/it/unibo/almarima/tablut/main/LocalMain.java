@@ -13,7 +13,7 @@ public class LocalMain {
 
     public static void main(String[] args) throws UnknownHostException, IOException {
         /** Game Parameters */
-        int gamesNumber = 3;
+        int gamesNumber =1;
         Heuristic firstHeuristic = new PickleRicksheuristic();
         Heuristic secondHeuristic = new Mars_heur();
 
