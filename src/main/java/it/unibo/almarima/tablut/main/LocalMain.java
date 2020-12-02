@@ -13,9 +13,9 @@ public class LocalMain {
 
     public static void main(String[] args) throws UnknownHostException, IOException {
         /** Game Parameters */
-        int gamesNumber =1;
-        Heuristic firstHeuristic = new Mars_heur();
-        Heuristic secondHeuristic = new PickleRicksheuristic();
+        int gamesNumber = 3;
+        Heuristic firstHeuristic = new Mars_heur_old();
+        Heuristic secondHeuristic = new Mars_heur();
 
         /** Server Configs */
         int serverTimeout = 300;
@@ -25,7 +25,7 @@ public class LocalMain {
         boolean gui = false;
 
         /** Client Configs */
-        int clientTimeout = 50;
+        int clientTimeout = 60;
 
         Scheduler s = new Scheduler(
             gamesNumber,

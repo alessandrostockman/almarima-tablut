@@ -169,6 +169,6 @@ public class Mars_heur extends Heuristic {
 	
 	@Override
 	public String printInfo() {
-		return this.toString()+"\npieceHWeigt: "+ pieceHWeight + "\ndistToEscapeWeight: "+ distToEscapeWeight+"\ndangerKingWeight: " + dangerKingWeight +"\nescapeLineWeight: "+escapeLineWeight;
+		return this.toString()+"\npieceHWeigt: "+ pieceHWeight + "\ndistToEscapeWeight: "+ distToEscapeWeight;
 	}
 }
