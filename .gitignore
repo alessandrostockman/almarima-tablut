@@ -37,3 +37,6 @@ target/*
 
 #game_logs
 logs
+
+#macOS
+.DS_Store
