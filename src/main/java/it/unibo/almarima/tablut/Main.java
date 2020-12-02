@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         if (args.length != 3) {
-            System.out.println("Number of arguments not valid. Usage: AlMaRiMa.jar [black/white] [ip] [port]");
+            System.out.println("Number of arguments not valid. Usage: AlMaRiMa.jar [black/white] [timeout] [ip]");
             System.exit(1);
         }
 
