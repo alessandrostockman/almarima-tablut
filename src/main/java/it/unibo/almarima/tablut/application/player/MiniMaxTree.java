@@ -119,6 +119,7 @@ public class MiniMaxTree {
 					updated = true;
 
 				}
+				//TODO: modificare il pruning 
 				//if alpha>=beta prune the tree
                 if (alpha.gethVal()>=beta.gethVal()){
                     break;
@@ -151,6 +152,7 @@ public class MiniMaxTree {
 					updated = true;
 
 				}
+				//TODO: modificare il pruning
 				//if alpha>=beta prune the tree
                 if (beta.gethVal()<=alpha.gethVal()){
                     break;

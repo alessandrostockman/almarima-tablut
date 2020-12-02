@@ -9,7 +9,7 @@ import it.unibo.almarima.tablut.external.State;
 public class ImplPlayer extends TablutPlayer{
 
 	//TODO: scegliere l'offset da dargli
-	long timeLimit = (this.getTimeout()-5)*1000;
+	long timeLimit = (this.getTimeout()-1)*1000;
 	
 
     public ImplPlayer(int timeout, State.Turn role) {
