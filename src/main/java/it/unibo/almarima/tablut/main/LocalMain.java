@@ -14,8 +14,8 @@ public class LocalMain {
     public static void main(String[] args) throws UnknownHostException, IOException {
         /** Game Parameters */
         int gamesNumber =1;
-        Heuristic firstHeuristic = new PickleRicksheuristic();
-        Heuristic secondHeuristic = new Mars_heur();
+        Heuristic firstHeuristic = new Mars_heur();
+        Heuristic secondHeuristic = new PickleRicksheuristic();
 
         /** Server Configs */
         int serverTimeout = 300;

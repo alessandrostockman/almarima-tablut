@@ -10,47 +10,80 @@ import it.unibo.almarima.tablut.external.State.Pawn;
 
 public class Mars_heur extends Heuristic {
 	
-	private final static double pieceHWeight = 0.5;
-	private final static double distToEscapeWeight = 0.2;    //TODO: forse 0,3 distEscape perchè spesso ha la possibilità di vincere e non lo fa
-	private final static double dangerKingWeight = 0.15;
-	private final static double escapeLineWeight = 0.15;
+	private double pieceHWeight = 0.5;
+	private double distToEscapeWeight = 0.2;    //TODO: forse 0,3 distEscape perchè spesso ha la possibilità di vincere e non lo fa
+	private double dangerKingWeight = 0.15;
+	private double escapeLineWeight = 0.15;
 	
 	private Coord kingPos;
 
 	public double evaluate(BoardState state)  {
-
-		this.kingPos=state.getKingPosition();
-		
-		// if there is a winner return the winner (corresponds to the max and min h values of 0 or 1)
-		if (state.getWinner() == 0 || state.getWinner() == 1) {
-			return state.getWinner();
-		}
-		
-		// calculate a ratio of white to black pieces remaining on the board
-		int whitePieceCount = state.getNumberPlayerPieces(BoardState.WHITE);
-		int blackPieceCount = state.getNumberPlayerPieces(BoardState.BLACK);
-		int totalPieceCount = whitePieceCount + blackPieceCount;
-		double pieceH = (whitePieceCount*1.0/totalPieceCount);
-		
-		// calculate the distance of the king to the closest escape
-		int kingDistToEscape = Coordinates.distanceToClosestEscape(kingPos);
-		int maxDistToEscape = 6;
-		double distToEscape= ((maxDistToEscape-kingDistToEscape)*1.0/maxDistToEscape); 
-
-		double surrKing;
 		if (state.getTurnPlayer() == BoardState.WHITE) {
-			surrKing = this.scoreKing(state);
-		} else{
-			surrKing = this.checkSurroundings(state, kingPos);
-		}
+			
+			// if one wants to change weights only for WHITE
+			pieceHWeight += 0;
+			distToEscapeWeight += 0;
+			dangerKingWeight += 0;
+			escapeLineWeight += 0;
 
-	
-		double escapeLine = this.checkKingEscapeLine(state);
-        
-		// weigh the two h values calculated above
-		double h = (pieceH*pieceHWeight + distToEscape*distToEscapeWeight+surrKing*dangerKingWeight+escapeLine*escapeLineWeight)/(pieceHWeight+distToEscapeWeight+dangerKingWeight+escapeLineWeight); 
+			this.kingPos=state.getKingPosition();
+			
+			// if there is a winner return the winner (corresponds to the max and min h values of 0 or 1)
+			if (state.getWinner() == 0 || state.getWinner() == 1) {
+				return state.getWinner();
+			}
+			
+			// calculate a ratio of white to black pieces remaining on the board
+			int whitePieceCount = state.getNumberPlayerPieces(BoardState.WHITE);
+			int blackPieceCount = state.getNumberPlayerPieces(BoardState.BLACK);
+			int totalPieceCount = whitePieceCount + blackPieceCount;
+			double pieceH = (whitePieceCount*1.0/totalPieceCount);
+			
+			// calculate the distance of the king to the closest escape
+			int kingDistToEscape = Coordinates.distanceToClosestEscape(kingPos);
+			int maxDistToEscape = 6;
+			double distToEscape= ((maxDistToEscape-kingDistToEscape)*1.0/maxDistToEscape); 
 
-		return h;
+			double surrKing = this.scoreKing(state);		
+			double escapeLine = this.checkKingEscapeLine(state);
+			
+			// weigh the two h values calculated above
+			double h = (pieceH*pieceHWeight + distToEscape*distToEscapeWeight+surrKing*dangerKingWeight+escapeLine*escapeLineWeight)/(pieceHWeight+distToEscapeWeight+dangerKingWeight+escapeLineWeight); 
+			return h;
+		} else {
+
+			// if one wants to change weights only for BLACK
+			pieceHWeight += 0;
+			distToEscapeWeight += 0;
+			dangerKingWeight += 0;
+			escapeLineWeight += 0;
+
+			this.kingPos=state.getKingPosition();
+			
+			// if there is a winner return the winner (corresponds to the max and min h values of 0 or 1)
+			if (state.getWinner() == 0 || state.getWinner() == 1) {
+				return state.getWinner();
+			}
+			
+			// calculate a ratio of white to black pieces remaining on the board
+			int whitePieceCount = state.getNumberPlayerPieces(BoardState.WHITE);
+			int blackPieceCount = state.getNumberPlayerPieces(BoardState.BLACK);
+			int totalPieceCount = whitePieceCount + blackPieceCount;
+			double pieceH = (whitePieceCount*1.0/totalPieceCount);
+			
+			// calculate the distance of the king to the closest escape
+			int kingDistToEscape = Coordinates.distanceToClosestEscape(kingPos);
+			int maxDistToEscape = 6;
+			double distToEscape= ((maxDistToEscape-kingDistToEscape)*1.0/maxDistToEscape); 
+
+			double surrKing = this.checkSurroundings(state, kingPos);
+			
+			double escapeLine = this.checkKingEscapeLine(state);
+			
+			// weigh the two h values calculated above
+			double h = (pieceH*pieceHWeight + distToEscape*distToEscapeWeight+surrKing*dangerKingWeight+escapeLine*escapeLineWeight)/(pieceHWeight+distToEscapeWeight+dangerKingWeight+escapeLineWeight); 
+			return h;	
+	}	
 	}
 
 	private double scoreKing(BoardState b){
