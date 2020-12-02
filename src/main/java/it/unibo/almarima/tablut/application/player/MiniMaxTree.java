@@ -151,9 +151,8 @@ public class MiniMaxTree {
 					updated = true;
 
 				}
-				//TODO: modificare il pruning
 				//if alpha>=beta prune the tree
-                if (beta.gethVal()<=alpha.gethVal()){
+				if (beta.gethVal() < alpha.gethVal() || beta.gethVal() == alpha.gethVal() && (beta.gethVal() != this.headBoardState.getTurnPlayer() || depth >= beta.getDepthAttained())){
                     break;
 				}
 			}
