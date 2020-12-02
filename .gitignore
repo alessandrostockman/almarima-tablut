@@ -38,3 +38,6 @@ target/*
 #game_logs
 logs
 src/main/java/it/unibo/almarima/tablut/local/match_history/
+
+#macOS
+.DS_Store
