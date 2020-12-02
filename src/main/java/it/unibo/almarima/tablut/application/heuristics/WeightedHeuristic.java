@@ -27,7 +27,7 @@ public class WeightedHeuristic extends Heuristic {
         int score = checkSurroundings(b, b.getKingPosition());
         if(Coordinates.isCenterOrNeighborCenter(b.getKingPosition()))
             return (4-score)/4;
-        return (3-score)/4;
+        return (3-score)/4; 
     }
 
 
