@@ -119,9 +119,8 @@ public class MiniMaxTree {
 					updated = true;
 
 				}
-				//TODO: modificare il pruning 
-				//if alpha>=beta prune the tree
-                if (alpha.gethVal()>=beta.gethVal()){
+				//if alpha>beta or if they are equal but the depth is higher prune the tree
+				if (alpha.gethVal() > beta.gethVal() || alpha.gethVal() == beta.gethVal() && (alpha.gethVal() != this.headBoardState.getTurnPlayer() || depth >= alpha.getDepthAttained())){
                     break;
                 }
 			}
