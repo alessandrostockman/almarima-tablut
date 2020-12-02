@@ -37,7 +37,13 @@ public class Mars_heur extends Heuristic {
 		int maxDistToEscape = 6;
 		double distToEscape= ((maxDistToEscape-kingDistToEscape)*1.0/maxDistToEscape); 
 
-		double surrKing = this.checkSurroundings(state, kingPos);
+		double surrKing;
+		if (state.getTurnPlayer() == BoardState.WHITE) {
+			surrKing = this.scoreKing(state);
+		} else{
+			surrKing = this.checkSurroundings(state, kingPos);
+		}
+
 	
 		double escapeLine = this.checkKingEscapeLine(state);
         
@@ -46,6 +52,27 @@ public class Mars_heur extends Heuristic {
 
 		return h;
 	}
+
+	private double scoreKing(BoardState b){
+        double score = checkSurroundingsWhite(b, b.getKingPosition());
+        if(Coordinates.isCenterOrNeighborCenter(b.getKingPosition()))
+            return (4-score)/4;
+        return (3-score)/4; 
+    }
+
+
+    /*Checks the numbers of black Pawns surrounding the king*/
+    private double checkSurroundingsWhite(BoardState b, Coord kingPos){
+        double counter = 0;
+        ArrayList<Coord> neigh = (ArrayList<Coord>) Coordinates.getNeighbors(kingPos);
+
+        for(Coord x: neigh){
+            if(b.getPawnAt(x) == Pawn.BLACK || b.getPawnAt(x) == Pawn.THRONE || Coordinates.isCitadel(x)){
+                counter++;
+            }
+        }
+        return counter;
+    }
 	
 	/*Checks the numbers of black Pawns surrounding the king*/
 	private double checkSurroundings(BoardState b, Coord kingPos){
