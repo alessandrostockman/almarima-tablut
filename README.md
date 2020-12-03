@@ -1,8 +1,9 @@
 # AlMaRiMa team - Tablut AI Player
 
 
-The aim of this project was to develop an AI agent that is able to play the game of Tablut according to the Ashton Rules. 
-The final version of the player is intended to participate to the 2020 Tablut Competition between students of the Fundamentals of AI course held at the University of Bologna. 
+The aim of this project was to develop an AI agent that is able to play the game of Tablut according to the Ashton Rules.  
+
+The final version of the player is intended to participate to the 2020-21 Tablut Competition between students of the Fundamentals of AI course held at the University of Bologna. 
 
 The project is entirely java-based so , after obtaining the jar file, here's how to run it :
 
