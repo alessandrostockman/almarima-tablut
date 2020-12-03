@@ -178,20 +178,15 @@ public class MiniMaxTree {
 	private double escapeLineWeight = 0.15;
 	
 	private double evaluate(BoardState state) {
-		if (state.getTurnPlayer() == BoardState.WHITE) {
-			
-			// if one wants to change weights only for WHITE
-			pieceHWeight += 0;
-			distToEscapeWeight += 0;
-			dangerKingWeight += 0;
-			escapeLineWeight += 0;
 
-			this.kingPos = state.getKingPosition();
-			
-			// if there is a winner return the winner (corresponds to the max and min h values of 0 or 1)
-			if (state.getWinner() == 0 || state.getWinner() == 1) {
-				return state.getWinner();
-			}
+		// if there is a winner return the winner (corresponds to the max and min h values of 0 or 1)
+		if (state.getWinner() == 0 || state.getWinner() == 1) {
+			return state.getWinner();
+		}
+
+		this.kingPos = state.getKingPosition();
+
+		if (state.getTurnPlayer() == BoardState.WHITE) {
 			
 			// calculate a ratio of white to black pieces remaining on the board
 			int whitePieceCount = state.getNumberPlayerPieces(BoardState.WHITE);
@@ -209,22 +204,11 @@ public class MiniMaxTree {
 			
 			// weigh the two h values calculated above
 			double h = (pieceH*pieceHWeight + distToEscape*distToEscapeWeight+surrKing*dangerKingWeight+escapeLine*escapeLineWeight)/(pieceHWeight+distToEscapeWeight+dangerKingWeight+escapeLineWeight); 
+			
 			return h;
+
 		} else {
 
-			// if one wants to change weights only for BLACK
-			pieceHWeight += 0;
-			distToEscapeWeight += 0;
-			dangerKingWeight += 0;
-			escapeLineWeight += 0;
-
-			this.kingPos = state.getKingPosition();
-			
-			// if there is a winner return the winner (corresponds to the max and min h values of 0 or 1)
-			if (state.getWinner() == 0 || state.getWinner() == 1) {
-				return state.getWinner();
-			}
-			
 			// calculate a ratio of white to black pieces remaining on the board
 			int whitePieceCount = state.getNumberPlayerPieces(BoardState.WHITE);
 			int blackPieceCount = state.getNumberPlayerPieces(BoardState.BLACK);
@@ -236,12 +220,12 @@ public class MiniMaxTree {
 			int maxDistToEscape = 6;
 			double distToEscape= ((maxDistToEscape-kingDistToEscape)*1.0/maxDistToEscape); 
 
-			double surrKing = this.checkSurroundings(state, kingPos);
-			
+			double surrKing = this.checkSurroundings(state, kingPos);	
 			double escapeLine = this.checkKingEscapeLine(state);
 			
 			// weigh the two h values calculated above
 			double h = (pieceH*pieceHWeight + distToEscape*distToEscapeWeight+surrKing*dangerKingWeight+escapeLine*escapeLineWeight)/(pieceHWeight+distToEscapeWeight+dangerKingWeight+escapeLineWeight); 
+			
 			return h;	
 		}
 	}
