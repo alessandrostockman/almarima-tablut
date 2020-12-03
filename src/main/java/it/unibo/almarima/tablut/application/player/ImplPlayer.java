@@ -21,7 +21,7 @@ public class ImplPlayer extends TablutPlayer{
     	long endTime = startTime + timeLimit;
 		
     	// start minimaxPruning algorithm with desired depth 
-    	int iterDepth = 5;
+    	int iterDepth = 4;
     	Move chosenMove = boardState.getRandomMove();
 		try {
 			// if move is chosen without time limit reached, set it to chosenMove

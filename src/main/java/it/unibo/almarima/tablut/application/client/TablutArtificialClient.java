@@ -16,13 +16,17 @@ public class TablutArtificialClient extends TablutClient {
     }
     
     public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
+		if (args.length != 3) {
+            System.out.println("Number of arguments not valid. Usage: AlMaRiMa.jar [black/white] [timeout] [ip]");
+            System.exit(1);
+        }
 
-		if (args.length == 0) {
-			System.out.println("You must specify which player you are (WHITE or BLACK)!");
-			System.exit(-1);
+        String role = args[0].toLowerCase();
+        if (!role.equals("black") && !role.equals("white")) {
+            System.out.println("Player role not valid. Must be 'black' or 'white'.");
+            System.exit(1);
 		}
-		System.out.println("Selected this: " + args[0]);
-
+		
 		TablutClient client = new TablutArtificialClient(args[0],Integer.parseInt(args[1]),args[2]);
 
 		client.run();
