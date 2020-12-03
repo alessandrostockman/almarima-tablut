@@ -35,5 +35,8 @@ target/*
 .vscode
 .factorypath
 
-
+#game_logs
+logs
 src/main/java/it/unibo/almarima/tablut/local/
+#macOS
+.DS_Store
