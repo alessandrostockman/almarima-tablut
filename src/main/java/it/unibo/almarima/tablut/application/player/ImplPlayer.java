@@ -7,9 +7,7 @@ import it.unibo.almarima.tablut.external.State;
 
 
 public class ImplPlayer extends TablutPlayer{
-
-	//TODO: scegliere l'offset da dargli
-	long timeLimit = (this.getTimeout()-5)*1000;
+	long timeLimit = (this.getTimeout() - 3) * 1000;
 	
 
     public ImplPlayer(int timeout, State.Turn role) {
@@ -22,9 +20,8 @@ public class ImplPlayer extends TablutPlayer{
     	long startTime = System.currentTimeMillis();
     	long endTime = startTime + timeLimit;
 		
-		//TODO: decidere la depth iniziale
     	// start minimaxPruning algorithm with desired depth 
-    	int iterDepth = 4;
+    	int iterDepth = 5;
     	Move chosenMove = boardState.getRandomMove();
 		try {
 			// if move is chosen without time limit reached, set it to chosenMove
