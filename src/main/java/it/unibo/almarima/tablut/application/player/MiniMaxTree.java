@@ -125,7 +125,7 @@ public class MiniMaxTree {
 
 				}
 				//if alpha>=beta prune the tree
-                if (alpha.gethVal()>=beta.gethVal()){
+				if (alpha.gethVal() > beta.gethVal() || alpha.gethVal() == beta.gethVal() && (alpha.gethVal() != this.headBoardState.getTurnPlayer() || depth >= alpha.getDepthAttained())){
                     break;
                 }
 			}
@@ -157,7 +157,7 @@ public class MiniMaxTree {
 
 				}
 				//if alpha>=beta prune the tree
-                if (beta.gethVal()<=alpha.gethVal()){
+                if (beta.gethVal() < alpha.gethVal() || beta.gethVal() == alpha.gethVal() && (beta.gethVal() != this.headBoardState.getTurnPlayer() || depth >= beta.getDepthAttained())){
                     break;
 				}
 			}
