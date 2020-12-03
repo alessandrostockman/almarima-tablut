@@ -34,3 +34,6 @@ target/*
 .settings
 .vscode
 .factorypath
+
+
+src/main/java/it/unibo/almarima/tablut/local/
